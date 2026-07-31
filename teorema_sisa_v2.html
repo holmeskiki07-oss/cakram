@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Teorema Sisa — Cakrawala Matematika</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --primary:#2563EB;
+  --primary-hover:#1D4ED8;
+  --primary-light:#DBEAFE;
+  --bg:#F8FAFC;
+  --card:#FFFFFF;
+  --text:#0F172A;
+  --text-soft:#64748B;
+  --border:#E2E8F0;
+  --success:#10B981;
+  --success-bg:#ECFDF5;
+  --warning:#F59E0B;
+  --warning-bg:#FFFBEB;
+  --error:#EF4444;
+  --error-bg:#FEF2F2;
+  --radius-card:18px;
+  --radius-btn:12px;
+  --shadow:0 1px 2px rgba(15,23,42,.04), 0 4px 16px rgba(15,23,42,.06);
+  --sp-1:6px; --sp-2:10px; --sp-3:16px; --sp-4:24px; --sp-5:36px; --sp-6:52px;
+  --max-w:900px;
+}
+*{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
+html{scroll-behavior:smooth;}
+body{
+  margin:0; background:var(--bg); color:var(--text);
+  font-family:'Inter',sans-serif; line-height:1.65; font-size:16px;
+  overflow-x:hidden;
+}
+.wrap{max-width:var(--max-w); margin:0 auto; padding:0 20px;}
+
+/* ---------- top bar ---------- */
+.topbar{
+  position:sticky; top:0; z-index:50; background:rgba(248,250,252,.85); backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--border);
+}
+.topbar-inner{max-width:var(--max-w); margin:0 auto; padding:12px 20px; display:flex; align-items:center; justify-content:space-between;}
+.brand{font-size:13px; font-weight:700; color:var(--primary); letter-spacing:.02em;}
+.brand span{color:var(--text-soft); font-weight:500;}
+.progress-track{height:3px; background:var(--border);}
+.progress-fill{height:100%; width:0%; background:var(--primary); transition:width .1s linear;}
+
+/* ---------- header / hero ---------- */
+.hero{padding:var(--sp-6) 0 var(--sp-5);}
+.eyebrow{
+  display:inline-block; font-size:12.5px; font-weight:700; color:var(--primary);
+  background:var(--primary-light); padding:5px 14px; border-radius:999px; margin-bottom:var(--sp-3);
+  letter-spacing:.02em;
+}
+.hero h1{font-size:32px; font-weight:800; margin:0 0 var(--sp-2); letter-spacing:-.02em;}
+.hero-meta{display:flex; gap:10px; flex-wrap:wrap; margin-bottom:var(--sp-4);}
+.meta-chip{
+  font-size:13px; font-weight:600; color:var(--text-soft); background:var(--card);
+  border:1px solid var(--border); padding:6px 12px; border-radius:999px;
+}
+.goal-card{
+  background:var(--card); border:1px solid var(--border); border-radius:var(--radius-card);
+  padding:var(--sp-4); box-shadow:var(--shadow);
+}
+.goal-card h3{font-size:14px; margin:0 0 10px; color:var(--text-soft); font-weight:700; text-transform:uppercase; letter-spacing:.03em;}
+.goal-card ul{margin:0; padding-left:0; list-style:none;}
+.goal-card li{display:flex; gap:10px; align-items:flex-start; font-size:14.5px; margin-bottom:8px; color:var(--text);}
+.goal-card li:last-child{margin-bottom:0;}
+.goal-card li::before{content:'✓'; color:var(--success); font-weight:800; flex-shrink:0;}
+
+/* ---------- identitas siswa ---------- */
+.id-card{
+  background:var(--primary-light); border:1px solid #BFDBFE; border-radius:var(--radius-card);
+  padding:var(--sp-4); margin-top:var(--sp-3);
+}
+.id-card h3{font-size:14px; margin:0 0 4px; color:var(--primary-hover); font-weight:700;}
+.id-card p{font-size:13px; color:#1E40AF; margin:0 0 12px;}
+.id-grid{display:grid; grid-template-columns:1fr 1fr; gap:10px;}
+@media(max-width:480px){.id-grid{grid-template-columns:1fr;}}
+.id-grid label{display:block; font-size:12px; font-weight:700; color:#1E40AF; margin-bottom:5px;}
+.id-grid input{
+  width:100%; height:42px; border-radius:10px; border:1px solid #BFDBFE; padding:0 12px;
+  font-size:14.5px; font-weight:600; color:var(--text); background:#fff;
+}
+.id-grid input:focus{outline:2px solid var(--primary); outline-offset:1px;}
+.id-status{font-size:12.5px; margin-top:8px; color:#1E40AF; min-height:16px;}
+
+/* ---------- sections ---------- */
+section.block{padding:var(--sp-6) 0; border-top:1px solid var(--border);}
+.fade-up{opacity:0; transform:translateY(14px); transition:opacity .55s ease, transform .55s ease;}
+.fade-up.in{opacity:1; transform:translateY(0);}
+.section-tag{
+  display:inline-flex; align-items:center; gap:7px; font-size:12.5px; font-weight:700; color:var(--primary);
+  margin-bottom:var(--sp-2); letter-spacing:.02em; text-transform:uppercase;
+}
+.section-tag .num{
+  width:22px; height:22px; border-radius:50%; background:var(--primary); color:#fff;
+  display:flex; align-items:center; justify-content:center; font-size:11.5px;
+}
+h2{font-size:23px; font-weight:800; margin:0 0 var(--sp-3); letter-spacing:-.01em;}
+p{margin:0 0 var(--sp-3); color:var(--text);}
+p.soft{color:var(--text-soft);}
+.lede{font-size:16.5px;}
+
+.card{
+  background:var(--card); border:1px solid var(--border); border-radius:var(--radius-card);
+  padding:var(--sp-4); box-shadow:var(--shadow);
+}
+.card + .card{margin-top:var(--sp-3);}
+
+/* ---------- buttons ---------- */
+button{font-family:'Inter',sans-serif;}
+.btn{
+  border:none; border-radius:var(--radius-btn); padding:11px 20px; font-size:14.5px; font-weight:600;
+  cursor:pointer; transition:all .2s ease; display:inline-flex; align-items:center; gap:6px;
+}
+.btn-primary{background:var(--primary); color:#fff;}
+.btn-primary:hover{background:var(--primary-hover);}
+.btn-primary:disabled{background:var(--border); color:var(--text-soft); cursor:not-allowed;}
+.btn-ghost{background:var(--card); color:var(--text); border:1px solid var(--border);}
+.btn-ghost:hover{background:var(--bg);}
+.btn-ghost:disabled{opacity:.4; cursor:not-allowed;}
+.btn-sm{padding:8px 14px; font-size:13.5px;}
+
+/* ---------- lihat cara kerjanya ---------- */
+.step-shell{position:relative; min-height:190px;}
+.step-panel{display:none; animation:fadeIn .4s ease;}
+.step-panel.active{display:block;}
+@keyframes fadeIn{from{opacity:0; transform:translateX(6px);} to{opacity:1; transform:translateX(0);}}
+.step-label{font-size:12.5px; font-weight:700; color:var(--text-soft); text-transform:uppercase; letter-spacing:.03em; margin-bottom:10px;}
+.formula-line{
+  font-family:'Inter',sans-serif; font-size:19px; font-weight:600; background:var(--bg);
+  border-radius:12px; padding:16px 18px; margin-bottom:12px; text-align:center; letter-spacing:.01em;
+}
+mark{background:var(--primary-light); color:var(--primary-hover); padding:1px 5px; border-radius:5px; font-weight:700;}
+.step-desc{font-size:14.5px; color:var(--text-soft); text-align:center;}
+.step-controls{display:flex; align-items:center; justify-content:space-between; margin-top:var(--sp-3);}
+.step-dots{display:flex; gap:6px;}
+.step-dots .dot{width:7px; height:7px; border-radius:50%; background:var(--border); transition:all .2s;}
+.step-dots .dot.active{background:var(--primary); width:18px; border-radius:4px;}
+
+/* ---------- coba sendiri ---------- */
+.stepper-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:10px; margin-bottom:var(--sp-3);}
+@media(max-width:560px){.stepper-grid{grid-template-columns:repeat(2,1fr);}}
+.stepper{background:var(--bg); border:1px solid var(--border); border-radius:14px; padding:12px; text-align:center;}
+.stepper .lbl{font-size:11.5px; font-weight:700; color:var(--text-soft); margin-bottom:8px; text-transform:uppercase; letter-spacing:.02em;}
+.stepper .row{display:flex; align-items:center; justify-content:center; gap:8px;}
+.stepper button{
+  width:30px; height:30px; border-radius:9px; border:1px solid var(--border); background:#fff; color:var(--primary);
+  font-size:17px; font-weight:700; cursor:pointer; line-height:1;
+}
+.stepper button:active{background:var(--primary-light);}
+.stepper .val{font-size:18px; font-weight:800; min-width:28px; font-variant-numeric:tabular-nums;}
+
+.slider-block{margin-bottom:var(--sp-3);}
+.slider-top{display:flex; justify-content:space-between; font-size:13.5px; font-weight:600; margin-bottom:8px;}
+.slider-top .sval{font-weight:800; color:var(--primary); font-variant-numeric:tabular-nums;}
+input[type=range]{
+  width:100%; -webkit-appearance:none; height:6px; border-radius:999px; background:var(--border); outline:none;
+}
+input[type=range]::-webkit-slider-thumb{
+  -webkit-appearance:none; width:22px; height:22px; border-radius:50%; background:var(--primary);
+  cursor:pointer; border:3px solid #fff; box-shadow:0 1px 4px rgba(15,23,42,.25);
+}
+input[type=range]::-moz-range-thumb{
+  width:22px; height:22px; border-radius:50%; background:var(--primary); cursor:pointer; border:3px solid #fff;
+}
+
+.live-result{background:var(--bg); border-radius:14px; padding:16px 18px; margin-top:var(--sp-3);}
+.live-result .fx{font-size:16px; font-weight:600; margin-bottom:8px; text-align:center;}
+.live-result .steps{font-size:14.5px; color:var(--text-soft); text-align:center; margin-bottom:10px;}
+.live-result .final{
+  font-size:20px; font-weight:800; text-align:center; color:var(--primary); padding-top:10px; border-top:1px dashed var(--border);
+}
+.insight{
+  margin-top:12px; background:var(--success-bg); color:#047857; border-radius:12px; padding:10px 14px;
+  font-size:13.5px; font-weight:600; text-align:center; display:none;
+}
+.insight.show{display:block; animation:fadeIn .3s ease;}
+
+/* ---------- latihan & tantangan ---------- */
+.problem{margin-bottom:var(--sp-3);}
+.problem .qtag-row{display:flex; align-items:center; gap:8px; margin-bottom:8px; flex-wrap:wrap;}
+.qtag{font-size:12px; font-weight:700; color:var(--primary);}
+.diff-badge{font-size:11px; font-weight:700; padding:3px 10px; border-radius:999px; text-transform:uppercase; letter-spacing:.02em;}
+.diff-badge.mudah{background:var(--success-bg); color:#047857;}
+.diff-badge.sedang{background:var(--warning-bg); color:#B45309;}
+.diff-badge.sulit{background:var(--error-bg); color:#B91C1C;}
+.problem .qtext{font-size:16px; font-weight:600; margin-bottom:12px;}
+.answer-row{display:flex; gap:10px; align-items:center; flex-wrap:wrap;}
+.answer-row input[type=text]{
+  width:110px; height:42px; border-radius:10px; border:1px solid var(--border); text-align:center;
+  font-size:16px; font-weight:700; color:var(--text); background:var(--bg);
+}
+.answer-row input[type=text]:focus{outline:2px solid var(--primary); outline-offset:1px;}
+.feedback-box{margin-top:12px; padding:12px 14px; border-radius:12px; font-size:14px; font-weight:500; display:none;}
+.feedback-box.show{display:block; animation:fadeIn .3s ease;}
+.feedback-box.good{background:var(--success-bg); color:#047857;}
+.feedback-box.bad{background:var(--error-bg); color:#B91C1C;}
+.feedback-box b{font-weight:700;}
+.send-status{font-size:12px; color:var(--text-soft); margin-top:6px; min-height:16px;}
+.mini-stepper-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:8px; margin-bottom:var(--sp-3);}
+@media(max-width:480px){.mini-stepper-grid{grid-template-columns:repeat(2,1fr);}}
+.mini-stepper{background:var(--bg); border:1px solid var(--border); border-radius:12px; padding:10px; text-align:center;}
+.mini-stepper .lbl{font-size:11px; font-weight:700; color:var(--text-soft); margin-bottom:6px;}
+.mini-stepper .row{display:flex; align-items:center; justify-content:center; gap:6px;}
+.mini-stepper button{
+  width:26px; height:26px; border-radius:8px; border:1px solid var(--border); background:#fff; color:var(--primary);
+  font-size:15px; font-weight:700; cursor:pointer;
+}
+.mini-stepper .val{font-size:16px; font-weight:800; min-width:22px;}
+.reason-box{
+  width:100%; min-height:56px; border-radius:12px; border:1px solid var(--border); background:var(--bg);
+  padding:10px 12px; font-family:'Inter',sans-serif; font-size:14px; color:var(--text); resize:vertical; margin-bottom:10px;
+}
+
+/* ---------- kesalahan umum ---------- */
+.mistake-card{display:flex; gap:12px; align-items:flex-start;}
+.mistake-card .icon{
+  width:34px; height:34px; border-radius:10px; background:var(--warning-bg); color:var(--warning);
+  display:flex; align-items:center; justify-content:center; font-size:16px; flex-shrink:0;
+}
+.mistake-card .txt b{display:block; font-size:14.5px; margin-bottom:3px;}
+.mistake-card .txt span{font-size:13.5px; color:var(--text-soft);}
+
+/* ---------- ringkasan ---------- */
+.summary-list{display:flex; flex-direction:column; gap:10px;}
+.summary-item{display:flex; gap:12px; align-items:flex-start; background:var(--card); border:1px solid var(--border); border-radius:14px; padding:14px 16px; box-shadow:var(--shadow);}
+.summary-item .n{
+  width:26px; height:26px; border-radius:50%; background:var(--primary); color:#fff; font-size:13px; font-weight:800;
+  display:flex; align-items:center; justify-content:center; flex-shrink:0;
+}
+.summary-item p{margin:0; font-size:14.5px;}
+
+footer{padding:var(--sp-5) 0 var(--sp-6); text-align:center;}
+footer .badge{
+  display:inline-block; font-size:12.5px; font-weight:700; color:var(--text-soft);
+  background:var(--card); border:1px solid var(--border); padding:8px 16px; border-radius:999px;
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <div class="brand">CAKRAWALA MATEMATIKA <span>· Teorema Sisa</span></div>
+  </div>
+  <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+</div>
+
+<div class="wrap">
+
+  <!-- 1. HEADER -->
+  <div class="hero">
+    <span class="eyebrow">Modul Interaktif</span>
+    <h1>Teorema Sisa</h1>
+    <div class="hero-meta">
+      <span class="meta-chip">📘 Kelas XI</span>
+      <span class="meta-chip">⏱ 15–20 menit</span>
+      <span class="meta-chip">🎯 Mandiri</span>
+    </div>
+    <div class="goal-card">
+      <h3>Setelah ini kamu bisa</h3>
+      <ul>
+        <li>Cari sisa pembagian polinomial tanpa membagi panjang</li>
+        <li>Pakai caranya untuk pembagi (x − k), (x + k), maupun (ax − b)</li>
+        <li>Kenali kapan sisa = 0 itu artinya apa</li>
+      </ul>
+    </div>
+
+    <div class="id-card">
+      <h3>Isi dulu sebelum mulai 👋</h3>
+      <p>Jawabanmu di bagian Latihan &amp; Tantangan otomatis terkirim ke gurumu. Tidak perlu login atau email apapun.</p>
+      <div class="id-grid">
+        <div><label>Nama lengkap</label><input type="text" id="namaSiswa" placeholder="Tulis namamu"></div>
+        <div><label>Kelas</label><input type="text" id="kelasSiswa" placeholder="Contoh: XI IPA 2"></div>
+      </div>
+      <div class="id-status" id="idStatus"></div>
+    </div>
+  </div>
+
+  <!-- 2. PERNAHKAH KAMU BERPIKIR -->
+  <section class="block fade-up" id="s1">
+    <div class="section-tag"><span class="num">1</span> Pernahkah kamu berpikir?</div>
+    <h2>Bagi polinomial itu... lama ya?</h2>
+    <div class="card">
+      <p class="lede">Coba bayangkan. Kamu disuruh bagi <b>2x³ − 5x² + 3x − 7</b> dengan <b>(x − 2)</b>.</p>
+      <p>Pakai cara bersusun, atau cara Horner. Panjang. Banyak langkah. Padahal yang kamu butuhkan cuma satu angka: <b>sisanya</b>.</p>
+      <p class="soft">Nah... menurutmu, mungkin tidak, cari sisa itu tanpa membagi sama sekali?</p>
+      <p><b>Ternyata bisa. Bahkan cuma butuh satu langkah.</b> Yuk lihat kenapa.</p>
+    </div>
+  </section>
+
+  <!-- 3. PENJELASAN SEDERHANA -->
+  <section class="block fade-up" id="s2">
+    <div class="section-tag"><span class="num">2</span> Penjelasan sederhana</div>
+    <h2>Ingat cara bagi bilangan biasa</h2>
+    <div class="card">
+      <p>Waktu SD, kamu pernah bagi <b>17 ÷ 5</b>, kan? Hasilnya 3, sisa 2.</p>
+      <p>Polinomial juga begitu. Kalau <b>f(x)</b> dibagi <b>(x − k)</b>, hasilnya punya sisa juga. Bedanya, sisa di sini bukan angka biasa — tapi tetap satu angka saja (karena pembaginya cuma berderajat 1).</p>
+      <p>Sekarang bagian serunya. Ternyata, sisa itu <b>sama persis</b> dengan nilai f(x) saat x diganti k.</p>
+      <p>Coba perhatikan: kalau x = k, maka (x − k) menjadi nol. Bagian yang kena kali (x−k) otomatis hilang. Yang tersisa cuma... ya, sisanya itu sendiri.</p>
+      <p><b>Jadi, sisa pembagian f(x) oleh (x − k) = f(k).</b> Tinggal masukkan angka k ke f(x), selesai. Tidak perlu membagi apa-apa.</p>
+      <p class="soft">Sampai sini masih masuk akal? Kalau iya, lanjut kita lihat contohnya langkah demi langkah.</p>
+    </div>
+  </section>
+
+  <!-- 4. LIHAT CARA KERJANYA -->
+  <section class="block fade-up" id="s3">
+    <div class="section-tag"><span class="num">3</span> Lihat cara kerjanya</div>
+    <h2>Contoh: 2x³ − 5x² + 3x − 7 dibagi (x − 2)</h2>
+    <div class="card">
+      <div class="step-shell">
+        <div class="step-panel active" data-step="0">
+          <div class="step-label">Langkah 1 dari 4</div>
+          <div class="formula-line">f(x) = 2x³ − 5x² + 3x − 7</div>
+          <div class="step-desc">Ini polinomial yang mau kita cari sisanya.</div>
+        </div>
+        <div class="step-panel" data-step="1">
+          <div class="step-label">Langkah 2 dari 4</div>
+          <div class="formula-line">x − 2 = 0 &nbsp;→&nbsp; x = <mark>2</mark></div>
+          <div class="step-desc">Cari dulu nilai k dari pembaginya. Pembaginya (x − 2), jadi k = 2.</div>
+        </div>
+        <div class="step-panel" data-step="2">
+          <div class="step-label">Langkah 3 dari 4</div>
+          <div class="formula-line">f(<mark>2</mark>) = 2(<mark>2</mark>)³ − 5(<mark>2</mark>)² + 3(<mark>2</mark>) − 7</div>
+          <div class="step-desc">Ganti setiap x pada f(x) dengan k = 2.</div>
+        </div>
+        <div class="step-panel" data-step="3">
+          <div class="step-label">Langkah 4 dari 4</div>
+          <div class="formula-line">f(2) = 16 − 20 + 6 − 7 = <mark>−5</mark></div>
+          <div class="step-desc">Hitung. Hasilnya −5. Itulah sisanya — tanpa membagi sama sekali!</div>
+        </div>
+      </div>
+      <div class="step-controls">
+        <button class="btn btn-ghost btn-sm" id="prevStep" disabled>← Sebelumnya</button>
+        <div class="step-dots" id="stepDots"></div>
+        <button class="btn btn-primary btn-sm" id="nextStep">Selanjutnya →</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. COBA SENDIRI -->
+  <section class="block fade-up" id="s4">
+    <div class="section-tag"><span class="num">4</span> Coba sendiri</div>
+    <h2>Atur polinomialnya, lihat sisanya berubah</h2>
+    <div class="card">
+      <p class="soft">Atur koefisien f(x) = ax³ + bx² + cx + d, lalu geser k untuk pembagi (x − k).</p>
+      <div class="stepper-grid">
+        <div class="stepper"><div class="lbl">a (x³)</div><div class="row">
+          <button onclick="chg('a',-1)">−</button><span class="val" id="val_a">2</span><button onclick="chg('a',1)">+</button>
+        </div></div>
+        <div class="stepper"><div class="lbl">b (x²)</div><div class="row">
+          <button onclick="chg('b',-1)">−</button><span class="val" id="val_b">-5</span><button onclick="chg('b',1)">+</button>
+        </div></div>
+        <div class="stepper"><div class="lbl">c (x)</div><div class="row">
+          <button onclick="chg('c',-1)">−</button><span class="val" id="val_c">3</span><button onclick="chg('c',1)">+</button>
+        </div></div>
+        <div class="stepper"><div class="lbl">d</div><div class="row">
+          <button onclick="chg('d',-1)">−</button><span class="val" id="val_d">-7</span><button onclick="chg('d',1)">+</button>
+        </div></div>
+      </div>
+      <div class="slider-block">
+        <div class="slider-top"><span>Pembagi: (x − k)</span><span class="sval" id="kval">2</span></div>
+        <input type="range" id="kSlider" min="-6" max="6" step="1" value="2" oninput="updateLive()">
+      </div>
+      <div class="live-result">
+        <div class="fx" id="fxLine">f(x) = 2x³ − 5x² + 3x − 7</div>
+        <div class="steps" id="subLine">f(2) = 2(2)³ − 5(2)² + 3(2) − 7</div>
+        <div class="final" id="resultLine">Sisa = −5</div>
+      </div>
+      <div class="insight" id="insightBox">🎉 Sisa = 0! Artinya (x − k) adalah <b>faktor</b> dari f(x) ini.</div>
+    </div>
+  </section>
+
+  <!-- 6. LATIHAN & TANTANGAN -->
+  <section class="block fade-up" id="s5">
+    <div class="section-tag"><span class="num">5</span> Latihan &amp; Tantangan</div>
+    <h2>Yuk buktikan kamu sudah paham</h2>
+    <p class="soft">3 soal, makin ke bawah makin menantang. Setiap kamu cek jawaban, hasilnya otomatis terkirim ke gurumu.</p>
+
+    <div class="card">
+      <div class="problem">
+        <div class="qtag-row"><span class="qtag">Soal 1</span><span class="diff-badge mudah">Mudah</span></div>
+        <div class="qtext">f(x) = x³ − 4x² + x + 6 dibagi (x − 1). Sisanya = ...</div>
+        <div class="answer-row">
+          <input type="text" id="ans0" inputmode="numeric" placeholder="?">
+          <button class="btn btn-primary btn-sm" onclick="checkAns(0)">Cek jawaban</button>
+        </div>
+        <div class="feedback-box" id="fb0"></div>
+        <div class="send-status" id="send0"></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="problem" style="margin-bottom:0;">
+        <div class="qtag-row"><span class="qtag">Soal 2</span><span class="diff-badge sedang">Sedang</span></div>
+        <div class="qtext">f(x) = 2x³ + x² − 5x − 3 dibagi (x + 1). Sisanya = ...</div>
+        <div class="answer-row">
+          <input type="text" id="ans1" inputmode="numeric" placeholder="?">
+          <button class="btn btn-primary btn-sm" onclick="checkAns(1)">Cek jawaban</button>
+        </div>
+        <div class="feedback-box" id="fb1"></div>
+        <div class="send-status" id="send1"></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="problem" style="margin-bottom:0;">
+        <div class="qtag-row"><span class="qtag">Soal 3 — Tantangan</span><span class="diff-badge sulit">Sulit</span></div>
+        <div class="qtext">Buat SENDIRI polinomial f(x) = ax³ + bx² + cx + d sehingga sisa pembagiannya oleh (x − 2) adalah tepat 5.</div>
+        <div class="mini-stepper-grid">
+          <div class="mini-stepper"><div class="lbl">a</div><div class="row">
+            <button onclick="chgT('a',-1)">−</button><span class="val" id="t_a">0</span><button onclick="chgT('a',1)">+</button>
+          </div></div>
+          <div class="mini-stepper"><div class="lbl">b</div><div class="row">
+            <button onclick="chgT('b',-1)">−</button><span class="val" id="t_b">0</span><button onclick="chgT('b',1)">+</button>
+          </div></div>
+          <div class="mini-stepper"><div class="lbl">c</div><div class="row">
+            <button onclick="chgT('c',-1)">−</button><span class="val" id="t_c">0</span><button onclick="chgT('c',1)">+</button>
+          </div></div>
+          <div class="mini-stepper"><div class="lbl">d</div><div class="row">
+            <button onclick="chgT('d',-1)">−</button><span class="val" id="t_d">0</span><button onclick="chgT('d',1)">+</button>
+          </div></div>
+        </div>
+        <textarea class="reason-box" id="reason2" placeholder="Ceritakan singkat alasanmu memilih angka-angka itu (opsional, tapi bagus untuk dikirim ke guru)."></textarea>
+        <div class="answer-row">
+          <button class="btn btn-primary btn-sm" onclick="checkTantangan()">Cek jawaban</button>
+        </div>
+        <div class="feedback-box" id="fb2"></div>
+        <div class="send-status" id="send2"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7. KESALAHAN UMUM -->
+  <section class="block fade-up" id="s7">
+    <div class="section-tag"><span class="num">6</span> Kesalahan yang sering terjadi</div>
+    <h2>Biar kamu tidak kejebak juga</h2>
+    <div class="card mistake-card">
+      <div class="icon">⚠️</div>
+      <div class="txt"><b>Salah tanda k</b><span>Pembagi (x + 3) itu artinya k = −3, bukan k = 3. Ubah dulu jadi (x − (−3)) sebelum substitusi.</span></div>
+    </div>
+    <div class="card mistake-card">
+      <div class="icon">⚠️</div>
+      <div class="txt"><b>Lupa suku konstanta</b><span>Suku yang tidak ada x-nya (misalnya angka −7 di akhir) sering kelupaan ikut dijumlahkan.</span></div>
+    </div>
+    <div class="card mistake-card">
+      <div class="icon">⚠️</div>
+      <div class="txt"><b>Salah hitung pangkat untuk k negatif</b><span>Hati-hati, (−2)³ = −8, bukan 8. Tanda minus ikut kepangkatkan kalau pangkatnya ganjil.</span></div>
+    </div>
+    <div class="card mistake-card">
+      <div class="icon">⚠️</div>
+      <div class="txt"><b>Mengira harus membagi penuh dulu</b><span>Justru sebaliknya — teorema sisa itu dibuat supaya kamu TIDAK perlu membagi panjang.</span></div>
+    </div>
+  </section>
+
+  <!-- 8. RINGKASAN -->
+  <section class="block fade-up" id="s8">
+    <div class="section-tag"><span class="num">7</span> Ringkasan</div>
+    <h2>5 hal yang perlu kamu ingat</h2>
+    <div class="summary-list">
+      <div class="summary-item"><div class="n">1</div><p>Sisa f(x) dibagi (x − k) = f(k). Tinggal substitusi, tidak perlu membagi.</p></div>
+      <div class="summary-item"><div class="n">2</div><p>Pembagi (x + k) artinya k-nya negatif. Substitusikan x = −k.</p></div>
+      <div class="summary-item"><div class="n">3</div><p>Pembagi (ax − b) artinya substitusikan x = b/a.</p></div>
+      <div class="summary-item"><div class="n">4</div><p>Kalau sisa = 0, berarti pembaginya adalah faktor dari polinomial itu.</p></div>
+      <div class="summary-item"><div class="n">5</div><p>Teorema sisa mengubah soal "membagi panjang" jadi soal "substitusi sederhana".</p></div>
+    </div>
+  </section>
+
+  <footer><span class="badge">✓ Selesai — Teorema Sisa · Cakrawala Matematika</span></footer>
+
+</div>
+
+<script>
+/* ---------- progress bar ---------- */
+window.addEventListener('scroll', function(){
+  var h = document.documentElement;
+  var pct = (h.scrollTop) / (h.scrollHeight - h.clientHeight) * 100;
+  document.getElementById('progressFill').style.width = pct + '%';
+});
+
+/* ---------- fade-up on scroll ---------- */
+var io = new IntersectionObserver(function(entries){
+  entries.forEach(function(e){ if(e.isIntersecting) e.target.classList.add('in'); });
+}, { threshold:0.12 });
+document.querySelectorAll('.fade-up').forEach(function(el){ io.observe(el); });
+
+/* ---------- lihat cara kerjanya (step viewer) ---------- */
+var steps = document.querySelectorAll('.step-panel');
+var curStep = 0;
+var dotsWrap = document.getElementById('stepDots');
+steps.forEach(function(_, i){
+  var d = document.createElement('div');
+  d.className = 'dot' + (i===0 ? ' active' : '');
+  dotsWrap.appendChild(d);
+});
+function renderStep(){
+  steps.forEach(function(p,i){ p.classList.toggle('active', i===curStep); });
+  document.querySelectorAll('.step-dots .dot').forEach(function(d,i){ d.classList.toggle('active', i===curStep); });
+  document.getElementById('prevStep').disabled = curStep===0;
+  document.getElementById('nextStep').disabled = curStep===steps.length-1;
+  document.getElementById('nextStep').textContent = curStep===steps.length-1 ? 'Selesai ✓' : 'Selanjutnya →';
+}
+document.getElementById('nextStep').addEventListener('click', function(){
+  if(curStep < steps.length-1){ curStep++; renderStep(); }
+});
+document.getElementById('prevStep').addEventListener('click', function(){
+  if(curStep > 0){ curStep--; renderStep(); }
+});
+renderStep();
+
+/* ---------- coba sendiri ---------- */
+var coef = { a:2, b:-5, c:3, d:-7 };
+function chg(key, dir){
+  coef[key] = Math.max(-9, Math.min(9, coef[key] + dir));
+  document.getElementById('val_'+key).textContent = coef[key];
+  updateLive();
+}
+function fmtTerm(n, powLabel, isFirst){
+  if(n===0) return '';
+  var sign = n < 0 ? ' − ' : (isFirst ? '' : ' + ');
+  var abs = Math.abs(n);
+  var numPart = (abs===1 && powLabel) ? '' : abs;
+  return sign + numPart + powLabel;
+}
+function updateLive(){
+  var k = parseInt(document.getElementById('kSlider').value);
+  document.getElementById('kval').textContent = k;
+  var a=coef.a,b=coef.b,c=coef.c,d=coef.d;
+
+  var fx = 'f(x) = ' + fmtTerm(a,'x³',true) + fmtTerm(b,'x²',false) + fmtTerm(c,'x',false) + fmtTerm(d,'',false);
+  fx = fx.replace('f(x) =  + ', 'f(x) = ');
+  document.getElementById('fxLine').textContent = fx;
+
+  var kk = k;
+  document.getElementById('subLine').textContent =
+    'f(' + kk + ') = ' + a + '(' + kk + ')³ + ' + b + '(' + kk + ')² + ' + c + '(' + kk + ') + ' + d;
+
+  var result = a*Math.pow(kk,3) + b*Math.pow(kk,2) + c*kk + d;
+  document.getElementById('resultLine').textContent = 'Sisa = ' + result;
+
+  var box = document.getElementById('insightBox');
+  if(result === 0){ box.classList.add('show'); } else { box.classList.remove('show'); }
+}
+updateLive();
+
+/* ---------- identitas siswa ---------- */
+function getIdentitas(){
+  var nama = document.getElementById('namaSiswa').value.trim();
+  var kelas = document.getElementById('kelasSiswa').value.trim();
+  return { nama: nama, kelas: kelas };
+}
+function identitasLengkap(){
+  var id = getIdentitas();
+  var statusEl = document.getElementById('idStatus');
+  if(!id.nama || !id.kelas){
+    statusEl.textContent = 'Isi nama dan kelas dulu ya, sebelum cek jawaban.';
+    statusEl.style.color = '#B91C1C';
+    document.getElementById('namaSiswa').focus();
+    return false;
+  }
+  statusEl.textContent = '';
+  return true;
+}
+
+/* ---------- latihan soal 1 & 2 ---------- */
+var answerKey = [
+  { correct: 4, common: { '-4':'Sepertinya kamu salah tanda saat substitusi x = 1. Coba hitung ulang tiap suku satu per satu.' } },
+  { correct: 1, common: { '-9':'Ingat, pembagi (x + 1) artinya k = −1, bukan k = 1. Coba ganti tandanya.', '9':'Hampir — coba cek lagi tanda pada suku x³ dan x² saat x = −1.' } }
+];
+function checkAns(idx){
+  if(!identitasLengkap()) return;
+  var input = document.getElementById('ans'+idx).value.trim();
+  var fb = document.getElementById('fb'+idx);
+  var key = answerKey[idx];
+  fb.classList.remove('good','bad');
+  if(input === ''){
+    fb.classList.add('show','bad');
+    fb.innerHTML = 'Isi dulu jawabanmu ya.';
+    return;
+  }
+  var num = parseFloat(input);
+  var benar = (num === key.correct);
+  if(benar){
+    fb.classList.add('show','good');
+    fb.innerHTML = '<b>Benar!</b> Sisanya memang ' + key.correct + '.';
+  } else {
+    fb.classList.add('show','bad');
+    var hint = key.common[input];
+    fb.innerHTML = '<b>Belum tepat.</b> ' + (hint || 'Coba substitusi ulang nilai k ke tiap suku f(x), lalu jumlahkan pelan-pelan.');
+  }
+  kirimKeGuru(idx+1, input, '', benar);
+}
+
+/* ---------- soal 3: tantangan buat-sendiri ---------- */
+var tcoef = { a:0, b:0, c:0, d:0 };
+function chgT(key, dir){
+  tcoef[key] = Math.max(-9, Math.min(9, tcoef[key] + dir));
+  document.getElementById('t_'+key).textContent = tcoef[key];
+}
+function checkTantangan(){
+  if(!identitasLengkap()) return;
+  var a=tcoef.a,b=tcoef.b,c=tcoef.c,d=tcoef.d;
+  var hasil = a*8 + b*4 + c*2 + d;
+  var fb = document.getElementById('fb2');
+  fb.classList.remove('good','bad');
+  var benar = (hasil === 5);
+  if(benar){
+    fb.classList.add('show','good');
+    fb.innerHTML = '<b>Keren, berhasil!</b> f(2) = ' + a + '(8) + ' + b + '(4) + ' + c + '(2) + ' + d + ' = 5. Polinomialmu benar menghasilkan sisa 5.';
+  } else {
+    fb.classList.add('show','bad');
+    fb.innerHTML = 'Polinomialmu saat ini menghasilkan f(2) = <b>' + hasil + '</b>, belum 5. Coba ubah salah satu koefisiennya.';
+  }
+  var polyStr = a+'x³ + '+b+'x² + '+c+'x + '+d;
+  var reason = document.getElementById('reason2').value.trim();
+  kirimKeGuru(3, polyStr + ' (f(2) = ' + hasil + ')', reason, benar);
+}
+
+/* ---------- kirim hasil ke guru (Google Apps Script) ---------- */
+/* Tempel URL Web App yang sama seperti modul lain (lihat terima_latihan_siswa.gs.txt) */
+var SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzcK65GHhWieoZ0MgGrIs4YIyYXyR7E1_UlbfH4fL-OD_movoIiUViBK49EA5mFF9jG/exec';
+
+function kirimKeGuru(nomorSoal, jawaban1, jawaban2, benar){
+  var idx = nomorSoal - 1;
+  var statusEl = document.getElementById('send'+idx);
+  if(!SCRIPT_URL){ if(statusEl) statusEl.textContent=''; return; }
+  var id = getIdentitas();
+  var namaKelas = id.nama + ' — ' + id.kelas;
+  var payload = {
+    topik: 'Teorema Sisa',
+    nama: namaKelas,
+    soal: nomorSoal,
+    jawaban: jawaban1,
+    jawaban2: jawaban2,
+    benar: benar ? 'Benar' : 'Salah',
+    waktu: new Date().toLocaleString('id-ID')
+  };
+  if(statusEl) statusEl.textContent = 'Mengirim ke guru...';
+  fetch(SCRIPT_URL, { method:'POST', mode:'no-cors', headers:{'Content-Type':'text/plain'}, body: JSON.stringify(payload) })
+    .then(function(){ if(statusEl) statusEl.textContent = 'Terkirim ke guru ✓'; })
+    .catch(function(){ if(statusEl) statusEl.textContent = 'Gagal mengirim (periksa koneksi internet).'; });
+}
+</script>
+
+</body>
+</html>
