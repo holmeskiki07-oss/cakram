@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Topik Pembelajaran | Cakrawala Matematika</title>
+
+<!--
+    =====================================================================
+    CAKRAWALA MATEMATIKA — topik.html
+    =====================================================================
+    Halaman ini adalah PUSAT NAVIGASI seluruh materi (bukan halaman materi).
+
+    CARA MENAMBAH / MENGUBAH TOPIK
+    -------------------------------
+    Semua data topik ada pada satu array bernama TOPIK, di bagian
+    <script> menjelang akhir file ini. Guru cukup mengubah array
+    tersebut untuk:
+      - menambah topik baru      -> tambahkan satu object baru di TOPIK
+      - menghapus topik          -> hapus object-nya dari TOPIK
+      - mengubah kategori        -> ubah properti "kategori" (filter chip
+                                     akan otomatis menyesuaikan)
+      - mengubah ikon            -> ubah properti "ikon" (emoji)
+      - mengubah warna aksen     -> ubah properti "warna" (kode hex)
+      - mengubah jumlah modul    -> ubah properti "jumlah"
+      - mengubah nama modul      -> ubah isi array "modul"
+      - mengubah link tujuan     -> ubah properti "link"
+
+    TIDAK PERLU mengubah bagian HTML atau CSS sama sekali.
+    Card, filter kategori, pencarian, jumlah topik, dan tampilan kosong
+    akan otomatis menyesuaikan.
+    =====================================================================
+-->
+
+<style>
+    /* =================================================================
+       RESET & DASAR
+       ================================================================= */
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    :root {
+        --primary: #2563EB;
+        --bg: #F8FAFC;
+        --card: #FFFFFF;
+        --border: #E2E8F0;
+        --text: #0F172A;
+        --text-secondary: #64748B;
+    }
+
+    body {
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        background: var(--bg);
+        color: var(--text);
+        -webkit-font-smoothing: antialiased;
+        line-height: 1.5;
+    }
+
+    /* =================================================================
+       BANNER
+       ================================================================= */
+    .page-header {
+        width: 100%;
+        line-height: 0;
+        background: var(--card);
+        border-bottom: 1px solid var(--border);
+    }
+
+    .page-header img {
+        width: 100%;
+        height: auto;
+        display: block;
+        max-height: 260px;
+        object-fit: cover;
+    }
+
+    /* =================================================================
+       KONTAINER UTAMA
+       ================================================================= */
+    .container {
+        max-width: 880px;
+        margin: 0 auto;
+        padding: 32px 20px 64px;
+    }
+
+    /* =================================================================
+       HEADING
+       ================================================================= */
+    .heading {
+        text-align: center;
+        margin-bottom: 22px;
+        animation: fadeInUp 0.5s ease both;
+    }
+
+    .heading h1 {
+        font-size: 26px;
+        font-weight: 700;
+        letter-spacing: -0.02em;
+        margin-bottom: 8px;
+    }
+
+    .heading p {
+        font-size: 15px;
+        color: var(--text-secondary);
+    }
+
+    .topik-count {
+        font-size: 13px;
+        color: var(--text-secondary);
+        margin-top: 6px;
+    }
+
+    .topik-count strong {
+        color: var(--primary);
+        font-weight: 600;
+    }
+
+    /* =================================================================
+       FILTER KATEGORI (CHIP)
+       ================================================================= */
+    .filter-wrap {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 8px;
+        max-width: 640px;
+        margin: 0 auto 18px;
+        animation: fadeInUp 0.5s ease 0.03s both;
+    }
+
+    .filter-chip {
+        font-family: inherit;
+        font-size: 13px;
+        font-weight: 500;
+        color: var(--text-secondary);
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 999px;
+        padding: 7px 16px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        white-space: nowrap;
+    }
+
+    .filter-chip:hover {
+        border-color: var(--primary);
+        color: var(--primary);
+    }
+
+    .filter-chip.active {
+        background: var(--primary);
+        border-color: var(--primary);
+        color: #fff;
+    }
+
+    /* =================================================================
+       SEARCH
+       ================================================================= */
+    .search-wrap {
+        position: relative;
+        max-width: 520px;
+        margin: 0 auto 32px;
+        animation: fadeInUp 0.5s ease 0.06s both;
+    }
+
+    .search-icon {
+        position: absolute;
+        left: 18px;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 16px;
+        opacity: 0.55;
+        pointer-events: none;
+    }
+
+    #searchInput {
+        width: 100%;
+        padding: 14px 18px 14px 46px;
+        border-radius: 14px;
+        border: 1px solid var(--border);
+        background: var(--card);
+        font-family: inherit;
+        font-size: 15px;
+        color: var(--text);
+        outline: none;
+        box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+        transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    #searchInput::placeholder {
+        color: var(--text-secondary);
+    }
+
+    #searchInput:focus {
+        border-color: var(--primary);
+        box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.12);
+    }
+
+    /* =================================================================
+       GRID TOPIK
+       ================================================================= */
+    .topik-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 14px;
+    }
+
+    @media (min-width: 640px) {
+        .topik-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+
+    /* =================================================================
+       CARD TOPIK
+       ================================================================= */
+    .topik-card {
+        position: relative;
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 18px;
+        padding: 18px 20px;
+        text-decoration: none;
+        color: inherit;
+        cursor: pointer;
+        overflow: hidden;
+        box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
+        transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+        animation: fadeInUp 0.45s ease both;
+    }
+
+    /* garis aksen kiri, warna diambil dari data JS lewat --accent */
+    .topik-card::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 4px;
+        background: var(--accent, var(--primary));
+    }
+
+    .topik-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 12px 24px rgba(15, 23, 42, 0.08);
+        border-color: var(--border);
+    }
+
+    .topik-card:active {
+        transform: translateY(-1px);
+    }
+
+    .topik-icon {
+        flex-shrink: 0;
+        width: 52px;
+        height: 52px;
+        border-radius: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 26px;
+        background: color-mix(in srgb, var(--accent, var(--primary)) 12%, white);
+    }
+
+    .topik-body {
+        flex: 1;
+        min-width: 0;
+    }
+
+    .topik-nama {
+        font-size: 16px;
+        font-weight: 600;
+        margin-bottom: 6px;
+        letter-spacing: -0.01em;
+    }
+
+    /* daftar modul ringkas (maks. 3 ditampilkan) */
+    .topik-modul-list {
+        list-style: none;
+        margin: 0 0 4px;
+        padding: 0;
+    }
+
+    .topik-modul-list li {
+        position: relative;
+        padding-left: 13px;
+        font-size: 12.5px;
+        color: var(--text-secondary);
+        line-height: 1.55;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .topik-modul-list li::before {
+        content: "•";
+        position: absolute;
+        left: 0;
+        color: var(--accent, var(--primary));
+        font-weight: 700;
+    }
+
+    .topik-lebih {
+        font-size: 12px;
+        color: var(--text-secondary);
+        opacity: 0.85;
+        margin-bottom: 8px;
+    }
+
+    .topik-badge {
+        display: inline-block;
+        font-size: 12px;
+        font-weight: 600;
+        color: var(--accent, var(--primary));
+        background: color-mix(in srgb, var(--accent, var(--primary)) 10%, white);
+        padding: 3px 10px;
+        border-radius: 999px;
+    }
+
+    .topik-arrow {
+        flex-shrink: 0;
+        font-size: 18px;
+        color: var(--text-secondary);
+        transition: transform 0.2s ease, color 0.2s ease;
+    }
+
+    .topik-card:hover .topik-arrow {
+        transform: translateX(4px);
+        color: var(--accent, var(--primary));
+    }
+
+    /* stagger sedikit animasi masuk untuk tiap card */
+    .topik-card:nth-child(1) { animation-delay: 0.05s; }
+    .topik-card:nth-child(2) { animation-delay: 0.09s; }
+    .topik-card:nth-child(3) { animation-delay: 0.13s; }
+    .topik-card:nth-child(4) { animation-delay: 0.17s; }
+    .topik-card:nth-child(5) { animation-delay: 0.21s; }
+    .topik-card:nth-child(6) { animation-delay: 0.25s; }
+    .topik-card:nth-child(n+7) { animation-delay: 0.28s; }
+
+    /* =================================================================
+       EMPTY STATE (tidak ada hasil pencarian / filter)
+       ================================================================= */
+    .empty-state {
+        display: none;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        padding: 64px 20px;
+        color: var(--text-secondary);
+        animation: fadeInUp 0.4s ease both;
+    }
+
+    .empty-state .empty-icon {
+        font-size: 40px;
+        margin-bottom: 14px;
+        opacity: 0.6;
+    }
+
+    .empty-state p {
+        font-size: 14.5px;
+    }
+
+    .empty-state.show {
+        display: flex;
+    }
+
+    /* =================================================================
+       FOOTER
+       ================================================================= */
+    footer {
+        text-align: center;
+        padding: 28px 20px 36px;
+        font-size: 13px;
+        color: var(--text-secondary);
+        border-top: 1px solid var(--border);
+    }
+
+    /* =================================================================
+       ANIMASI
+       ================================================================= */
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        * {
+            animation: none !important;
+            transition: none !important;
+        }
+    }
+</style>
+</head>
+<body>
+
+    <!-- ================= BANNER ================= -->
+    <header class="page-header">
+        <img src="header_topik.webp" alt="Topik Pembelajaran">
+    </header>
+
+    <div class="container">
+
+        <!-- ================= HEADING ================= -->
+        <div class="heading">
+            <h1>📚 Topik Pembelajaran</h1>
+            <p>Pilih topik yang ingin dipelajari.</p>
+            <p class="topik-count" id="topikCount"></p>
+        </div>
+
+        <!-- ================= FILTER KATEGORI (diisi otomatis lewat JS) ================= -->
+        <div class="filter-wrap" id="filterWrap"></div>
+
+        <!-- ================= SEARCH ================= -->
+        <div class="search-wrap">
+            <span class="search-icon">🔍</span>
+            <input
+                type="text"
+                id="searchInput"
+                placeholder="Cari topik atau materi..."
+                autocomplete="off"
+            >
+        </div>
+
+        <!-- ================= GRID TOPIK (diisi otomatis lewat JS) ================= -->
+        <div class="topik-grid" id="topikGrid"></div>
+
+        <!-- ================= EMPTY STATE ================= -->
+        <div class="empty-state" id="emptyState">
+            <div class="empty-icon">🔍</div>
+            <p>Tidak ada topik yang ditemukan.</p>
+        </div>
+
+    </div>
+
+    <!-- ================= FOOTER ================= -->
+    <footer>
+        Cakrawala Matematika
+    </footer>
+
+    <script>
+        /* =============================================================
+           DATA TOPIK
+           -------------------------------------------------------------
+           Guru cukup mengedit array ini untuk menambah / mengubah /
+           menghapus topik. Tidak perlu menyentuh HTML atau CSS.
+
+           Setiap object memiliki properti:
+             nama       : nama topik (string)
+             kategori   : kategori topik, dipakai untuk filter chip (string)
+             ikon       : emoji sebagai ikon (string)
+             warna      : kode warna hex untuk aksen card (string)
+             deskripsi  : deskripsi singkat topik, dipakai untuk pencarian
+                          (string, tidak ditampilkan langsung di card)
+             jumlah     : jumlah modul dalam topik (angka)
+             modul      : daftar nama modul (array of string)
+             link       : file/halaman tujuan saat card diklik (string)
+
+           Tips: kategori baru akan otomatis muncul sebagai tombol
+           filter tanpa perlu mengubah HTML sama sekali.
+           ============================================================= */
+        const TOPIK = [
+            {
+                nama: "Polinomial",
+                kategori: "Aljabar",
+                ikon: "📘",
+                warna: "#2563EB",
+                deskripsi: "Pembagian polinomial, Horner, Faktor, Akar",
+                jumlah: 4,
+                modul: [
+                    "Teorema Sisa",
+                    "Metode Horner",
+                    "Teorema Faktor",
+                    "Akar Polinomial"
+                ],
+                link: "polinomial.html"
+            },
+            {
+                nama: "Trigonometri",
+                kategori: "Geometri",
+                ikon: "📐",
+                warna: "#8B5CF6",
+                deskripsi: "Sudut, Identitas, Persamaan",
+                jumlah: 8,
+                modul: [
+                    "Sudut",
+                    "Identitas",
+                    "Persamaan"
+                ],
+                link: "trigonometri.html"
+            }
+
+            // Tambahkan object topik baru di sini, contoh:
+            // {
+            //     nama: "Statistika",
+            //     kategori: "Statistika",
+            //     ikon: "📊",
+            //     warna: "#F97316",
+            //     deskripsi: "Ukuran pemusatan, penyebaran, dan penyajian data",
+            //     jumlah: 5,
+            //     modul: ["Mean", "Median", "Modus", "Simpangan Baku", "Diagram"],
+            //     link: "statistika.html"
+            // },
+        ];
+
+        /* =============================================================
+           ELEMEN DOM
+           ============================================================= */
+        const grid = document.getElementById("topikGrid");
+        const emptyState = document.getElementById("emptyState");
+        const searchInput = document.getElementById("searchInput");
+        const filterWrap = document.getElementById("filterWrap");
+        const topikCountEl = document.getElementById("topikCount");
+
+        /* state filter & pencarian yang aktif saat ini */
+        let kategoriAktif = "Semua";
+
+        /* =============================================================
+           JUMLAH TOPIK (dihitung otomatis dari TOPIK)
+           ============================================================= */
+        function tampilkanJumlahTopik() {
+            const total = TOPIK.length;
+            topikCountEl.innerHTML = `Saat ini tersedia <strong>${total}</strong> topik pembelajaran.`;
+        }
+
+        /* =============================================================
+           FILTER KATEGORI — dibuat otomatis dari TOPIK
+           ============================================================= */
+        function bangunFilterKategori() {
+            // ambil kategori unik sesuai urutan kemunculan, lalu tambahkan "Semua" di depan
+            const kategoriUnik = [...new Set(TOPIK.map(t => t.kategori))];
+            const daftarChip = ["Semua", ...kategoriUnik];
+
+            filterWrap.innerHTML = "";
+
+            daftarChip.forEach(kategori => {
+                const chip = document.createElement("button");
+                chip.type = "button";
+                chip.className = "filter-chip" + (kategori === kategoriAktif ? " active" : "");
+                chip.textContent = kategori;
+                chip.dataset.kategori = kategori;
+
+                chip.addEventListener("click", () => {
+                    kategoriAktif = kategori;
+                    document.querySelectorAll(".filter-chip").forEach(el => {
+                        el.classList.toggle("active", el.dataset.kategori === kategoriAktif);
+                    });
+                    terapkanFilter();
+                });
+
+                filterWrap.appendChild(chip);
+            });
+        }
+
+        /* =============================================================
+           RENDER CARD
+           ============================================================= */
+        function buatCard(topik) {
+            const card = document.createElement("a");
+            card.className = "topik-card";
+            card.href = topik.link;
+            card.style.setProperty("--accent", topik.warna);
+
+            // maksimal 3 modul ditampilkan sebagai daftar ringkas
+            const modulTampil = topik.modul.slice(0, 3);
+            const sisaModul = topik.modul.length - modulTampil.length;
+
+            const daftarModulHTML = modulTampil
+                .map(m => `<li>${m}</li>`)
+                .join("");
+
+            const lebihHTML = sisaModul > 0
+                ? `<div class="topik-lebih">+${sisaModul} modul lagi</div>`
+                : "";
+
+            card.innerHTML = `
+                <div class="topik-icon">${topik.ikon}</div>
+                <div class="topik-body">
+                    <div class="topik-nama">${topik.nama}</div>
+                    <ul class="topik-modul-list">${daftarModulHTML}</ul>
+                    ${lebihHTML}
+                    <span class="topik-badge">${topik.jumlah} Modul</span>
+                </div>
+                <div class="topik-arrow">›</div>
+            `;
+
+            return card;
+        }
+
+        function render(daftar) {
+            grid.innerHTML = "";
+
+            if (daftar.length === 0) {
+                emptyState.classList.add("show");
+                return;
+            }
+
+            emptyState.classList.remove("show");
+
+            daftar.forEach(topik => {
+                grid.appendChild(buatCard(topik));
+            });
+        }
+
+        /* =============================================================
+           PENCARIAN + FILTER KATEGORI (BEKERJA BERSAMAAN)
+           Pencarian mencocokkan: nama topik, deskripsi, dan nama modul
+           ============================================================= */
+        function cariTopik(kata) {
+            const kunci = kata.trim().toLowerCase();
+
+            if (kunci === "") {
+                return TOPIK;
+            }
+
+            return TOPIK.filter(topik => {
+                const cocokNama = topik.nama.toLowerCase().includes(kunci);
+                const cocokDeskripsi = topik.deskripsi.toLowerCase().includes(kunci);
+                const cocokModul = topik.modul.some(m => m.toLowerCase().includes(kunci));
+
+                return cocokNama || cocokDeskripsi || cocokModul;
+            });
+        }
+
+        function terapkanFilter() {
+            let hasil = cariTopik(searchInput.value);
+
+            if (kategoriAktif !== "Semua") {
+                hasil = hasil.filter(topik => topik.kategori === kategoriAktif);
+            }
+
+            render(hasil);
+        }
+
+        searchInput.addEventListener("input", terapkanFilter);
+
+        /* =============================================================
+           INISIALISASI
+           ============================================================= */
+        tampilkanJumlahTopik();
+        bangunFilterKategori();
+        terapkanFilter();
+    </script>
+
+</body>
+</html>
