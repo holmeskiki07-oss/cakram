@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Pengumuman · Cakrawala Matematika</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --primary:#2563EB;
+    --primary-hover:#1D4ED8;
+    --primary-light:#DBEAFE;
+    --bg:#F8FAFC;
+    --card:#FFFFFF;
+    --text:#0F172A;
+    --text-secondary:#64748B;
+    --border:#E2E8F0;
+    --success:#10B981;
+    --warning:#F59E0B;
+    --error:#EF4444;
+    --radius-card:18px;
+    --shadow:0 1px 2px rgba(15,23,42,.04), 0 4px 16px rgba(15,23,42,.06);
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    -webkit-font-smoothing:antialiased;
+  }
+
+  .wrap{max-width:900px;margin:0 auto;padding:0 20px;}
+
+  .topbar{
+    position:sticky;top:0;z-index:900;
+    background:rgba(248,250,252,.85);
+    backdrop-filter:blur(10px);
+    -webkit-backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--border);
+    padding:14px 0;
+  }
+  .topbar .wrap{
+    font-size:12.5px;font-weight:600;letter-spacing:.02em;color:var(--text-secondary);
+  }
+  .topbar b{color:var(--text);}
+
+  .header{padding:36px 0 24px;}
+  h1{font-size:26px;font-weight:800;line-height:1.25;margin:0 0 8px;}
+  .header p{font-size:15px;color:var(--text-secondary);margin:0;}
+
+  main{padding-bottom:56px;}
+
+  .card{
+    background:var(--card);border:1px solid var(--border);
+    border-radius:var(--radius-card);box-shadow:var(--shadow);
+    padding:22px 24px;
+    margin-bottom:16px;
+    opacity:0;transform:translateY(14px);
+    transition:opacity .5s ease, transform .5s ease;
+  }
+  .card.show{opacity:1;transform:translateY(0);}
+  .card.penting{border-left:4px solid var(--accent-color, var(--primary));}
+
+  .badge-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;gap:10px;flex-wrap:wrap;}
+  .badge{
+    display:inline-flex;align-items:center;gap:6px;
+    font-size:12.5px;font-weight:700;padding:5px 12px;border-radius:999px;
+  }
+  .tag-penting{
+    font-size:11.5px;font-weight:700;color:#fff;background:var(--error);
+    padding:4px 10px;border-radius:999px;letter-spacing:.02em;
+  }
+
+  .card h3{font-size:17px;font-weight:700;margin:0 0 6px;}
+  .tanggal{font-size:13.5px;color:var(--text-secondary);font-weight:600;margin:0 0 10px;}
+  .deskripsi{font-size:14.5px;line-height:1.6;color:var(--text);margin:0;}
+
+  .empty-state{
+    text-align:center;padding:60px 20px;color:var(--text-secondary);
+  }
+  .empty-state .icon{font-size:38px;margin-bottom:10px;}
+
+  footer{text-align:center;padding:20px 0 40px;font-size:12.5px;color:var(--text-secondary);}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="wrap">CAKRAWALA MATEMATIKA · <b>📢 Pengumuman</b></div>
+</div>
+
+<div class="wrap">
+  <header class="header">
+    <h1>📢 Pengumuman Kelas</h1>
+    <p>Info materi, jadwal, dan agenda terbaru — cek halaman ini secara berkala.</p>
+  </header>
+
+  <main id="pengumumanContainer"></main>
+
+  <footer>Cakrawala Matematika</footer>
+</div>
+
+<script>
+/* ==========================================================================
+   ZONA EDIT — GURU HANYA MENGUBAH BAGIAN DI BAWAH INI SAMPAI TULISAN
+   "AKHIR ZONA EDIT". JANGAN UBAH KODE DI LUAR AREA INI.
+
+   CARA MENAMBAH PENGUMUMAN BARU:
+   1. Salin satu blok { ... } di bawah ini (termasuk koma di akhir blok).
+   2. Tempel di posisi yang kamu mau di dalam DATA_PENGUMUMAN.
+      Paling atas = tampil paling atas di halaman.
+   3. Ganti teks di dalam tanda kutip " " sesuai kebutuhan.
+
+   CARA MENGHAPUS PENGUMUMAN:
+   Hapus satu blok { ... } beserta koma setelahnya.
+
+   JANGAN HAPUS tanda kutip " ", kurung kurawal { }, atau koma , — itu bagian
+   dari format data, bukan teks yang tampil di halaman.
+
+   PILIHAN kategori yang tersedia (tulis persis salah satu dari ini):
+     "materi"    -> 📘 Materi   (biru)
+     "jadwal"    -> 🗓️ Jadwal   (biru)
+     "ulangan"   -> 📝 Ulangan  (kuning)
+     "deadline"  -> ⏰ Deadline (merah)
+     "game"      -> 🎮 Agenda   (hijau)
+     "info"      -> 📢 Info     (abu)
+
+   Field "penting" bersifat opsional. Tulis true untuk menonjolkan kartu,
+   atau hapus baris itu sepenuhnya kalau tidak perlu.
+   ========================================================================== */
+
+const DATA_PENGUMUMAN = [
+  {
+    kategori: "deadline",
+    judul: "Tugas Modul Teorema Sisa",
+    tanggal: "Kumpul paling lambat Jumat, 8 Agustus 2026",
+    deskripsi: "Kerjakan Modul dan kirim lewat tombol yang ada di halaman modul.",
+    penting: true
+  },
+  {
+    kategori: "materi",
+    judul: "Materi Minggu Ini: Teorema Sisa & Faktor",
+    tanggal: "3 – 9 Agustus 2026",
+    deskripsi: "Fokus ke pembagian polinomial dan penerapannya pada pencarian akar."
+  },
+  {
+    kategori: "ulangan",
+    judul: "Ulangan Harian Bab Polinomial",
+    tanggal: "Kamis, 14 Agustus 2026",
+    deskripsi: "Materi mencakup pembagian polinomial, Teorema Sisa, dan Teorema Faktor."
+  },
+  {
+    kategori: "game",
+    judul: "Sesi Kuis Interaktif Akhir Bab",
+    tanggal: "Jumat, 15 Agustus 2026",
+    deskripsi: "Kuis santai berkelompok di kelas, tanpa dampak ke nilai."
+  }
+];
+
+/* ==========================================================================
+   AKHIR ZONA EDIT — jangan ubah kode di bawah ini.
+   ========================================================================== */
+
+const KATEGORI_CONFIG = {
+  materi:   { icon: "📘", label: "Materi",   color: "var(--primary)", bg: "var(--primary-light)" },
+  jadwal:   { icon: "🗓️", label: "Jadwal",   color: "var(--primary)", bg: "var(--primary-light)" },
+  ulangan:  { icon: "📝", label: "Ulangan",  color: "var(--warning)", bg: "rgba(245,158,11,0.12)" },
+  deadline: { icon: "⏰", label: "Deadline", color: "var(--error)",   bg: "rgba(239,68,68,0.12)" },
+  game:     { icon: "🎮", label: "Agenda",   color: "var(--success)", bg: "rgba(16,185,129,0.12)" },
+  info:     { icon: "📢", label: "Info",     color: "var(--text-secondary)", bg: "var(--bg)" }
+};
+const KATEGORI_DEFAULT = KATEGORI_CONFIG.info;
+
+function renderPengumuman(){
+  const container = document.getElementById('pengumumanContainer');
+  container.innerHTML = '';
+
+  if(!DATA_PENGUMUMAN || DATA_PENGUMUMAN.length === 0){
+    container.innerHTML = `
+      <div class="empty-state">
+        <div class="icon">📭</div>
+        <div>Belum ada pengumuman saat ini.</div>
+      </div>`;
+    return;
+  }
+
+  DATA_PENGUMUMAN.forEach((item) => {
+    const cfg = KATEGORI_CONFIG[item.kategori] || KATEGORI_DEFAULT;
+
+    const card = document.createElement('div');
+    card.className = 'card' + (item.penting ? ' penting' : '');
+    if(item.penting) card.style.setProperty('--accent-color', cfg.color);
+
+    card.innerHTML = `
+      <div class="badge-row">
+        <span class="badge" style="color:${cfg.color}; background:${cfg.bg};">
+          ${cfg.icon} ${cfg.label}
+        </span>
+        ${item.penting ? '<span class="tag-penting">Penting</span>' : ''}
+      </div>
+      <h3>${item.judul || ''}</h3>
+      <p class="tanggal">${item.tanggal || ''}</p>
+      <p class="deskripsi">${item.deskripsi || ''}</p>
+    `;
+    container.appendChild(card);
+  });
+
+  requestAnimationFrame(() => {
+    document.querySelectorAll('.card').forEach((el, i) => {
+      setTimeout(() => el.classList.add('show'), i * 60);
+    });
+  });
+}
+
+renderPengumuman();
+</script>
+
+</body>
+</html>
