@@ -1,0 +1,681 @@
+<!--
+==========================================================
+CAKRAWALA MATEMATIKA
+
+Judul      : Pengertian dan Unsur Polinomial
+Jenis      : Modul Interaktif
+Versi      : 1.0
+
+Dikembangkan oleh
+Kiki Herdiansyah
+
+Copyright © 2026
+
+Website ini merupakan bagian dari proyek
+"Cakrawala Matematika".
+==========================================================
+-->
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Pengertian dan Unsur Polinomial — Cakrawala Matematika</title>
+<meta name="author" content="Kiki Herdiansyah">
+<meta name="application-name" content="Cakrawala Matematika">
+<meta name="copyright" content="© 2026 Kiki Herdiansyah">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --primary:#2563EB;
+  --primary-hover:#1D4ED8;
+  --primary-light:#DBEAFE;
+  --bg:#F8FAFC;
+  --card:#FFFFFF;
+  --text:#0F172A;
+  --text-soft:#64748B;
+  --border:#E2E8F0;
+  --success:#10B981;
+  --success-bg:#ECFDF5;
+  --warning:#F59E0B;
+  --warning-bg:#FFFBEB;
+  --error:#EF4444;
+  --error-bg:#FEF2F2;
+  --radius-card:18px;
+  --radius-btn:12px;
+  --shadow:0 1px 2px rgba(15,23,42,.04), 0 4px 16px rgba(15,23,42,.06);
+  --sp-1:6px; --sp-2:10px; --sp-3:16px; --sp-4:24px; --sp-5:36px; --sp-6:52px;
+  --max-w:900px;
+}
+*{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
+html{scroll-behavior:smooth;}
+body{
+  margin:0; background:var(--bg); color:var(--text);
+  font-family:'Inter',sans-serif; line-height:1.65; font-size:16px;
+  overflow-x:hidden;
+}
+.wrap{max-width:var(--max-w); margin:0 auto; padding:0 20px;}
+
+/* ---------- top bar ---------- */
+.topbar{
+  position:sticky; top:0; z-index:50; background:rgba(248,250,252,.85); backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--border);
+}
+.topbar-inner{max-width:var(--max-w); margin:0 auto; padding:12px 20px; display:flex; align-items:center; justify-content:space-between;}
+.brand{font-size:13px; font-weight:700; color:var(--primary); letter-spacing:.02em;}
+.brand span{color:var(--text-soft); font-weight:500;}
+.progress-track{height:3px; background:var(--border);}
+.progress-fill{height:100%; width:0%; background:var(--primary); transition:width .1s linear;}
+
+/* ---------- header / hero ---------- */
+.hero{padding:var(--sp-6) 0 var(--sp-5);}
+.eyebrow{
+  display:inline-block; font-size:12.5px; font-weight:700; color:var(--primary);
+  background:var(--primary-light); padding:5px 14px; border-radius:999px; margin-bottom:var(--sp-3);
+  letter-spacing:.02em;
+}
+.hero h1{font-size:27px; font-weight:800; margin:0 0 var(--sp-2); letter-spacing:-.02em;}
+.hero-meta{display:flex; gap:10px; flex-wrap:wrap; margin-bottom:var(--sp-4);}
+.meta-chip{
+  font-size:13px; font-weight:600; color:var(--text-soft); background:var(--card);
+  border:1px solid var(--border); padding:6px 12px; border-radius:999px;
+}
+.goal-card{
+  background:var(--card); border:1px solid var(--border); border-radius:var(--radius-card);
+  padding:var(--sp-4); box-shadow:var(--shadow);
+}
+.goal-card h3{font-size:14px; margin:0 0 10px; color:var(--text-soft); font-weight:700; text-transform:uppercase; letter-spacing:.03em;}
+.goal-card ul{margin:0; padding-left:0; list-style:none;}
+.goal-card li{display:flex; gap:10px; align-items:flex-start; font-size:14.5px; margin-bottom:8px; color:var(--text);}
+.goal-card li:last-child{margin-bottom:0;}
+.goal-card li::before{content:'✓'; color:var(--success); font-weight:800; flex-shrink:0;}
+
+/* ---------- identitas siswa ---------- */
+.id-card{
+  background:var(--primary-light); border:1px solid #BFDBFE; border-radius:var(--radius-card);
+  padding:var(--sp-4); margin-top:var(--sp-3);
+}
+.id-card h3{font-size:14px; margin:0 0 4px; color:var(--primary-hover); font-weight:700;}
+.id-card p{font-size:13px; color:#1E40AF; margin:0 0 12px;}
+.id-grid{display:grid; grid-template-columns:1fr 1fr; gap:10px;}
+@media(max-width:480px){.id-grid{grid-template-columns:1fr;}}
+.id-grid label{display:block; font-size:12px; font-weight:700; color:#1E40AF; margin-bottom:5px;}
+.id-grid input{
+  width:100%; height:42px; border-radius:10px; border:1px solid #BFDBFE; padding:0 12px;
+  font-size:14.5px; font-weight:600; color:var(--text); background:#fff;
+}
+.id-grid input:focus{outline:2px solid var(--primary); outline-offset:1px;}
+.id-status{font-size:12.5px; margin-top:8px; color:#1E40AF; min-height:16px;}
+
+/* ---------- sections ---------- */
+section.block{padding:var(--sp-6) 0; border-top:1px solid var(--border);}
+.fade-up{opacity:0; transform:translateY(14px); transition:opacity .55s ease, transform .55s ease;}
+.fade-up.in{opacity:1; transform:translateY(0);}
+.section-tag{
+  display:inline-flex; align-items:center; gap:7px; font-size:12.5px; font-weight:700; color:var(--primary);
+  margin-bottom:var(--sp-2); letter-spacing:.02em; text-transform:uppercase;
+}
+.section-tag .num{
+  width:22px; height:22px; border-radius:50%; background:var(--primary); color:#fff;
+  display:flex; align-items:center; justify-content:center; font-size:11.5px;
+}
+h2{font-size:22px; font-weight:800; margin:0 0 var(--sp-3); letter-spacing:-.01em;}
+p{margin:0 0 var(--sp-3); color:var(--text);}
+p.soft{color:var(--text-soft);}
+.lede{font-size:16.5px;}
+
+.card{
+  background:var(--card); border:1px solid var(--border); border-radius:var(--radius-card);
+  padding:var(--sp-4); box-shadow:var(--shadow);
+}
+.card + .card{margin-top:var(--sp-3);}
+
+/* ---------- buttons ---------- */
+button{font-family:'Inter',sans-serif;}
+.btn{
+  border:none; border-radius:var(--radius-btn); padding:11px 20px; font-size:14.5px; font-weight:600;
+  cursor:pointer; transition:all .2s ease; display:inline-flex; align-items:center; gap:6px;
+}
+.btn-primary{background:var(--primary); color:#fff;}
+.btn-primary:hover{background:var(--primary-hover);}
+.btn-primary:disabled{background:var(--border); color:var(--text-soft); cursor:not-allowed;}
+.btn-ghost{background:var(--card); color:var(--text); border:1px solid var(--border);}
+.btn-ghost:hover{background:var(--bg);}
+.btn-ghost:disabled{opacity:.4; cursor:not-allowed;}
+.btn-sm{padding:8px 14px; font-size:13.5px;}
+
+/* ---------- lihat cara kerjanya ---------- */
+.step-shell{position:relative; min-height:190px;}
+.step-panel{display:none; animation:fadeIn .4s ease;}
+.step-panel.active{display:block;}
+@keyframes fadeIn{from{opacity:0; transform:translateX(6px);} to{opacity:1; transform:translateX(0);}}
+.step-label{font-size:12.5px; font-weight:700; color:var(--text-soft); text-transform:uppercase; letter-spacing:.03em; margin-bottom:10px;}
+.formula-line{
+  font-family:'Inter',sans-serif; font-size:19px; font-weight:600; background:var(--bg);
+  border-radius:12px; padding:16px 18px; margin-bottom:12px; text-align:center; letter-spacing:.01em;
+}
+mark{background:var(--primary-light); color:var(--primary-hover); padding:1px 5px; border-radius:5px; font-weight:700;}
+.step-desc{font-size:14.5px; color:var(--text-soft); text-align:center;}
+.step-controls{display:flex; align-items:center; justify-content:space-between; margin-top:var(--sp-3);}
+.step-dots{display:flex; gap:6px;}
+.step-dots .dot{width:7px; height:7px; border-radius:50%; background:var(--border); transition:all .2s;}
+.step-dots .dot.active{background:var(--primary); width:18px; border-radius:4px;}
+
+/* ---------- coba sendiri ---------- */
+.stepper-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:10px; margin-bottom:var(--sp-3);}
+@media(max-width:560px){.stepper-grid{grid-template-columns:repeat(2,1fr);}}
+.stepper{background:var(--bg); border:1px solid var(--border); border-radius:14px; padding:12px; text-align:center;}
+.stepper .lbl{font-size:11.5px; font-weight:700; color:var(--text-soft); margin-bottom:8px; text-transform:uppercase; letter-spacing:.02em;}
+.stepper .row{display:flex; align-items:center; justify-content:center; gap:8px;}
+.stepper button{
+  width:30px; height:30px; border-radius:9px; border:1px solid var(--border); background:#fff; color:var(--primary);
+  font-size:17px; font-weight:700; cursor:pointer; line-height:1;
+}
+.stepper button:active{background:var(--primary-light);}
+.stepper .val{font-size:18px; font-weight:800; min-width:28px; font-variant-numeric:tabular-nums;}
+
+.live-poly{background:var(--bg); border-radius:14px; padding:18px; margin-top:var(--sp-3); text-align:center;}
+.live-poly .fx{font-size:20px; font-weight:700;}
+
+.identify-grid{display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:var(--sp-3);}
+@media(max-width:560px){.identify-grid{grid-template-columns:1fr;}}
+.identify-card{background:var(--card); border:1px solid var(--border); border-radius:12px; padding:12px 14px;}
+.identify-card .lbl{font-size:11.5px; font-weight:700; color:var(--text-soft); text-transform:uppercase; letter-spacing:.02em; margin-bottom:4px;}
+.identify-card .val{font-size:15px; font-weight:700; color:var(--primary-hover);}
+
+.insight{
+  margin-top:12px; background:var(--success-bg); color:#047857; border-radius:12px; padding:10px 14px;
+  font-size:13.5px; font-weight:600; text-align:center; display:none;
+}
+.insight.show{display:block; animation:fadeIn .3s ease;}
+
+/* ---------- challenge ---------- */
+.problem{margin-bottom:var(--sp-3);}
+.problem .qtag-row{display:flex; align-items:center; gap:8px; margin-bottom:8px; flex-wrap:wrap;}
+.qtag{font-size:12px; font-weight:700; color:var(--primary);}
+.diff-badge{font-size:11px; font-weight:700; padding:3px 10px; border-radius:999px; text-transform:uppercase; letter-spacing:.02em;}
+.diff-badge.mudah{background:var(--success-bg); color:#047857;}
+.diff-badge.sedang{background:var(--warning-bg); color:#B45309;}
+.diff-badge.sulit{background:var(--error-bg); color:#B91C1C;}
+.problem .qtext{font-size:16px; font-weight:600; margin-bottom:12px;}
+.answer-row{display:flex; gap:10px; align-items:flex-end; flex-wrap:wrap; margin-bottom:12px;}
+.answer-row .field label{display:block; font-size:11.5px; color:var(--text-soft); margin-bottom:4px;}
+.answer-row input[type=text]{
+  width:120px; height:42px; border-radius:10px; border:1px solid var(--border); text-align:center;
+  font-size:15px; font-weight:700; color:var(--text); background:var(--bg);
+}
+.answer-row input[type=text]:focus{outline:2px solid var(--primary); outline-offset:1px;}
+.feedback-box{margin-top:12px; padding:12px 14px; border-radius:12px; font-size:14px; font-weight:500; display:none;}
+.feedback-box.show{display:block; animation:fadeIn .3s ease;}
+.feedback-box.good{background:var(--success-bg); color:#047857;}
+.feedback-box.bad{background:var(--error-bg); color:#B91C1C;}
+.feedback-box b{font-weight:700;}
+.send-status{font-size:12px; color:var(--text-soft); margin-top:6px; min-height:16px;}
+
+.mini-stepper-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:8px; margin-bottom:var(--sp-3);}
+@media(max-width:480px){.mini-stepper-grid{grid-template-columns:repeat(2,1fr);}}
+.mini-stepper{background:var(--bg); border:1px solid var(--border); border-radius:12px; padding:10px; text-align:center;}
+.mini-stepper .lbl{font-size:11px; font-weight:700; color:var(--text-soft); margin-bottom:6px;}
+.mini-stepper .row{display:flex; align-items:center; justify-content:center; gap:6px;}
+.mini-stepper button{
+  width:26px; height:26px; border-radius:8px; border:1px solid var(--border); background:#fff; color:var(--primary);
+  font-size:15px; font-weight:700; cursor:pointer;
+}
+.mini-stepper .val{font-size:16px; font-weight:800; min-width:22px;}
+
+/* ---------- kesalahan umum ---------- */
+.mistake-card{display:flex; gap:12px; align-items:flex-start;}
+.mistake-card .icon{
+  width:34px; height:34px; border-radius:10px; background:var(--warning-bg); color:var(--warning);
+  display:flex; align-items:center; justify-content:center; font-size:16px; flex-shrink:0;
+}
+.mistake-card .txt b{display:block; font-size:14.5px; margin-bottom:3px;}
+.mistake-card .txt span{font-size:13.5px; color:var(--text-soft);}
+
+/* ---------- ringkasan ---------- */
+.summary-list{display:flex; flex-direction:column; gap:10px;}
+.summary-item{display:flex; gap:12px; align-items:flex-start; background:var(--card); border:1px solid var(--border); border-radius:14px; padding:14px 16px; box-shadow:var(--shadow);}
+.summary-item .n{
+  width:26px; height:26px; border-radius:50%; background:var(--primary); color:#fff; font-size:13px; font-weight:800;
+  display:flex; align-items:center; justify-content:center; flex-shrink:0;
+}
+.summary-item p{margin:0; font-size:14.5px;}
+
+/* ---------- footer "selesai" + footer identitas ---------- */
+.done-footer{padding:var(--sp-5) 0 var(--sp-2); text-align:center;}
+.done-footer .badge{
+  display:inline-block; font-size:12.5px; font-weight:700; color:var(--text-soft);
+  background:var(--card); border:1px solid var(--border); padding:8px 16px; border-radius:999px;
+}
+.site-footer{padding: var(--sp-5) 0 var(--sp-6); text-align:center;}
+.footer-divider{height:1px; background:var(--border); margin-bottom:var(--sp-4);}
+.footer-brand{font-size:13.5px; font-weight:700; color:var(--primary); margin:0 0 4px;}
+.footer-text{font-size:13px; color:var(--text-soft); margin:0 0 2px;}
+.footer-meta{font-size:12.5px; color:var(--text-soft); margin:0; opacity:.85;}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <div class="brand">CAKRAWALA MATEMATIKA <span>· Pengertian &amp; Unsur Polinomial</span></div>
+  </div>
+  <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+</div>
+
+<div class="wrap">
+
+  <!-- 1. HEADER -->
+  <div class="hero">
+    <span class="eyebrow">Modul Interaktif</span>
+    <h1>Pengertian dan Unsur Polinomial</h1>
+    <div class="hero-meta">
+      <span class="meta-chip">📘 Kelas X</span>
+      <span class="meta-chip">⏱ 15–20 menit</span>
+      <span class="meta-chip">🎯 Mandiri</span>
+    </div>
+    <div class="goal-card">
+      <h3>Setelah ini kamu bisa</h3>
+      <ul>
+        <li>Mengenali apa itu polinomial dan bedanya dengan bentuk aljabar lain</li>
+        <li>Menunjuk derajat, koefisien, dan konstanta dari sebuah polinomial</li>
+        <li>Siap lanjut ke operasi-operasi polinomial tanpa bingung istilah dasar</li>
+      </ul>
+    </div>
+
+    <div class="id-card">
+      <h3>Isi dulu sebelum mulai 👋</h3>
+      <p>Jawabanmu di bagian Challenge otomatis terkirim ke gurumu. Tidak perlu login atau email apapun.</p>
+      <div class="id-grid">
+        <div><label>Nama lengkap</label><input type="text" id="namaSiswa" placeholder="Tulis namamu"></div>
+        <div><label>Kelas</label><input type="text" id="kelasSiswa" placeholder="Contoh: X IPA 2"></div>
+      </div>
+      <div class="id-status" id="idStatus"></div>
+    </div>
+  </div>
+
+  <!-- 2. PERNAHKAH KAMU BERPIKIR -->
+  <section class="block fade-up" id="s1">
+    <div class="section-tag"><span class="num">1</span> Pernahkah kamu berpikir?</div>
+    <h2>Istilah-istilah itu nunjuk ke bagian mana, sih?</h2>
+    <div class="card">
+      <p class="lede">Coba lihat bentuk ini: <b>3x² + 5x − 2</b>.</p>
+      <p>Pernah dengar kata "derajat", "koefisien", "konstanta" dipakai buat bentuk kayak gini, tapi bingung itu nunjuk ke bagian yang mana?</p>
+      <p class="soft">Sama kayak rumahmu punya alamat — nomor rumah, nama jalan, kota — masing-masing punya nama sendiri. Bentuk aljabar juga begitu, tiap bagiannya punya nama.</p>
+      <p><b>Begitu kamu tahu nama tiap bagiannya, bentuk ini nggak akan bikin bingung lagi.</b> Yuk kita bedah satu-satu.</p>
+    </div>
+  </section>
+
+  <!-- 3. PENJELASAN SEDERHANA -->
+  <section class="block fade-up" id="s2">
+    <div class="section-tag"><span class="num">2</span> Penjelasan sederhana</div>
+    <h2>Kenalan sama polinomial</h2>
+    <div class="card">
+      <p><b>Polinomial</b> itu bentuk aljabar yang tersusun dari suku-suku yang dijumlahkan/dikurangkan, di mana tiap suku berbentuk angka dikali variabel berpangkat bilangan bulat 0, 1, 2, 3, dan seterusnya (tidak boleh pangkat negatif atau pecahan).</p>
+      <p>Jadi 3x² + 5x − 2 itu polinomial. Tapi 3x⁻¹ + 5 atau 3√x + 5 itu BUKAN polinomial, karena pangkatnya negatif atau pecahan.</p>
+      <p>Sekarang bagian-bagiannya. Tiap potongan yang dipisah tanda + atau − itu namanya <b>suku</b>. Pada 3x² + 5x − 2, ada 3 suku: 3x², 5x, dan −2.</p>
+      <p><b>Koefisien</b> itu angka di depan variabel pada tiap suku. Koefisien dari 3x² adalah 3, koefisien dari 5x adalah 5.</p>
+      <p><b>Konstanta</b> itu suku yang sama sekali tidak punya variabel — angka polos. Pada contoh tadi, −2 itu konstantanya.</p>
+      <p><b>Derajat</b> itu pangkat TERTINGGI yang koefisiennya tidak nol. Pada 3x² + 5x − 2, pangkat tertingginya 2 (dari 3x²), jadi derajat polinomial ini = 2.</p>
+      <p class="soft">Derajat ini penting banget nanti — dia yang menentukan "bentuk" polinomialnya. Sampai sini masih masuk akal?</p>
+    </div>
+  </section>
+
+  <!-- 4. LIHAT CARA KERJANYA -->
+  <section class="block fade-up" id="s3">
+    <div class="section-tag"><span class="num">3</span> Lihat cara kerjanya</div>
+    <h2>Contoh: bedah f(x) = 4x³ − 2x² + 7x − 5</h2>
+    <div class="card">
+      <div class="step-shell">
+        <div class="step-panel active" data-step="0">
+          <div class="step-label">Langkah 1 dari 4</div>
+          <div class="formula-line">f(x) = 4x³ − 2x² + 7x − 5</div>
+          <div class="step-desc">Ini polinomialnya. Ada 4 suku: 4x³, −2x², 7x, dan −5.</div>
+        </div>
+        <div class="step-panel" data-step="1">
+          <div class="step-label">Langkah 2 dari 4</div>
+          <div class="formula-line">Pangkat tertinggi: <mark>x³</mark> &nbsp;→&nbsp; Derajat = <mark>3</mark></div>
+          <div class="step-desc">Cari suku dengan pangkat paling tinggi. Di sini pangkat tertingginya 3, jadi derajatnya 3.</div>
+        </div>
+        <div class="step-panel" data-step="2">
+          <div class="step-label">Langkah 3 dari 4</div>
+          <div class="formula-line"><mark>4</mark>x³ − <mark>2</mark>x² + <mark>7</mark>x − 5</div>
+          <div class="step-desc">Koefisien x³ adalah 4, koefisien x² adalah −2, koefisien x adalah 7.</div>
+        </div>
+        <div class="step-panel" data-step="3">
+          <div class="step-label">Langkah 4 dari 4</div>
+          <div class="formula-line">4x³ − 2x² + 7x <mark>− 5</mark></div>
+          <div class="step-desc">Suku terakhir, −5, tidak punya variabel sama sekali — itulah konstantanya.</div>
+        </div>
+      </div>
+      <div class="step-controls">
+        <button class="btn btn-ghost btn-sm" id="prevStep" disabled>← Sebelumnya</button>
+        <div class="step-dots" id="stepDots"></div>
+        <button class="btn btn-primary btn-sm" id="nextStep">Selanjutnya →</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. COBA SENDIRI -->
+  <section class="block fade-up" id="s4">
+    <div class="section-tag"><span class="num">4</span> Coba sendiri</div>
+    <h2>Atur polinomialnya, lihat unsurnya berubah</h2>
+    <div class="card">
+      <p class="soft">Atur koefisien f(x) = ax³ + bx² + cx + d. Derajat, koefisien, dan konstantanya otomatis terdeteksi.</p>
+      <div class="stepper-grid">
+        <div class="stepper"><div class="lbl">a (x³)</div><div class="row">
+          <button onclick="chg('a',-1)">−</button><span class="val" id="val_a">4</span><button onclick="chg('a',1)">+</button>
+        </div></div>
+        <div class="stepper"><div class="lbl">b (x²)</div><div class="row">
+          <button onclick="chg('b',-1)">−</button><span class="val" id="val_b">-2</span><button onclick="chg('b',1)">+</button>
+        </div></div>
+        <div class="stepper"><div class="lbl">c (x)</div><div class="row">
+          <button onclick="chg('c',-1)">−</button><span class="val" id="val_c">7</span><button onclick="chg('c',1)">+</button>
+        </div></div>
+        <div class="stepper"><div class="lbl">d</div><div class="row">
+          <button onclick="chg('d',-1)">−</button><span class="val" id="val_d">-5</span><button onclick="chg('d',1)">+</button>
+        </div></div>
+      </div>
+
+      <div class="live-poly"><div class="fx" id="fxLine">f(x) = 4x³ − 2x² + 7x − 5</div></div>
+
+      <div class="identify-grid">
+        <div class="identify-card"><div class="lbl">Derajat</div><div class="val" id="outDerajat">3</div></div>
+        <div class="identify-card"><div class="lbl">Konstanta</div><div class="val" id="outKonstanta">−5</div></div>
+        <div class="identify-card"><div class="lbl">Koefisien x³</div><div class="val" id="outKoefA">4</div></div>
+        <div class="identify-card"><div class="lbl">Koefisien x²</div><div class="val" id="outKoefB">−2</div></div>
+      </div>
+
+      <div class="insight" id="insightBox">🎉 Koefisien x³ jadi 0! Suku itu otomatis hilang, dan derajat polinomialnya ikut turun.</div>
+    </div>
+  </section>
+
+  <!-- 6. CHALLENGE -->
+  <section class="block fade-up" id="s5">
+    <div class="section-tag"><span class="num">5</span> Challenge</div>
+    <h2>Yuk buktikan kamu sudah paham</h2>
+    <p class="soft">3 soal, makin ke bawah makin menantang. Setiap kamu cek jawaban, hasilnya otomatis terkirim ke gurumu.</p>
+
+    <div class="card">
+      <div class="problem">
+        <div class="qtag-row"><span class="qtag">Soal 1</span><span class="diff-badge mudah">Mudah</span></div>
+        <div class="qtext">f(x) = 5x⁴ − 3x² + x − 8. Tentukan derajat dan koefisien x²-nya.</div>
+        <div class="answer-row">
+          <div class="field"><label>Derajat</label><input type="text" id="q0_a" inputmode="numeric"></div>
+          <div class="field"><label>Koefisien x²</label><input type="text" id="q0_b" inputmode="numeric"></div>
+        </div>
+        <button class="btn btn-primary btn-sm" onclick="checkAns(0)">Cek jawaban</button>
+        <div class="feedback-box" id="fb0"></div>
+        <div class="send-status" id="send0"></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="problem" style="margin-bottom:0;">
+        <div class="qtag-row"><span class="qtag">Soal 2</span><span class="diff-badge sedang">Sedang</span></div>
+        <div class="qtext">f(x) = 7 − 2x³ + 4x. Tentukan derajat dan koefisien x²-nya. <span class="soft" style="font-weight:400; font-size:13.5px;">(Perhatikan baik-baik — ada suku yang "tidak kelihatan"!)</span></div>
+        <div class="answer-row">
+          <div class="field"><label>Derajat</label><input type="text" id="q1_a" inputmode="numeric"></div>
+          <div class="field"><label>Koefisien x²</label><input type="text" id="q1_b" inputmode="numeric"></div>
+        </div>
+        <button class="btn btn-primary btn-sm" onclick="checkAns(1)">Cek jawaban</button>
+        <div class="feedback-box" id="fb1"></div>
+        <div class="send-status" id="send1"></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="problem" style="margin-bottom:0;">
+        <div class="qtag-row"><span class="qtag">Soal 3 — Tantangan</span><span class="diff-badge sulit">Sulit</span></div>
+        <div class="qtext">Buat SENDIRI polinomial f(x) = ax³ + bx² + cx + d yang berderajat TEPAT 2 (bukan 3, bukan 1, bukan 0), dan konstantanya harus 0.</div>
+        <div class="mini-stepper-grid">
+          <div class="mini-stepper"><div class="lbl">a</div><div class="row">
+            <button onclick="chgT('a',-1)">−</button><span class="val" id="t_a">0</span><button onclick="chgT('a',1)">+</button>
+          </div></div>
+          <div class="mini-stepper"><div class="lbl">b</div><div class="row">
+            <button onclick="chgT('b',-1)">−</button><span class="val" id="t_b">0</span><button onclick="chgT('b',1)">+</button>
+          </div></div>
+          <div class="mini-stepper"><div class="lbl">c</div><div class="row">
+            <button onclick="chgT('c',-1)">−</button><span class="val" id="t_c">0</span><button onclick="chgT('c',1)">+</button>
+          </div></div>
+          <div class="mini-stepper"><div class="lbl">d</div><div class="row">
+            <button onclick="chgT('d',-1)">−</button><span class="val" id="t_d">0</span><button onclick="chgT('d',1)">+</button>
+          </div></div>
+        </div>
+        <button class="btn btn-primary btn-sm" onclick="checkTantangan()">Cek jawaban</button>
+        <div class="feedback-box" id="fb2"></div>
+        <div class="send-status" id="send2"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7. KESALAHAN UMUM -->
+  <section class="block fade-up" id="s6">
+    <div class="section-tag"><span class="num">6</span> Kesalahan yang sering terjadi</div>
+    <h2>Biar kamu tidak kejebak juga</h2>
+    <div class="card mistake-card">
+      <div class="icon">⚠️</div>
+      <div class="txt"><b>Mengira derajat = banyaknya suku</b><span>Derajat itu PANGKAT tertinggi, bukan jumlah suku. Polinomial dengan 2 suku bisa saja berderajat 5.</span></div>
+    </div>
+    <div class="card mistake-card">
+      <div class="icon">⚠️</div>
+      <div class="txt"><b>Lupa suku yang "tidak kelihatan"</b><span>Kalau x² tidak muncul di tulisan, koefisiennya tetap ada nilainya, yaitu 0 — bukan berarti "tidak perlu dijawab".</span></div>
+    </div>
+    <div class="card mistake-card">
+      <div class="icon">⚠️</div>
+      <div class="txt"><b>Menganggap pangkat negatif/pecahan tetap polinomial</b><span>Bentuk seperti 3x⁻¹ atau 2√x BUKAN polinomial, karena pangkatnya bukan bilangan bulat non-negatif.</span></div>
+    </div>
+    <div class="card mistake-card">
+      <div class="icon">⚠️</div>
+      <div class="txt"><b>Tertukar koefisien dan konstanta</b><span>Koefisien itu angka yang menempel ke variabel. Konstanta itu istilah khusus untuk suku yang SAMA SEKALI tidak punya variabel.</span></div>
+    </div>
+  </section>
+
+  <!-- 8. RINGKASAN -->
+  <section class="block fade-up" id="s7">
+    <div class="section-tag"><span class="num">7</span> Ringkasan</div>
+    <h2>5 hal yang perlu kamu ingat</h2>
+    <div class="summary-list">
+      <div class="summary-item"><div class="n">1</div><p>Polinomial = bentuk aljabar dengan pangkat variabel bilangan bulat non-negatif.</p></div>
+      <div class="summary-item"><div class="n">2</div><p>Derajat = pangkat tertinggi yang koefisiennya tidak nol.</p></div>
+      <div class="summary-item"><div class="n">3</div><p>Koefisien = angka di depan variabel pada tiap suku.</p></div>
+      <div class="summary-item"><div class="n">4</div><p>Konstanta = suku yang sama sekali tidak punya variabel.</p></div>
+      <div class="summary-item"><div class="n">5</div><p>Kalau koefisien suku pangkat tertinggi jadi 0, derajat polinomialnya otomatis turun.</p></div>
+    </div>
+  </section>
+
+  <div class="done-footer"><span class="badge">✓ Selesai — Pengertian dan Unsur Polinomial</span></div>
+
+  <footer class="site-footer">
+    <div class="footer-divider"></div>
+    <p class="footer-brand">Cakrawala Matematika</p>
+    <p class="footer-text">Dikembangkan oleh <strong>Kiki Herdiansyah</strong></p>
+    <p class="footer-meta">Versi 1.0 · © 2026</p>
+  </footer>
+
+</div>
+
+<script>
+/* ---------- progress bar ---------- */
+window.addEventListener('scroll', function(){
+  var h = document.documentElement;
+  var pct = (h.scrollTop) / (h.scrollHeight - h.clientHeight) * 100;
+  document.getElementById('progressFill').style.width = pct + '%';
+});
+
+/* ---------- fade-up on scroll ---------- */
+var io = new IntersectionObserver(function(entries){
+  entries.forEach(function(e){ if(e.isIntersecting) e.target.classList.add('in'); });
+}, { threshold:0.12 });
+document.querySelectorAll('.fade-up').forEach(function(el){ io.observe(el); });
+
+/* ---------- lihat cara kerjanya (step viewer) ---------- */
+var steps = document.querySelectorAll('.step-panel');
+var curStep = 0;
+var dotsWrap = document.getElementById('stepDots');
+steps.forEach(function(_, i){
+  var d = document.createElement('div');
+  d.className = 'dot' + (i===0 ? ' active' : '');
+  dotsWrap.appendChild(d);
+});
+function renderStep(){
+  steps.forEach(function(p,i){ p.classList.toggle('active', i===curStep); });
+  document.querySelectorAll('.step-dots .dot').forEach(function(d,i){ d.classList.toggle('active', i===curStep); });
+  document.getElementById('prevStep').disabled = curStep===0;
+  document.getElementById('nextStep').disabled = curStep===steps.length-1;
+  document.getElementById('nextStep').textContent = curStep===steps.length-1 ? 'Selesai ✓' : 'Selanjutnya →';
+}
+document.getElementById('nextStep').addEventListener('click', function(){
+  if(curStep < steps.length-1){ curStep++; renderStep(); }
+});
+document.getElementById('prevStep').addEventListener('click', function(){
+  if(curStep > 0){ curStep--; renderStep(); }
+});
+renderStep();
+
+/* ---------- coba sendiri ---------- */
+var coef = { a:4, b:-2, c:7, d:-5 };
+function fmtPoly(a,b,c,d){
+  var terms = [[a,'x³'],[b,'x²'],[c,'x'],[d,'']];
+  var str = '';
+  terms.forEach(function(t){
+    var n = t[0], label = t[1];
+    if(n===0) return;
+    var sign = n<0 ? ' − ' : (str==='' ? '' : ' + ');
+    var abs = Math.abs(n);
+    var numPart = (abs===1 && label) ? '' : abs;
+    str += sign + numPart + label;
+  });
+  return str || '0';
+}
+function chg(key, dir){
+  coef[key] = Math.max(-9, Math.min(9, coef[key] + dir));
+  document.getElementById('val_'+key).textContent = coef[key];
+  updateLive();
+}
+function updateLive(){
+  var a=coef.a,b=coef.b,c=coef.c,d=coef.d;
+  var prevDerajat = window._lastDerajat;
+  document.getElementById('fxLine').textContent = 'f(x) = ' + fmtPoly(a,b,c,d);
+
+  var derajat;
+  if(a!==0) derajat=3; else if(b!==0) derajat=2; else if(c!==0) derajat=1; else if(d!==0) derajat=0; else derajat=null;
+
+  document.getElementById('outDerajat').textContent = derajat===null ? 'tidak terdefinisi' : derajat;
+  document.getElementById('outKonstanta').textContent = d;
+  document.getElementById('outKoefA').textContent = a;
+  document.getElementById('outKoefB').textContent = b;
+
+  var turun = (a===0 && prevDerajat===3);
+  document.getElementById('insightBox').classList.toggle('show', a===0);
+  window._lastDerajat = derajat;
+}
+updateLive();
+
+/* ---------- identitas siswa ---------- */
+function getIdentitas(){
+  var nama = document.getElementById('namaSiswa').value.trim();
+  var kelas = document.getElementById('kelasSiswa').value.trim();
+  return { nama: nama, kelas: kelas };
+}
+function identitasLengkap(){
+  var id = getIdentitas();
+  var statusEl = document.getElementById('idStatus');
+  if(!id.nama || !id.kelas){
+    statusEl.textContent = 'Isi nama dan kelas dulu ya, sebelum cek jawaban.';
+    statusEl.style.color = '#B91C1C';
+    document.getElementById('namaSiswa').focus();
+    return false;
+  }
+  statusEl.textContent = '';
+  return true;
+}
+
+/* ---------- challenge soal 1 & 2 ---------- */
+var answerKey = [
+  { derajat:4, koefB:-3, commonWrong:null },
+  { derajat:3, koefB:0, commonWrong:{ note:'kosong' } }
+];
+function checkAns(idx){
+  if(!identitasLengkap()) return;
+  var key = answerKey[idx];
+  var uDerajat = document.getElementById('q'+idx+'_a').value.trim();
+  var uKoefB = document.getElementById('q'+idx+'_b').value.trim();
+  var fb = document.getElementById('fb'+idx);
+  fb.classList.remove('good','bad');
+  if(uDerajat===''){
+    fb.classList.add('show','bad');
+    fb.innerHTML = 'Isi dulu jawaban derajatnya ya. Kalau koefisien x²-nya menurutmu tidak ada, isi 0.';
+    return;
+  }
+  var dNum = parseFloat(uDerajat);
+  var bNum = uKoefB==='' ? NaN : parseFloat(uKoefB);
+  var benar = (dNum===key.derajat) && (bNum===key.koefB);
+  if(benar){
+    fb.classList.add('show','good');
+    fb.innerHTML = '<b>Benar!</b> Derajatnya '+key.derajat+', koefisien x²-nya '+key.koefB+'.';
+  } else {
+    fb.classList.add('show','bad');
+    if(idx===1 && uKoefB===''){
+      fb.innerHTML = '<b>Belum tepat.</b> Kamu mengosongkan koefisien x², padahal suku x² memang tidak ditulis — artinya koefisiennya 0, bukan "tidak dijawab".';
+    } else if(idx===1 && bNum!==0){
+      fb.innerHTML = '<b>Belum tepat.</b> Coba cek lagi, apakah ada suku x² pada f(x) = 7 − 2x³ + 4x? Kalau tidak ada, koefisiennya 0.';
+    } else {
+      fb.innerHTML = '<b>Belum tepat.</b> Cek lagi pangkat tertinggi untuk derajat, dan angka di depan x² untuk koefisiennya.';
+    }
+  }
+  kirimKeGuru(idx+1, 'derajat='+uDerajat, 'koefX2='+uKoefB, benar);
+}
+
+/* ---------- challenge soal 3: tantangan buat-sendiri ---------- */
+var tcoef = { a:0, b:0, c:0, d:0 };
+function chgT(key, dir){
+  tcoef[key] = Math.max(-9, Math.min(9, tcoef[key] + dir));
+  document.getElementById('t_'+key).textContent = tcoef[key];
+}
+function checkTantangan(){
+  if(!identitasLengkap()) return;
+  var a=tcoef.a,b=tcoef.b,c=tcoef.c,d=tcoef.d;
+  var fb = document.getElementById('fb2');
+  fb.classList.remove('good','bad');
+  var benar = (a===0 && b!==0 && d===0);
+  if(benar){
+    fb.classList.add('show','good');
+    fb.innerHTML = '<b>Keren, berhasil!</b> f(x) = '+fmtPoly(a,b,c,d)+' — derajatnya tepat 2 (karena a=0, b≠0), dan konstantanya 0.';
+  } else {
+    fb.classList.add('show','bad');
+    var alasan = a!==0 ? 'koefisien x³ (a) harus 0 supaya derajatnya bukan 3' : (b===0 ? 'koefisien x² (b) tidak boleh 0, kalau tidak derajatnya turun lagi' : 'konstanta (d) harus 0');
+    fb.innerHTML = 'Belum tepat — '+alasan+'. Polinomialmu sekarang: f(x) = '+fmtPoly(a,b,c,d)+'.';
+  }
+  kirimKeGuru(3, fmtPoly(a,b,c,d), '', benar);
+}
+
+/* ---------- kirim hasil ke guru (Google Apps Script) ---------- */
+/* Tempel URL Web App yang sama seperti modul lain */
+var SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzcK65GHhWieoZ0MgGrIs4YIyYXyR7E1_UlbfH4fL-OD_movoIiUViBK49EA5mFF9jG/exec';
+
+function kirimKeGuru(nomorSoal, jawaban1, jawaban2, benar){
+  var idx = nomorSoal - 1;
+  var statusEl = document.getElementById('send'+idx);
+  if(!SCRIPT_URL){ if(statusEl) statusEl.textContent=''; return; }
+  var id = getIdentitas();
+  var namaKelas = id.nama + ' — ' + id.kelas;
+  var payload = {
+    topik: 'Pengertian dan Unsur Polinomial',
+    nama: namaKelas,
+    soal: nomorSoal,
+    jawaban: jawaban1,
+    jawaban2: jawaban2 || '',
+    benar: benar ? 'Benar' : 'Salah',
+    waktu: new Date().toLocaleString('id-ID')
+  };
+  if(statusEl) statusEl.textContent = 'Mengirim ke guru...';
+  fetch(SCRIPT_URL, { method:'POST', mode:'no-cors', headers:{'Content-Type':'text/plain'}, body: JSON.stringify(payload) })
+    .then(function(){ if(statusEl) statusEl.textContent = 'Terkirim ke guru ✓'; })
+    .catch(function(){ if(statusEl) statusEl.textContent = 'Gagal mengirim (periksa koneksi internet).'; });
+}
+</script>
+
+</body>
+</html>

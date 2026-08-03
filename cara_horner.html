@@ -1,0 +1,769 @@
+<!--
+==========================================================
+CAKRAWALA MATEMATIKA
+
+Judul      : Pembagian Polinomial (Cara Horner)
+Jenis      : Modul Interaktif
+Versi      : 1.0
+
+Dikembangkan oleh
+Kiki Herdiansyah
+
+Copyright © 2026
+
+Website ini merupakan bagian dari proyek
+"Cakrawala Matematika".
+==========================================================
+-->
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Pembagian Polinomial (Cara Horner) · Cakrawala Matematika</title>
+<meta name="description" content="Modul interaktif belajar pembagian polinomial dengan cara Horner (pembagian sintetik) untuk siswa SMA.">
+<meta name="author" content="Kiki Herdiansyah">
+<meta name="application-name" content="Cakrawala Matematika">
+<meta name="copyright" content="© 2026 Kiki Herdiansyah">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --primary:#2563EB;
+    --primary-hover:#1D4ED8;
+    --primary-light:#DBEAFE;
+    --bg:#F8FAFC;
+    --card:#FFFFFF;
+    --text:#0F172A;
+    --text-soft:#64748B;
+    --border:#E2E8F0;
+    --success:#10B981;
+    --warning:#F59E0B;
+    --error:#EF4444;
+    --success-bg:#ECFDF5;
+    --warning-bg:#FFFBEB;
+    --error-bg:#FEF2F2;
+    --radius-card:18px;
+    --radius-btn:12px;
+    --sp-1:4px; --sp-2:8px; --sp-3:12px; --sp-4:16px; --sp-5:24px; --sp-6:40px;
+    --shadow-card:0 1px 2px rgba(15,23,42,.04), 0 4px 16px rgba(15,23,42,.06);
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    font-family:'Inter', sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+
+  .progress-wrap{position:sticky; top:0; z-index:100; width:100%;}
+  .progress-bar{height:3px; background:var(--primary); width:0%; transition:width .1s linear;}
+  .topbar{
+    position:sticky; top:3px; z-index:99;
+    background:rgba(248,250,252,.9); backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--border);
+    padding:10px var(--sp-4);
+    font-size:13px; font-weight:600; color:var(--primary);
+    text-align:center;
+    letter-spacing:.2px;
+  }
+
+  .container{max-width:900px; margin:0 auto; padding:var(--sp-4) var(--sp-4) var(--sp-6);}
+
+  .fade-up{opacity:0; transform:translateY(16px); transition:opacity .5s ease, transform .5s ease;}
+  .fade-up.visible{opacity:1; transform:translateY(0);}
+
+  .hero{padding:var(--sp-6) var(--sp-3) var(--sp-4);}
+  .hero h1{font-size:26px; font-weight:800; margin:0 0 var(--sp-3); line-height:1.3;}
+  .meta-row{display:flex; gap:8px; flex-wrap:wrap; margin-bottom:var(--sp-4);}
+  .badge{
+    display:inline-block; background:var(--primary-light); color:var(--primary-hover);
+    font-size:12.5px; font-weight:600; padding:6px 12px; border-radius:999px;
+  }
+  .tujuan{
+    background:var(--card); border:1px solid var(--border); border-radius:var(--radius-card);
+    padding:var(--sp-4); font-size:15px; color:var(--text-soft); box-shadow:var(--shadow-card);
+  }
+
+  .id-card{
+    background:var(--card); border:1px solid var(--border); border-radius:var(--radius-card);
+    padding:var(--sp-4); margin:0 var(--sp-3) var(--sp-5); box-shadow:var(--shadow-card);
+  }
+  .id-card h3{margin:0 0 4px; font-size:16px;}
+  .id-card > p{margin:0 0 var(--sp-3); font-size:13.5px; color:var(--text-soft);}
+  .id-grid{display:grid; grid-template-columns:1fr 1fr; gap:var(--sp-3);}
+  .id-grid label{display:block; font-size:12.5px; font-weight:600; color:var(--text-soft); margin-bottom:4px;}
+  .id-grid input{
+    width:100%; padding:10px 12px; border:1px solid var(--border); border-radius:var(--radius-btn);
+    font-family:'Inter', sans-serif; font-size:14px; color:var(--text); background:var(--bg);
+  }
+  .id-grid input:focus{outline:none; border-color:var(--primary);}
+  .id-status{margin-top:8px; font-size:13px; min-height:16px;}
+
+  .card{
+    background:var(--card); border:1px solid var(--border); border-radius:var(--radius-card);
+    padding:var(--sp-5) var(--sp-4); margin:0 var(--sp-2) var(--sp-5); box-shadow:var(--shadow-card);
+  }
+  .section-label{
+    display:inline-block; font-size:12.5px; font-weight:700; color:var(--primary);
+    text-transform:uppercase; letter-spacing:.5px; margin-bottom:var(--sp-2);
+  }
+  .card h2{font-size:20px; font-weight:800; margin:0 0 var(--sp-3); line-height:1.35;}
+  .card h3{font-size:16px; font-weight:700; margin:var(--sp-4) 0 var(--sp-2);}
+  .card p{font-size:15px; margin:0 0 var(--sp-3); color:var(--text);}
+  .card p.soft{color:var(--text-soft); font-size:14px;}
+  mark{background:var(--primary-light); color:var(--primary-hover); padding:1px 4px; border-radius:4px; font-weight:600;}
+
+  .btn{
+    display:inline-flex; align-items:center; justify-content:center; gap:6px;
+    height:44px; padding:0 20px; border-radius:var(--radius-btn); border:none;
+    font-family:'Inter', sans-serif; font-size:14.5px; font-weight:600; cursor:pointer;
+    transition:all .2s ease;
+  }
+  .btn-primary{background:var(--primary); color:#fff;}
+  .btn-primary:hover{background:var(--primary-hover);}
+  .btn-primary:disabled{background:var(--border); color:var(--text-soft); cursor:not-allowed;}
+  .btn-secondary{background:var(--bg); color:var(--text); border:1px solid var(--border);}
+  .btn-secondary:hover{background:#EEF2F7;}
+  .btn-secondary:disabled{opacity:.5; cursor:not-allowed;}
+
+  /* Horner table */
+  .horner-table{overflow-x:auto; margin:var(--sp-4) 0 var(--sp-2); -webkit-overflow-scrolling:touch;}
+  .h-row{display:flex; gap:6px; margin-bottom:6px; min-width:420px;}
+  .h-cell{
+    flex:1; min-width:64px; text-align:center; padding:10px 4px; border-radius:10px;
+    background:var(--bg); border:1px solid var(--border); font-weight:700; font-size:15px;
+    transition:all .25s ease;
+  }
+  .h-cell.h-label{
+    flex:0 0 92px; min-width:92px; background:transparent; border:none; color:var(--text-soft);
+    font-weight:600; font-size:12.5px; display:flex; align-items:center; justify-content:flex-start;
+    text-align:left;
+  }
+  .h-cell.active{background:var(--primary); color:#fff; border-color:var(--primary); transform:scale(1.06);}
+  .h-cell.done{background:var(--primary-light); color:var(--primary-hover); border-color:var(--primary-light);}
+  .h-cell.empty{color:var(--border);}
+  .h-row.h-result .h-cell:last-child.done{background:var(--success-bg); color:#047857; border-color:#A7F3D0;}
+
+  .demo-caption{
+    background:var(--bg); border-radius:12px; padding:var(--sp-3) var(--sp-4); font-size:14.5px;
+    min-height:44px; display:flex; align-items:center; margin-bottom:var(--sp-3);
+  }
+  .demo-nav{display:flex; align-items:center; justify-content:space-between; gap:8px;}
+  .demo-nav span{font-size:13px; color:var(--text-soft); font-weight:600;}
+
+  /* Coba sendiri */
+  .poly-display{
+    text-align:center; font-size:19px; font-weight:700; background:var(--primary-light);
+    color:var(--primary-hover); border-radius:14px; padding:var(--sp-4); margin-bottom:var(--sp-4);
+    word-break:break-word;
+  }
+  .slider-group{margin-bottom:var(--sp-4);}
+  .slider-row{display:flex; align-items:center; gap:var(--sp-3); margin-bottom:var(--sp-3);}
+  .slider-row label{flex:0 0 76px; font-size:14px; font-weight:700; color:var(--text);}
+  .slider-row input[type=range]{flex:1; accent-color:var(--primary); height:6px;}
+  .slider-row .val{
+    flex:0 0 44px; text-align:center; font-weight:700; font-size:14px; color:var(--primary);
+    background:var(--primary-light); border-radius:8px; padding:4px 0;
+  }
+  .result-box{
+    display:flex; flex-wrap:wrap; gap:var(--sp-3); background:var(--bg); border-radius:14px;
+    padding:var(--sp-4); margin-top:var(--sp-3);
+  }
+  .result-item{flex:1; min-width:140px;}
+  .result-item .lbl{font-size:12px; color:var(--text-soft); font-weight:600; text-transform:uppercase;}
+  .result-item .num{font-size:16px; font-weight:700; margin-top:2px;}
+  .insight-box{
+    margin-top:var(--sp-3); padding:var(--sp-3) var(--sp-4); border-radius:14px;
+    background:var(--success-bg); border:1px solid #A7F3D0; color:#047857;
+    font-size:14px; font-weight:600; display:none; align-items:center; gap:8px;
+  }
+  .insight-box.show{display:flex;}
+  .insight-box.neutral{background:var(--primary-light); border-color:#BFDBFE; color:var(--primary-hover);}
+
+  /* Challenge */
+  .challenge-item{border:1px solid var(--border); border-radius:16px; padding:var(--sp-4); margin-bottom:var(--sp-4);}
+  .challenge-head{display:flex; align-items:center; gap:10px; margin-bottom:var(--sp-3); flex-wrap:wrap;}
+  .level-badge{font-size:11.5px; font-weight:700; padding:5px 10px; border-radius:999px; text-transform:uppercase; letter-spacing:.3px;}
+  .level-mudah{background:var(--success-bg); color:#047857;}
+  .level-sedang{background:var(--warning-bg); color:#B45309;}
+  .level-sulit{background:var(--error-bg); color:#B91C1C;}
+  .challenge-item h4{margin:0; font-size:15px;}
+  .soal-text{font-size:14.5px; margin-bottom:var(--sp-3);}
+  .poly-box{
+    background:var(--bg); border-radius:10px; padding:10px 14px; font-weight:700;
+    font-size:15px; text-align:center; margin-bottom:var(--sp-3);
+  }
+  .input-row{display:flex; flex-wrap:wrap; gap:10px; align-items:center; margin-bottom:var(--sp-3);}
+  .input-row .field{display:flex; flex-direction:column; gap:4px;}
+  .input-row .field label{font-size:12px; color:var(--text-soft); font-weight:600;}
+  .input-row input[type=number]{
+    width:76px; padding:9px 8px; border:1px solid var(--border); border-radius:10px;
+    font-family:'Inter', sans-serif; font-size:14px; text-align:center;
+  }
+  .input-row input[type=number]:focus{outline:none; border-color:var(--primary);}
+  .plusform{display:flex; align-items:center; gap:6px; font-weight:700; font-size:14px; flex-wrap:wrap;}
+  .feedback{margin-top:var(--sp-2); padding:var(--sp-3); border-radius:10px; font-size:13.5px; font-weight:600; display:none;}
+  .feedback.correct{display:block; background:var(--success-bg); color:#047857;}
+  .feedback.wrong{display:block; background:var(--error-bg); color:#B91C1C;}
+  .send-status{font-size:12px; color:var(--text-soft); margin-top:6px; min-height:14px;}
+
+  /* Kesalahan umum */
+  .mistake{display:flex; gap:12px; margin-bottom:var(--sp-4); align-items:flex-start;}
+  .mistake .icon{
+    flex:0 0 34px; height:34px; border-radius:10px; background:var(--error-bg); color:var(--error);
+    display:flex; align-items:center; justify-content:center; font-weight:800; font-size:16px;
+  }
+  .mistake .body h4{margin:0 0 3px; font-size:14.5px;}
+  .mistake .body p{margin:0; font-size:13.5px; color:var(--text-soft);}
+
+  /* Ringkasan */
+  .summary-list{list-style:none; margin:0; padding:0;}
+  .summary-list li{
+    display:flex; gap:12px; padding:var(--sp-3) 0; border-bottom:1px solid var(--border); font-size:14.5px;
+  }
+  .summary-list li:last-child{border-bottom:none;}
+  .summary-num{
+    flex:0 0 26px; height:26px; border-radius:8px; background:var(--primary); color:#fff;
+    display:flex; align-items:center; justify-content:center; font-weight:700; font-size:13px;
+  }
+  .badge-selesai{
+    margin-top:var(--sp-4); text-align:center; font-weight:700; color:var(--success);
+    background:var(--success-bg); border-radius:12px; padding:12px; font-size:14px;
+  }
+
+  /* Footer identitas */
+  .site-footer{padding:var(--sp-5) 0 var(--sp-6); text-align:center;}
+  .footer-divider{height:1px; background:var(--border); margin:0 var(--sp-3) var(--sp-4);}
+  .footer-brand{font-size:13.5px; font-weight:700; color:var(--primary); margin:0 0 4px;}
+  .footer-text{font-size:13px; color:var(--text-soft); margin:0 0 2px;}
+  .footer-meta{font-size:12.5px; color:var(--text-soft); margin:0; opacity:.85;}
+
+  @media (max-width:480px){
+    .hero h1{font-size:22px;}
+    .card{padding:var(--sp-4) var(--sp-3);}
+    .h-cell{min-width:52px; font-size:13px; padding:8px 2px;}
+    .h-cell.h-label{flex:0 0 74px; min-width:74px; font-size:11.5px;}
+  }
+</style>
+</head>
+<body>
+
+<div class="progress-wrap"><div class="progress-bar" id="progressBar"></div></div>
+<div class="topbar">CAKRAWALA MATEMATIKA · Pembagian Polinomial (Cara Horner)</div>
+
+<div class="container">
+
+  <!-- 1. HEADER -->
+  <section class="hero fade-up">
+    <h1>Pembagian Polinomial — Cara Horner</h1>
+    <div class="meta-row">
+      <span class="badge">Kelas XI</span>
+      <span class="badge">⏱ 15–20 menit</span>
+    </div>
+    <p class="tujuan">Setelah belajar ini, kamu bisa membagi polinomial dengan cepat memakai <strong>cara Horner</strong> (pembagian sintetik) — tanpa perlu pembagian bersusun yang panjang dan gampang salah.</p>
+  </section>
+
+  <div class="id-card fade-up">
+    <h3>Isi dulu sebelum mulai 👋</h3>
+    <p>Jawabanmu di bagian Challenge otomatis terkirim ke gurumu. Tidak perlu login atau email apapun.</p>
+    <div class="id-grid">
+      <div><label>Nama lengkap</label><input type="text" id="namaSiswa" placeholder="Tulis namamu"></div>
+      <div><label>Kelas</label><input type="text" id="kelasSiswa" placeholder="Contoh: XI IPA 2"></div>
+    </div>
+    <div class="id-status" id="idStatus"></div>
+  </div>
+
+  <!-- 2. PERNAHKAH KAMU BERPIKIR -->
+  <section class="card fade-up">
+    <span class="section-label">💭 Pernahkah Kamu Berpikir?</span>
+    <h2>Kalau kamu disuruh bagi x³ − 2x² − 5x + 6 dengan (x − 1), kamu bakal ngapain?</h2>
+    <p>Pembagian bersusun panjang bisa dipakai. Tapi jujur saja, itu ribet. Banyak langkah, banyak tempat buat salah tulis.</p>
+    <p>Coba perhatikan... kalau pembaginya selalu berbentuk <mark>(x − k)</mark>, apa mungkin ada jalan pintas?</p>
+    <p>Ternyata ada. Namanya <strong>cara Horner</strong>. Cuma butuh kali dan tambah, berulang-ulang, seperti estafet.</p>
+  </section>
+
+  <!-- 3. PENJELASAN SEDERHANA -->
+  <section class="card fade-up">
+    <span class="section-label">📘 Penjelasan Sederhana</span>
+    <h2>Bayangkan seperti estafet lari</h2>
+    <p>Di lari estafet, pelari pertama bawa tongkat, lalu <em>oper</em> ke pelari berikutnya. Cara Horner mirip begitu.</p>
+    <p>Kamu punya koefisien-koefisien polinomial, berbaris dari pangkat tertinggi ke terendah. Angka pertama diturunkan apa adanya — dia pelari pertama.</p>
+    <p>Nah, mulai dari situ, setiap angka dikalikan dengan <mark>k</mark> (angka pembagi dari bentuk x − k), lalu hasilnya dijumlahkan dengan koefisien berikutnya. Begitu terus sampai koefisien terakhir habis.</p>
+    <p>Hasil terakhir yang kamu dapat itu <strong>sisa pembagian</strong>. Sisanya, dari kiri ke kanan (kecuali yang terakhir), itu koefisien <strong>hasil bagi</strong> — pangkatnya turun satu dari polinomial asal.</p>
+    <p>Sampai sini masih masuk akal? Yuk kita lihat langsung caranya jalan, langkah demi langkah.</p>
+  </section>
+
+  <!-- 4. LIHAT CARA KERJANYA -->
+  <section class="card fade-up" id="demo">
+    <span class="section-label">🎬 Lihat Cara Kerjanya</span>
+    <h2>Contoh: bagi 2x³ − 3x² − 11x + 6 dengan (x − 3)</h2>
+    <p class="soft">Klik <strong>Selanjutnya</strong> untuk lihat prosesnya satu per satu.</p>
+
+    <div class="horner-table">
+      <div class="h-row h-coef">
+        <div class="h-cell h-label">Koefisien</div>
+        <div class="h-cell" id="d_c0">2</div>
+        <div class="h-cell" id="d_c1">−3</div>
+        <div class="h-cell" id="d_c2">−11</div>
+        <div class="h-cell" id="d_c3">6</div>
+      </div>
+      <div class="h-row h-mult">
+        <div class="h-cell h-label">× k (k = 3)</div>
+        <div class="h-cell empty" id="d_m0">—</div>
+        <div class="h-cell empty" id="d_m1">—</div>
+        <div class="h-cell empty" id="d_m2">—</div>
+        <div class="h-cell empty" id="d_m3">—</div>
+      </div>
+      <div class="h-row h-result">
+        <div class="h-cell h-label">Hasil (jumlah)</div>
+        <div class="h-cell empty" id="d_r0">—</div>
+        <div class="h-cell empty" id="d_r1">—</div>
+        <div class="h-cell empty" id="d_r2">—</div>
+        <div class="h-cell empty" id="d_r3">—</div>
+      </div>
+    </div>
+
+    <div class="demo-caption" id="demoCaption">Ini susunan awal. Baris atas adalah koefisien 2, −3, −11, 6. Pembaginya (x − 3), jadi k = 3.</div>
+    <div class="demo-nav">
+      <button class="btn btn-secondary" id="demoPrev">← Sebelumnya</button>
+      <span id="demoStepIndicator">Langkah 1 / 9</span>
+      <button class="btn btn-primary" id="demoNext">Selanjutnya →</button>
+    </div>
+  </section>
+
+  <!-- 5. COBA SENDIRI -->
+  <section class="card fade-up" id="coba">
+    <span class="section-label">🧪 Coba Sendiri</span>
+    <h2>Geser angkanya, lihat tabel Horner berubah otomatis</h2>
+    <p class="soft">Kamu atur sendiri koefisien polinomial (a, b, c, d) dan nilai k. Tabelnya update langsung, tanpa perlu tombol hitung.</p>
+
+    <div class="poly-display" id="polyDisplay">f(x) = 1x³ + 1x² + 1x + 1, dibagi (x − 1)</div>
+
+    <div class="slider-group">
+      <div class="slider-row"><label for="s_a">a (x³)</label><input type="range" id="s_a" min="-6" max="6" value="1" step="1"><span class="val" id="v_a">1</span></div>
+      <div class="slider-row"><label for="s_b">b (x²)</label><input type="range" id="s_b" min="-6" max="6" value="1" step="1"><span class="val" id="v_b">1</span></div>
+      <div class="slider-row"><label for="s_c">c (x¹)</label><input type="range" id="s_c" min="-6" max="6" value="1" step="1"><span class="val" id="v_c">1</span></div>
+      <div class="slider-row"><label for="s_d">d (konstan)</label><input type="range" id="s_d" min="-6" max="6" value="1" step="1"><span class="val" id="v_d">1</span></div>
+      <div class="slider-row"><label for="s_k">k</label><input type="range" id="s_k" min="-6" max="6" value="1" step="1"><span class="val" id="v_k">1</span></div>
+    </div>
+
+    <div class="horner-table">
+      <div class="h-row h-coef">
+        <div class="h-cell h-label">Koefisien</div>
+        <div class="h-cell" id="l_c0">1</div>
+        <div class="h-cell" id="l_c1">1</div>
+        <div class="h-cell" id="l_c2">1</div>
+        <div class="h-cell" id="l_c3">1</div>
+      </div>
+      <div class="h-row h-mult">
+        <div class="h-cell h-label">× k</div>
+        <div class="h-cell empty" id="l_m0">—</div>
+        <div class="h-cell" id="l_m1"></div>
+        <div class="h-cell" id="l_m2"></div>
+        <div class="h-cell" id="l_m3"></div>
+      </div>
+      <div class="h-row h-result">
+        <div class="h-cell h-label">Hasil</div>
+        <div class="h-cell" id="l_r0"></div>
+        <div class="h-cell" id="l_r1"></div>
+        <div class="h-cell" id="l_r2"></div>
+        <div class="h-cell" id="l_r3"></div>
+      </div>
+    </div>
+
+    <div class="result-box">
+      <div class="result-item"><div class="lbl">Hasil bagi</div><div class="num" id="quotientText">x² + x + 2</div></div>
+      <div class="result-item"><div class="lbl">Sisa</div><div class="num" id="remainderText">3</div></div>
+    </div>
+
+    <div class="insight-box" id="insightBox"></div>
+  </section>
+
+  <!-- 6. CHALLENGE -->
+  <section class="card fade-up" id="challenge">
+    <span class="section-label">🏆 Challenge</span>
+    <h2>3 soal, makin lama makin nantang</h2>
+    <p class="soft">Isi identitasmu dulu di bagian atas ya, baru jawabanmu bisa dicek dan terkirim ke guru.</p>
+
+    <!-- SOAL 1 - MUDAH -->
+    <div class="challenge-item">
+      <div class="challenge-head">
+        <span class="level-badge level-mudah">Mudah</span>
+        <h4>Soal 1</h4>
+      </div>
+      <p class="soal-text">Bagi f(x) = x³ − 2x² − 5x + 6 dengan (x − 1) memakai cara Horner. Tentukan hasil bagi dan sisanya.</p>
+      <div class="poly-box">Hasil bagi berbentuk: ax² + bx + c</div>
+      <div class="input-row">
+        <div class="field"><label>a (x²)</label><input type="number" id="q1_a"></div>
+        <div class="field"><label>b (x)</label><input type="number" id="q1_b"></div>
+        <div class="field"><label>c (konstan)</label><input type="number" id="q1_c"></div>
+        <div class="field"><label>Sisa</label><input type="number" id="q1_sisa"></div>
+      </div>
+      <button class="btn btn-primary" onclick="checkSoal1()">Cek Jawaban</button>
+      <div class="feedback" id="fb1"></div>
+      <div class="send-status" id="send0"></div>
+    </div>
+
+    <!-- SOAL 2 - SEDANG -->
+    <div class="challenge-item">
+      <div class="challenge-head">
+        <span class="level-badge level-sedang">Sedang</span>
+        <h4>Soal 2</h4>
+      </div>
+      <p class="soal-text">Bagi f(x) = 2x³ − 5x² − x + 6 dengan <strong>(2x − 3)</strong>. Hati-hati, pembaginya bukan bentuk (x − k) murni!</p>
+      <p class="soft">Petunjuk: ubah dulu (2x − 3) menjadi 2(x − 1,5), lalu ingat langkah tambahan setelah tabel Horner selesai.</p>
+      <div class="poly-box">Hasil bagi berbentuk: ax² + bx + c</div>
+      <div class="input-row">
+        <div class="field"><label>a (x²)</label><input type="number" id="q2_a"></div>
+        <div class="field"><label>b (x)</label><input type="number" id="q2_b"></div>
+        <div class="field"><label>c (konstan)</label><input type="number" id="q2_c"></div>
+        <div class="field"><label>Sisa</label><input type="number" id="q2_sisa"></div>
+      </div>
+      <button class="btn btn-primary" onclick="checkSoal2()">Cek Jawaban</button>
+      <div class="feedback" id="fb2"></div>
+      <div class="send-status" id="send1"></div>
+    </div>
+
+    <!-- SOAL 3 - SULIT -->
+    <div class="challenge-item">
+      <div class="challenge-head">
+        <span class="level-badge level-sulit">Sulit</span>
+        <h4>Soal 3</h4>
+      </div>
+      <p class="soal-text">Diketahui f(x) = x³ + p·x² − 4x + 6. Jika f(x) dibagi (x − 2), sisanya adalah 10. Berapa nilai p?</p>
+      <p class="soft">Coba beberapa nilai p, lalu cek dengan Horner sampai sisanya benar-benar 10.</p>
+      <div class="input-row">
+        <div class="field"><label>Nilai p</label><input type="number" id="q3_p"></div>
+      </div>
+      <button class="btn btn-primary" onclick="checkSoal3()">Cek Jawaban</button>
+      <div class="feedback" id="fb3"></div>
+      <div class="send-status" id="send2"></div>
+    </div>
+  </section>
+
+  <!-- 7. KESALAHAN YANG SERING TERJADI -->
+  <section class="card fade-up">
+    <span class="section-label">⚠️ Kesalahan yang Sering Terjadi</span>
+    <h2>Biar kamu nggak jatuh di lubang yang sama</h2>
+
+    <div class="mistake">
+      <div class="icon">1</div>
+      <div class="body">
+        <h4>Lupa mengisi koefisien 0 untuk suku yang hilang</h4>
+        <p>Kalau f(x) = x³ − 5x + 2, ingat itu artinya 1x³ + 0x² − 5x + 2. Suku x² tidak ada, tapi koefisiennya tetap harus ditulis 0. Kalau dilewat, semua langkah berikutnya kacau.</p>
+      </div>
+    </div>
+
+    <div class="mistake">
+      <div class="icon">2</div>
+      <div class="body">
+        <h4>Salah menentukan nilai k</h4>
+        <p>Pembagi (x − k) berarti k positif kalau tandanya minus. Tapi kalau pembaginya (x + 3), itu sama dengan (x − (−3)), jadi k = −3, bukan 3.</p>
+      </div>
+    </div>
+
+    <div class="mistake">
+      <div class="icon">3</div>
+      <div class="body">
+        <h4>Lupa membagi hasil akhir kalau pembaginya bukan (x − k) murni</h4>
+        <p>Kalau pembaginya (2x − 3), kamu tetap pakai k = 1,5 di tabel Horner. Tapi hasil bagi dari tabel itu masih harus dibagi lagi dengan 2 (koefisien depan pembagi). Sisanya tidak perlu dibagi.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8. RINGKASAN -->
+  <section class="card fade-up">
+    <span class="section-label">✅ Ringkasan</span>
+    <h2>5 hal penting yang perlu kamu ingat</h2>
+    <ul class="summary-list">
+      <li><span class="summary-num">1</span><span>Cara Horner dipakai untuk membagi polinomial dengan bentuk (x − k), lebih cepat daripada pembagian bersusun.</span></li>
+      <li><span class="summary-num">2</span><span>Susun koefisien dari pangkat tertinggi ke terendah. Jangan lupa isi 0 untuk suku yang hilang.</span></li>
+      <li><span class="summary-num">3</span><span>Koefisien pertama diturunkan apa adanya, lalu tiap hasil dikali k dan dijumlahkan ke koefisien berikutnya.</span></li>
+      <li><span class="summary-num">4</span><span>Angka terakhir yang muncul adalah sisa pembagian. Sisanya yang lain (dari kiri) adalah koefisien hasil bagi, pangkatnya turun satu.</span></li>
+      <li><span class="summary-num">5</span><span>Kalau pembaginya bukan (x − k) murni, misalnya (2x − 3), hasil bagi dari tabel harus dibagi lagi dengan koefisien depan pembagi.</span></li>
+    </ul>
+    <div class="badge-selesai">✓ Selesai — Pembagian Polinomial (Cara Horner)</div>
+  </section>
+
+</div>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-divider"></div>
+    <p class="footer-brand">Cakrawala Matematika</p>
+    <p class="footer-text">Dikembangkan oleh <strong>Kiki Herdiansyah</strong></p>
+    <p class="footer-meta">Versi 1.0 · © 2026</p>
+  </div>
+</footer>
+
+<script>
+/* ===== Progress bar ===== */
+window.addEventListener('scroll', function(){
+  var h = document.documentElement;
+  var scrolled = (h.scrollTop) / (h.scrollHeight - h.clientHeight) * 100;
+  document.getElementById('progressBar').style.width = scrolled + '%';
+});
+
+/* ===== Fade up on scroll ===== */
+var faders = document.querySelectorAll('.fade-up');
+var observer = new IntersectionObserver(function(entries){
+  entries.forEach(function(entry){
+    if(entry.isIntersecting){ entry.target.classList.add('visible'); observer.unobserve(entry.target); }
+  });
+}, { threshold: 0.12 });
+faders.forEach(function(el){ observer.observe(el); });
+
+/* ===== Identitas siswa ===== */
+function getIdentitas(){
+  var nama = document.getElementById('namaSiswa').value.trim();
+  var kelas = document.getElementById('kelasSiswa').value.trim();
+  return { nama: nama, kelas: kelas };
+}
+function identitasLengkap(){
+  var id = getIdentitas();
+  var statusEl = document.getElementById('idStatus');
+  if(!id.nama || !id.kelas){
+    statusEl.textContent = 'Isi nama dan kelas dulu ya, sebelum cek jawaban.';
+    statusEl.style.color = '#B91C1C';
+    document.getElementById('namaSiswa').focus();
+    return false;
+  }
+  statusEl.textContent = '';
+  return true;
+}
+
+/* ===== Helper Horner umum ===== */
+function hornerDivide(coeffs, k){
+  // coeffs: array koefisien dari pangkat tertinggi ke terendah
+  var hasil = [coeffs[0]];
+  for(var i=1;i<coeffs.length;i++){
+    hasil.push(coeffs[i] + hasil[i-1]*k);
+  }
+  var sisa = hasil.pop();
+  return { quotient: hasil, sisa: sisa };
+}
+function fmt(n){
+  n = Math.round(n*1000)/1000;
+  return n;
+}
+
+/* ===================================================
+   4. LIHAT CARA KERJANYA (demo statis, animasi step)
+   f(x) = 2x^3 - 3x^2 - 11x + 6, dibagi (x - 3)
+=================================================== */
+var demoCoef = [2,-3,-11,6];
+var demoK = 3;
+var demoSteps = [
+  { text:'Ini susunan awal. Baris atas adalah koefisien 2, −3, −11, 6. Pembaginya (x − 3), jadi k = 3.', fill:[] },
+  { text:'Turunkan koefisien pertama apa adanya: 2 langsung jadi hasil pertama.', fill:['r0'] },
+  { text:'Kalikan 2 × 3 = 6, taruh di bawah koefisien kedua (−3).', fill:['r0','m1'] },
+  { text:'Jumlahkan: −3 + 6 = 3.', fill:['r0','m1','r1'] },
+  { text:'Kalikan 3 × 3 = 9, taruh di bawah koefisien ketiga (−11).', fill:['r0','m1','r1','m2'] },
+  { text:'Jumlahkan: −11 + 9 = −2.', fill:['r0','m1','r1','m2','r2'] },
+  { text:'Kalikan −2 × 3 = −6, taruh di bawah koefisien terakhir (6).', fill:['r0','m1','r1','m2','r2','m3'] },
+  { text:'Jumlahkan: 6 + (−6) = 0. Ini sisa pembagian.', fill:['r0','m1','r1','m2','r2','m3','r3'] },
+  { text:'Selesai! Hasil bagi: 2x² + 3x − 2, sisa = 0. Sisa nol artinya (x − 3) adalah faktor dari f(x).', fill:['r0','m1','r1','m2','r2','m3','r3'], final:true }
+];
+var demoVals = (function(){
+  var d = hornerDivide(demoCoef, demoK);
+  return { m1: demoCoef[1] ? d.quotient[0]*demoK : 0, m2: d.quotient[1]*demoK, m3: d.quotient[2]*demoK, r0:d.quotient[0], r1:d.quotient[1], r2:d.quotient[2], r3:d.sisa };
+})();
+var demoStepIdx = 0;
+function renderDemo(){
+  var ids = ['m1','m2','m3','r0','r1','r2','r3'];
+  var step = demoSteps[demoStepIdx];
+  ids.forEach(function(id){
+    var el = document.getElementById('d_'+id);
+    el.classList.remove('active','done','empty');
+    if(step.fill.indexOf(id) === -1){
+      el.textContent = '—';
+      el.classList.add('empty');
+    } else {
+      el.textContent = demoVals[id];
+      var isCurrent = step.fill[step.fill.length-1] === id;
+      el.classList.add(isCurrent ? 'active' : 'done');
+    }
+  });
+  document.getElementById('demoCaption').textContent = step.text;
+  document.getElementById('demoStepIndicator').textContent = 'Langkah ' + (demoStepIdx+1) + ' / ' + demoSteps.length;
+  document.getElementById('demoPrev').disabled = demoStepIdx === 0;
+  document.getElementById('demoNext').disabled = demoStepIdx === demoSteps.length - 1;
+}
+document.getElementById('demoNext').addEventListener('click', function(){
+  if(demoStepIdx < demoSteps.length-1){ demoStepIdx++; renderDemo(); }
+});
+document.getElementById('demoPrev').addEventListener('click', function(){
+  if(demoStepIdx > 0){ demoStepIdx--; renderDemo(); }
+});
+renderDemo();
+
+/* ===================================================
+   5. COBA SENDIRI (live)
+=================================================== */
+var sliders = ['a','b','c','d','k'];
+function readSliders(){
+  var vals = {};
+  sliders.forEach(function(s){ vals[s] = parseInt(document.getElementById('s_'+s).value,10); });
+  return vals;
+}
+function polyTerm(coef, varPart){
+  if(coef === 0) return '';
+  var sign = coef < 0 ? ' − ' : ' + ';
+  var abs = Math.abs(coef);
+  var numPart = (abs === 1 && varPart !== '') ? '' : abs;
+  return sign + numPart + varPart;
+}
+function renderPolyString(a,b,c,d){
+  var s = (a<0?'−':'') + Math.abs(a) + 'x³';
+  s += polyTerm(b,'x²');
+  s += polyTerm(c,'x');
+  s += polyTerm(d,'');
+  return s;
+}
+function renderLive(){
+  var v = readSliders();
+  sliders.forEach(function(s){ document.getElementById('v_'+s).textContent = v[s]; });
+
+  document.getElementById('polyDisplay').textContent =
+    'f(x) = ' + renderPolyString(v.a,v.b,v.c,v.d) + ', dibagi (x − ' + (v.k<0 ? '(' + v.k + ')' : v.k) + ')';
+
+  var coeffs = [v.a, v.b, v.c, v.d];
+  ['c0','c1','c2','c3'].forEach(function(id,i){ document.getElementById('l_'+id).textContent = coeffs[i]; });
+
+  var d = hornerDivide(coeffs, v.k);
+  var m1 = d.quotient[0]*v.k, m2 = d.quotient[1]*v.k, m3 = d.quotient[2]*v.k;
+
+  document.getElementById('l_m1').textContent = fmt(m1);
+  document.getElementById('l_m2').textContent = fmt(m2);
+  document.getElementById('l_m3').textContent = fmt(m3);
+  document.getElementById('l_r0').textContent = fmt(d.quotient[0]);
+  document.getElementById('l_r1').textContent = fmt(d.quotient[1]);
+  document.getElementById('l_r2').textContent = fmt(d.quotient[2]);
+  document.getElementById('l_r3').textContent = fmt(d.sisa);
+
+  document.getElementById('quotientText').textContent = (fmt(d.quotient[0]) + 'x²' + polyTerm(fmt(d.quotient[1]),'x') + polyTerm(fmt(d.quotient[2]),'')).trim();
+  document.getElementById('remainderText').textContent = fmt(d.sisa);
+
+  var insight = document.getElementById('insightBox');
+  if(d.sisa === 0){
+    insight.className = 'insight-box show';
+    insight.textContent = '✨ Sisa = 0! Artinya x = ' + v.k + ' adalah AKAR dari f(x), dan (x − ' + v.k + ') adalah FAKTOR-nya. Ini namanya Teorema Faktor.';
+  } else if(v.k === 0){
+    insight.className = 'insight-box show neutral';
+    insight.textContent = '🔍 Perhatikan: kalau k = 0, kolom "× k" selalu 0. Hasil bagi jadi sama persis dengan koefisien awal (kecuali suku terakhir jadi sisa).';
+  } else {
+    insight.className = 'insight-box';
+    insight.textContent = '';
+  }
+}
+sliders.forEach(function(s){ document.getElementById('s_'+s).addEventListener('input', renderLive); });
+renderLive();
+
+/* ===================================================
+   6. CHALLENGE
+=================================================== */
+var SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzcK65GHhWieoZ0MgGrIs4YIyYXyR7E1_UlbfH4fL-OD_movoIiUViBK49EA5mFF9jG/exec';
+
+function kirimKeGuru(nomorSoal, jawaban1, jawaban2, benar){
+  var idx = nomorSoal - 1;
+  var statusEl = document.getElementById('send'+idx);
+  if(!SCRIPT_URL){ if(statusEl) statusEl.textContent=''; return; }
+  var id = getIdentitas();
+  var namaKelas = id.nama + ' — ' + id.kelas;
+  var payload = {
+    topik: 'Pembagian Polinomial (Cara Horner)',
+    nama: namaKelas,
+    soal: nomorSoal,
+    jawaban: jawaban1,
+    jawaban2: jawaban2 || '',
+    benar: benar ? 'Benar' : 'Salah',
+    waktu: new Date().toLocaleString('id-ID')
+  };
+  if(statusEl) statusEl.textContent = 'Mengirim ke guru...';
+  fetch(SCRIPT_URL, { method:'POST', mode:'no-cors', headers:{'Content-Type':'text/plain'}, body: JSON.stringify(payload) })
+    .then(function(){ if(statusEl) statusEl.textContent = 'Terkirim ke guru ✓'; })
+    .catch(function(){ if(statusEl) statusEl.textContent = 'Gagal mengirim (periksa koneksi internet).'; });
+}
+
+function numVal(id){ var v = document.getElementById(id).value; return v === '' ? NaN : parseFloat(v); }
+
+/* Soal 1 - MUDAH: f(x)=x^3-2x^2-5x+6 dibagi (x-1) -> hasil bagi x^2-x-6, sisa 0 */
+function checkSoal1(){
+  if(!identitasLengkap()) return;
+  var a = numVal('q1_a'), b = numVal('q1_b'), c = numVal('q1_c'), sisa = numVal('q1_sisa');
+  var fb = document.getElementById('fb1');
+  if(isNaN(a)||isNaN(b)||isNaN(c)||isNaN(sisa)){
+    fb.className='feedback wrong'; fb.textContent='Isi semua kotak dulu ya (a, b, c, dan sisa).';
+    return;
+  }
+  var d = hornerDivide([1,-2,-5,6], 1);
+  var benar = (a===d.quotient[0] && b===d.quotient[1] && c===d.quotient[2] && sisa===d.sisa);
+  if(benar){
+    fb.className='feedback correct'; fb.textContent='Betul! Hasil bagi x² − x − 6, sisa 0. Karena sisanya 0, (x−1) adalah faktor dari f(x).';
+  } else {
+    fb.className='feedback wrong';
+    if(sisa !== d.sisa && a===d.quotient[0] && b===d.quotient[1] && c===d.quotient[2]){
+      fb.textContent = 'Hasil baginya sudah benar, tapi sisanya masih salah. Coba cek langkah terakhir di tabel Horner.';
+    } else {
+      fb.textContent = 'Belum tepat. Coba susun ulang koefisien 1, −2, −5, 6 dengan k = 1, lalu ikuti langkah kali-dan-jumlah satu per satu.';
+    }
+  }
+  kirimKeGuru(1, 'bagi='+a+','+b+','+c+' sisa='+sisa, '', benar);
+}
+
+/* Soal 2 - SEDANG: f(x)=2x^3-5x^2-x+6 dibagi (2x-3), k=1.5, quotient tabel /2 -> x^2-x-2, sisa 0 */
+function checkSoal2(){
+  if(!identitasLengkap()) return;
+  var a = numVal('q2_a'), b = numVal('q2_b'), c = numVal('q2_c'), sisa = numVal('q2_sisa');
+  var fb = document.getElementById('fb2');
+  if(isNaN(a)||isNaN(b)||isNaN(c)||isNaN(sisa)){
+    fb.className='feedback wrong'; fb.textContent='Isi semua kotak dulu ya (a, b, c, dan sisa).';
+    return;
+  }
+  var d = hornerDivide([2,-5,-1,6], 1.5);
+  var trueQuotient = d.quotient.map(function(x){ return x/2; });
+  var benar = (a===trueQuotient[0] && b===trueQuotient[1] && c===trueQuotient[2] && sisa===d.sisa);
+  if(benar){
+    fb.className='feedback correct'; fb.textContent='Tepat! Hasil bagi x² − x − 2, sisa 0. Kamu berhasil ingat untuk membagi hasil tabel dengan 2.';
+  } else {
+    var rawMatch = (a===d.quotient[0] && b===d.quotient[1] && c===d.quotient[2]);
+    fb.className='feedback wrong';
+    if(rawMatch){
+      fb.textContent = 'Hampir! Itu masih hasil MENTAH dari tabel Horner (dikali 2). Ingat, karena pembaginya (2x − 3) bukan (x − k) murni, hasil bagi harus dibagi lagi dengan 2.';
+    } else {
+      fb.textContent = 'Belum tepat. Ubah dulu (2x − 3) jadi 2(x − 1,5), lakukan Horner dengan k = 1,5, baru hasil bagi dari tabel dibagi 2 (sisanya TIDAK perlu dibagi).';
+    }
+  }
+  kirimKeGuru(2, 'bagi='+a+','+b+','+c+' sisa='+sisa, '', benar);
+}
+
+/* Soal 3 - SULIT: cari p supaya f(x)=x^3+px^2-4x+6 dibagi (x-2) sisa 10 -> p=1 */
+function checkSoal3(){
+  if(!identitasLengkap()) return;
+  var p = numVal('q3_p');
+  var fb = document.getElementById('fb3');
+  if(isNaN(p)){
+    fb.className='feedback wrong'; fb.textContent='Isi dulu nilai p yang mau kamu coba.';
+    return;
+  }
+  var d = hornerDivide([1,p,-4,6], 2);
+  var benar = d.sisa === 10;
+  if(benar){
+    fb.className='feedback correct'; fb.textContent='Tepat! Kalau p = ' + p + ', sisanya memang jadi 10. Kamu bisa cek: f(2) = 8 + 4p − 8 + 6 = 4p + 6 = 10, jadi p = 1.';
+  } else {
+    fb.className='feedback wrong';
+    fb.textContent = 'Belum pas. Dengan p = ' + p + ', sisanya jadi ' + fmt(d.sisa) + ' (bukan 10). Coba pakai teorema sisa: f(2) = 4p + 6, lalu samakan dengan 10.';
+  }
+  kirimKeGuru(3, 'p='+p, '', benar);
+}
+</script>
+
+</body>
+</html>

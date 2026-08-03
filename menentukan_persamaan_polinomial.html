@@ -1,0 +1,614 @@
+<!--
+==========================================================
+CAKRAWALA MATEMATIKA
+
+Judul      : Menentukan Persamaan Polinomial
+Jenis      : Modul Interaktif
+Versi      : 1.0
+
+Dikembangkan oleh
+Kiki Herdiansyah
+
+Copyright © 2026
+
+Website ini merupakan bagian dari proyek
+"Cakrawala Matematika".
+==========================================================
+-->
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Menentukan Persamaan Polinomial — Cakrawala Matematika</title>
+<meta name="description" content="Modul interaktif belajar mandiri tentang cara menentukan persamaan polinomial dari akar-akarnya, untuk siswa SMA.">
+<meta name="author" content="Kiki Herdiansyah">
+<meta name="application-name" content="Cakrawala Matematika">
+<meta name="copyright" content="© 2026 Kiki Herdiansyah">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --primary:#2563EB;
+  --primary-hover:#1D4ED8;
+  --primary-light:#DBEAFE;
+  --bg:#F8FAFC;
+  --card:#FFFFFF;
+  --text:#0F172A;
+  --text-soft:#64748B;
+  --border:#E2E8F0;
+  --success:#10B981;
+  --warning:#F59E0B;
+  --error:#EF4444;
+  --success-light:#D1FAE5;
+  --warning-light:#FEF3C7;
+  --error-light:#FEE2E2;
+  --radius-card:18px;
+  --radius-btn:12px;
+  --sp-1:4px;--sp-2:8px;--sp-3:12px;--sp-4:16px;--sp-5:24px;--sp-6:40px;
+  --shadow: 0 1px 2px rgba(15,23,42,.04), 0 4px 16px rgba(15,23,42,.06);
+}
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  margin:0;
+  font-family:'Inter',sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+.wrap{max-width:900px; margin:0 auto; padding:0 var(--sp-4);}
+
+/* Topbar */
+.topbar{
+  position:sticky; top:0; z-index:50;
+  background:rgba(248,250,252,.92);
+  backdrop-filter:blur(8px);
+  border-bottom:1px solid var(--border);
+}
+.topbar-inner{
+  max-width:900px; margin:0 auto; padding:12px var(--sp-4);
+  font-size:13px; font-weight:700; letter-spacing:.02em;
+  color:var(--primary);
+}
+.progress-track{height:3px; background:var(--border);}
+.progress-bar{height:3px; width:0%; background:var(--primary); transition:width 80ms linear;}
+
+/* Cards / sections */
+main{max-width:900px; margin:0 auto; padding:var(--sp-5) var(--sp-4) 0;}
+.card{
+  background:var(--card);
+  border-radius:var(--radius-card);
+  box-shadow:var(--shadow);
+  padding:var(--sp-5);
+  margin-bottom:var(--sp-5);
+}
+.fade-up{opacity:0; transform:translateY(16px); transition:opacity .5s ease, transform .5s ease;}
+.fade-up.in-view{opacity:1; transform:translateY(0);}
+
+.eyebrow{
+  font-size:12.5px; font-weight:700; color:var(--primary);
+  text-transform:uppercase; letter-spacing:.06em; margin:0 0 var(--sp-2);
+}
+h1{font-size:26px; font-weight:800; margin:0 0 var(--sp-2); line-height:1.25;}
+h2{font-size:20px; font-weight:700; margin:0 0 var(--sp-3);}
+p{margin:0 0 var(--sp-3); font-size:15.5px;}
+.meta-row{display:flex; flex-wrap:wrap; gap:var(--sp-2); margin-bottom:var(--sp-4);}
+.chip{
+  background:var(--primary-light); color:var(--primary-hover);
+  font-size:12.5px; font-weight:600; padding:6px 12px; border-radius:999px;
+}
+.goal-list{margin:0 0 var(--sp-4); padding-left:20px;}
+.goal-list li{margin-bottom:6px; font-size:14.5px;}
+
+/* Identitas siswa */
+.id-card{
+  background:var(--primary-light);
+  border-radius:14px;
+  padding:var(--sp-4);
+  margin-top:var(--sp-2);
+}
+.id-card h3{margin:0 0 4px; font-size:15px; font-weight:700; color:var(--text);}
+.id-card p{font-size:13.5px; color:var(--text-soft); margin:0 0 var(--sp-3);}
+.id-grid{display:grid; grid-template-columns:1fr 1fr; gap:var(--sp-3);}
+.id-grid label{display:block; font-size:12.5px; font-weight:600; margin-bottom:4px; color:var(--text-soft);}
+.id-grid input{
+  width:100%; padding:10px 12px; border-radius:10px; border:1px solid var(--border);
+  font-family:'Inter',sans-serif; font-size:14.5px; background:#fff;
+}
+.id-grid input:focus{outline:2px solid var(--primary); outline-offset:1px;}
+.id-status{font-size:13px; font-weight:600; margin-top:var(--sp-2); min-height:18px;}
+@media (max-width:480px){ .id-grid{grid-template-columns:1fr;} }
+
+mark{background:var(--primary-light); color:var(--primary-hover); padding:1px 4px; border-radius:4px; font-weight:700;}
+
+/* Buttons */
+.btn{
+  display:inline-flex; align-items:center; justify-content:center; gap:6px;
+  padding:10px 18px; min-height:40px; border-radius:var(--radius-btn);
+  font-family:'Inter',sans-serif; font-size:14.5px; font-weight:600;
+  border:none; cursor:pointer; transition:all 200ms ease;
+}
+.btn-primary{background:var(--primary); color:#fff;}
+.btn-primary:hover{background:var(--primary-hover);}
+.btn-primary:disabled{background:var(--border); color:var(--text-soft); cursor:not-allowed;}
+.btn-outline{background:#fff; color:var(--primary); border:1px solid var(--primary-light);}
+.btn-outline:hover{background:var(--primary-light);}
+
+/* Step visual (section 4) */
+.step-area{display:flex; flex-direction:column; gap:var(--sp-3);}
+.algebra-card{background:var(--bg); border-radius:12px; padding:var(--sp-4);}
+.algebra-line{
+  font-size:15px; font-weight:600; padding:10px 12px; border-radius:10px;
+  margin-bottom:8px; opacity:.35; transition:all 250ms ease; background:transparent;
+}
+.algebra-line.active{opacity:1; background:var(--primary-light); color:var(--primary-hover);}
+.algebra-line.done{opacity:1; background:#fff;}
+.algebra-line:last-child{margin-bottom:0;}
+.step-controls{display:flex; align-items:center; gap:var(--sp-3); justify-content:center; margin-top:var(--sp-3);}
+.step-indicator{font-size:13px; color:var(--text-soft); font-weight:600;}
+
+/* Coba sendiri sliders */
+.slider-row{margin-bottom:var(--sp-3);}
+.slider-row label{display:flex; justify-content:space-between; font-size:13.5px; font-weight:600; margin-bottom:2px;}
+.slider-row label span{color:var(--primary); font-weight:800;}
+.slider-row input[type=range]{width:100%; accent-color:var(--primary);}
+.poly-result{
+  margin-top:var(--sp-4); text-align:center; background:var(--bg); border-radius:14px;
+  padding:var(--sp-4); font-size:19px; font-weight:800; letter-spacing:.01em;
+}
+.poly-result span{color:var(--primary);}
+.insight-box{
+  margin-top:var(--sp-4); background:var(--primary-light); border-radius:12px;
+  padding:var(--sp-3) var(--sp-4); font-size:14px; font-weight:600; color:#1E3A8A;
+  display:flex; gap:10px; align-items:flex-start;
+}
+
+/* Challenge */
+.soal{border-top:1px solid var(--border); padding-top:var(--sp-4); margin-top:var(--sp-4);}
+.soal:first-of-type{border-top:none; padding-top:0; margin-top:0;}
+.badge{
+  display:inline-block; font-size:11.5px; font-weight:800; letter-spacing:.04em;
+  padding:4px 10px; border-radius:999px; margin-bottom:var(--sp-2); text-transform:uppercase;
+}
+.badge-mudah{background:var(--success-light); color:#065F46;}
+.badge-sedang{background:var(--warning-light); color:#92400E;}
+.badge-sulit{background:var(--error-light); color:#991B1B;}
+.soal-text{font-size:15px; margin-bottom:var(--sp-3);}
+.soal-formula{
+  background:var(--bg); border-radius:10px; padding:10px 14px; font-weight:700;
+  font-size:15px; margin-bottom:var(--sp-3); text-align:center;
+}
+.answer-row{display:flex; gap:var(--sp-2); align-items:center; flex-wrap:wrap;}
+.answer-row input[type=number]{
+  width:90px; padding:9px 10px; border-radius:10px; border:1px solid var(--border);
+  font-family:'Inter',sans-serif; font-size:14.5px;
+}
+.answer-row input[type=number]:focus{outline:2px solid var(--primary); outline-offset:1px;}
+.answer-row label{font-size:13px; font-weight:600; color:var(--text-soft);}
+.feedback{margin-top:var(--sp-3); padding:var(--sp-3); border-radius:12px; font-size:14px; font-weight:600; display:none;}
+.feedback.show{display:block;}
+.feedback.correct{background:var(--success-light); color:#065F46;}
+.feedback.wrong{background:var(--error-light); color:#991B1B;}
+.send-status{font-size:12.5px; color:var(--text-soft); margin-top:6px; min-height:16px;}
+
+/* Kesalahan umum */
+.mistake{display:flex; gap:12px; margin-bottom:var(--sp-4);}
+.mistake:last-child{margin-bottom:0;}
+.mistake-icon{
+  flex-shrink:0; width:32px; height:32px; border-radius:9px; background:var(--error-light);
+  color:#991B1B; display:flex; align-items:center; justify-content:center; font-weight:800;
+}
+.mistake-body h4{margin:0 0 4px; font-size:14.5px; font-weight:700;}
+.mistake-body p{margin:0; font-size:14px; color:var(--text-soft);}
+
+/* Ringkasan */
+.summary-list{margin:0; padding:0; list-style:none;}
+.summary-list li{
+  display:flex; gap:10px; padding:10px 0; border-bottom:1px solid var(--border); font-size:14.5px;
+}
+.summary-list li:last-child{border-bottom:none;}
+.summary-num{
+  flex-shrink:0; width:24px; height:24px; border-radius:50%; background:var(--primary);
+  color:#fff; font-size:12px; font-weight:800; display:flex; align-items:center; justify-content:center;
+}
+.done-badge{
+  display:inline-block; background:var(--success-light); color:#065F46;
+  font-size:13px; font-weight:700; padding:8px 16px; border-radius:999px; margin-top:var(--sp-2);
+}
+
+/* Footer identitas */
+.site-footer{padding: var(--sp-5) 0 var(--sp-6); text-align:center;}
+.footer-divider{height:1px; background:var(--border); margin-bottom:var(--sp-4);}
+.footer-brand{font-size:13.5px; font-weight:700; color:var(--primary); margin:0 0 4px;}
+.footer-text{font-size:13px; color:var(--text-soft); margin:0 0 2px;}
+.footer-meta{font-size:12.5px; color:var(--text-soft); margin:0; opacity:.85;}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-inner">CAKRAWALA MATEMATIKA · Menentukan Persamaan Polinomial</div>
+  <div class="progress-track"><div class="progress-bar" id="progressBar"></div></div>
+</div>
+
+<main>
+
+  <!-- 1. HEADER -->
+  <section class="card fade-up">
+    <p class="eyebrow">Modul Interaktif</p>
+    <h1>Menentukan Persamaan Polinomial</h1>
+    <div class="meta-row">
+      <span class="chip">Kelas XI</span>
+      <span class="chip">⏱ 15–20 menit</span>
+      <span class="chip">📚 Belajar mandiri</span>
+    </div>
+    <p><strong>Tujuan belajar.</strong> Setelah menyelesaikan modul ini, kamu akan bisa:</p>
+    <ul class="goal-list">
+      <li>Menjelaskan hubungan antara akar suatu polinomial dan faktor pembentuknya.</li>
+      <li>Menyusun persamaan polinomial derajat tiga jika diketahui akar-akarnya.</li>
+      <li>Mengembangkan (expand) hasil kali beberapa faktor menjadi bentuk polinomial biasa.</li>
+      <li>Melihat hubungan cepat antara akar-akar dengan koefisien polinomialnya.</li>
+    </ul>
+
+    <div class="id-card">
+      <h3>Isi dulu sebelum mulai 👋</h3>
+      <p>Jawabanmu di bagian Challenge otomatis terkirim ke gurumu. Tidak perlu login atau email apapun.</p>
+      <div class="id-grid">
+        <div><label>Nama lengkap</label><input type="text" id="namaSiswa" placeholder="Tulis namamu"></div>
+        <div><label>Kelas</label><input type="text" id="kelasSiswa" placeholder="Contoh: XI IPA 2"></div>
+      </div>
+      <div class="id-status" id="idStatus"></div>
+    </div>
+  </section>
+
+  <!-- 2. PERNAHKAH KAMU BERPIKIR? -->
+  <section class="card fade-up">
+    <h2>Pernahkah kamu berpikir?</h2>
+    <p>Biasanya kalau kita punya persamaan polinomial, kita disuruh mencari akar-akarnya.</p>
+    <p>Tapi coba bayangkan soalnya dibalik: kamu sudah TAHU akar-akarnya, misalnya x = 1, x = -2, dan x = 3.</p>
+    <p>Pertanyaannya, bisakah kamu menyusun kembali persamaan polinomial aslinya, hanya dari ketiga angka itu?</p>
+    <p>Ternyata bisa, dan caranya jauh lebih sederhana dari yang kamu kira.</p>
+    <p>Yuk kita bongkar caranya.</p>
+  </section>
+
+  <!-- 3. PENJELASAN SEDERHANA -->
+  <section class="card fade-up">
+    <h2>Penjelasan sederhana</h2>
+    <p>Ingat <strong>Teorema Faktor</strong>? Kalau x = r adalah akar suatu polinomial, artinya kalau kita masukkan r ke polinomial itu, hasilnya nol.</p>
+    <p>Nah, ternyata itu juga berarti <mark>(x − r)</mark> pasti merupakan salah satu faktor dari polinomial tersebut.</p>
+    <p>Bayangkan polinomial itu seperti puzzle, dan setiap akar adalah satu potongan puzzle berbentuk faktor.</p>
+    <p>Kalau kamu tahu SEMUA akarnya, kamu tinggal menyusun ulang semua potongan itu, lalu mengalikannya satu per satu.</p>
+    <p>Misalnya akar-akarnya adalah r₁, r₂, dan r₃, maka polinomialnya adalah:</p>
+    <p style="text-align:center;font-weight:700;font-size:17px;">P(x) = a(x − r₁)(x − r₂)(x − r₃)</p>
+    <p>Konstanta <strong>a</strong> biasanya bernilai 1, kecuali soal memberi info tambahan (misalnya grafiknya melewati satu titik lain).</p>
+    <p>Setelah faktor-faktornya tersusun, tinggal kalikan semuanya (expand), dan jadilah polinomial dalam bentuk biasa.</p>
+    <p>Sampai sini masih masuk akal? Yuk kita lihat langsung caranya di bagian berikutnya.</p>
+  </section>
+
+  <!-- 4. LIHAT CARA KERJANYA -->
+  <section class="card fade-up">
+    <h2>Lihat cara kerjanya</h2>
+    <p>Kita akan menyusun polinomial dari akar-akar berikut: x₁ = 1, x₂ = −2, x₃ = 3.</p>
+    <div class="step-area">
+      <div class="algebra-card">
+        <div class="algebra-line active" id="line0">Akar-akarnya: x₁ = 1, x₂ = −2, x₃ = 3</div>
+        <div class="algebra-line" id="line1">Ubah tiap akar jadi faktor: (x − 1)(x + 2)(x − 3)</div>
+        <div class="algebra-line" id="line2">Kalikan dua faktor pertama: (x − 1)(x + 2) = x² + x − 2</div>
+        <div class="algebra-line" id="line3">Kalikan hasilnya dengan faktor ketiga: (x² + x − 2)(x − 3) = x³ − 3x² + x² − 3x − 2x + 6</div>
+        <div class="algebra-line" id="line4">Gabungkan suku sejenis: <mark>P(x) = x³ − 2x² − 5x + 6</mark></div>
+      </div>
+      <div class="step-controls">
+        <button class="btn btn-outline" id="prevStep">← Sebelumnya</button>
+        <span class="step-indicator" id="stepIndicator">Langkah 0 / 4</span>
+        <button class="btn btn-primary" id="nextStep">Mulai →</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. COBA SENDIRI -->
+  <section class="card fade-up">
+    <h2>Coba sendiri</h2>
+    <p>Geser slider di bawah untuk mengubah ketiga akarnya. Perhatikan bagaimana polinomialnya berubah secara otomatis (a = 1).</p>
+
+    <div class="slider-row"><label>Akar 1 (r₁) <span id="vr1">1</span></label><input type="range" min="-5" max="5" value="1" id="sr1"></div>
+    <div class="slider-row"><label>Akar 2 (r₂) <span id="vr2">-2</span></label><input type="range" min="-5" max="5" value="-2" id="sr2"></div>
+    <div class="slider-row"><label>Akar 3 (r₃) <span id="vr3">3</span></label><input type="range" min="-5" max="5" value="3" id="sr3"></div>
+
+    <div class="poly-result" id="polyResult">P(x) = x³ − 2x² − 5x + 6</div>
+
+    <div class="insight-box" id="insightBox">💡 <span id="insightText">Coba ubah salah satu akar, perhatikan bagaimana ketiga koefisien ikut berubah.</span></div>
+  </section>
+
+  <!-- 6. CHALLENGE -->
+  <section class="card fade-up">
+    <h2>Challenge</h2>
+    <p>Tiga soal, makin ke bawah makin menantang. Pastikan identitasmu di atas sudah terisi ya.</p>
+
+    <!-- SOAL 1 - MUDAH -->
+    <div class="soal">
+      <span class="badge badge-mudah">Level Mudah</span>
+      <p class="soal-text">Diketahui akar-akar suatu polinomial derajat tiga (dengan a = 1) adalah <strong>2, −1, dan 3</strong>. Berapa nilai koefisien x² pada polinomial tersebut?</p>
+      <div class="answer-row">
+        <input type="number" id="jwb1" placeholder="Jawaban">
+        <button class="btn btn-primary" onclick="checkSoal1()">Cek jawaban</button>
+      </div>
+      <div class="feedback" id="fb1"></div>
+      <div class="send-status" id="send0"></div>
+    </div>
+
+    <!-- SOAL 2 - SEDANG -->
+    <div class="soal">
+      <span class="badge badge-sedang">Level Sedang</span>
+      <p class="soal-text">Diketahui akar-akar suatu polinomial derajat tiga (dengan a = 1) adalah <strong>1, 2, dan −3</strong>. Berapa suku tetap (konstanta) pada polinomial tersebut?</p>
+      <p style="font-size:13px;color:var(--text-soft);margin-top:-4px;">*Ingat, hati-hati dengan tanda pada faktor dari akar negatif.</p>
+      <div class="answer-row">
+        <input type="number" id="jwb2" placeholder="Jawaban">
+        <button class="btn btn-primary" onclick="checkSoal2()">Cek jawaban</button>
+      </div>
+      <div class="feedback" id="fb2"></div>
+      <div class="send-status" id="send1"></div>
+    </div>
+
+    <!-- SOAL 3 - SULIT (buat contohmu sendiri) -->
+    <div class="soal">
+      <span class="badge badge-sulit">Level Sulit</span>
+      <p class="soal-text">Susun sendiri tiga akar r₁, r₂, r₃ (bilangan bulat, boleh berulang) untuk sebuah polinomial derajat tiga (a = 1), sedemikian sehingga <strong>koefisien x² = −4</strong> DAN <strong>suku tetapnya = 6</strong>.</p>
+      <div class="answer-row">
+        <label>r₁</label><input type="number" id="jwb3a" placeholder="r1">
+        <label>r₂</label><input type="number" id="jwb3b" placeholder="r2">
+        <label>r₃</label><input type="number" id="jwb3c" placeholder="r3">
+        <button class="btn btn-primary" onclick="checkSoal3()">Cek jawaban</button>
+      </div>
+      <div class="feedback" id="fb3"></div>
+      <div class="send-status" id="send2"></div>
+    </div>
+  </section>
+
+  <!-- 7. KESALAHAN YANG SERING TERJADI -->
+  <section class="card fade-up">
+    <h2>Kesalahan yang sering terjadi</h2>
+    <div class="mistake">
+      <div class="mistake-icon">1</div>
+      <div class="mistake-body">
+        <h4>Lupa tanda minus dari akar negatif</h4>
+        <p>Kalau akarnya r = −2, faktornya adalah (x − (−2)) = (x + 2), bukan (x − 2). Tanda ini sering tertukar.</p>
+      </div>
+    </div>
+    <div class="mistake">
+      <div class="mistake-icon">2</div>
+      <div class="mistake-body">
+        <h4>Mengasumsikan a = 1 padahal belum tentu</h4>
+        <p>Kalau soal memberi info tambahan seperti "grafik melewati titik (0, 12)", nilai a harus dihitung dulu, tidak boleh langsung dianggap 1.</p>
+      </div>
+    </div>
+    <div class="mistake">
+      <div class="mistake-icon">3</div>
+      <div class="mistake-body">
+        <h4>Salah saat mengembangkan (expand) hasil kali faktor</h4>
+        <p>Saat mengalikan tiga faktor sekaligus, banyak siswa lupa mengalikan semua pasangan suku. Kerjakan dua faktor dulu, baru kalikan dengan faktor ketiga.</p>
+      </div>
+    </div>
+    <div class="mistake">
+      <div class="mistake-icon">4</div>
+      <div class="mistake-body">
+        <h4>Tertukar antara jumlah akar dan hasil kali akar</h4>
+        <p>Koefisien x² berhubungan dengan JUMLAH akar, sedangkan suku tetap berhubungan dengan HASIL KALI akar. Dua hal ini sering tertukar.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8. RINGKASAN -->
+  <section class="card fade-up">
+    <h2>Ringkasan</h2>
+    <ul class="summary-list">
+      <li><span class="summary-num">1</span> Kalau x = r adalah akar suatu polinomial, maka (x − r) adalah faktornya (Teorema Faktor).</li>
+      <li><span class="summary-num">2</span> Untuk menyusun polinomial dari akar-akarnya, kalikan semua faktornya: a(x − r₁)(x − r₂)(x − r₃).</li>
+      <li><span class="summary-num">3</span> Konstanta a bernilai 1, kecuali ada informasi tambahan seperti titik lain yang dilalui grafik.</li>
+      <li><span class="summary-num">4</span> Koefisien x² (untuk a = 1) sama dengan negatif dari jumlah seluruh akar.</li>
+      <li><span class="summary-num">5</span> Suku tetap (untuk a = 1) sama dengan negatif dari hasil kali seluruh akar.</li>
+    </ul>
+    <div class="done-badge">✓ Selesai — Menentukan Persamaan Polinomial</div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-divider"></div>
+    <p class="footer-brand">Cakrawala Matematika</p>
+    <p class="footer-text">Dikembangkan oleh <strong>Kiki Herdiansyah</strong></p>
+    <p class="footer-meta">Versi 1.0 · © 2026</p>
+  </div>
+</footer>
+
+<script>
+/* ===== Progress bar & fade-up ===== */
+window.addEventListener('scroll', function(){
+  var h = document.documentElement;
+  var scrolled = (h.scrollTop) / (h.scrollHeight - h.clientHeight) * 100;
+  document.getElementById('progressBar').style.width = scrolled + '%';
+});
+var observer = new IntersectionObserver(function(entries){
+  entries.forEach(function(en){ if(en.isIntersecting){ en.target.classList.add('in-view'); } });
+}, { threshold: 0.12 });
+document.querySelectorAll('.fade-up').forEach(function(el){ observer.observe(el); });
+
+/* ===== Identitas siswa ===== */
+function getIdentitas(){
+  var nama = document.getElementById('namaSiswa').value.trim();
+  var kelas = document.getElementById('kelasSiswa').value.trim();
+  return { nama: nama, kelas: kelas };
+}
+function identitasLengkap(){
+  var id = getIdentitas();
+  var statusEl = document.getElementById('idStatus');
+  if(!id.nama || !id.kelas){
+    statusEl.textContent = 'Isi nama dan kelas dulu ya, sebelum cek jawaban.';
+    statusEl.style.color = '#B91C1C';
+    document.getElementById('namaSiswa').focus();
+    return false;
+  }
+  statusEl.textContent = '';
+  return true;
+}
+
+/* ===== Section 4: Lihat cara kerjanya ===== */
+var totalSteps = 4;
+var curStep = 0;
+function renderStep(i){
+  for(var k=0;k<=totalSteps;k++){
+    var el = document.getElementById('line'+k);
+    el.classList.remove('active','done');
+    if(k < i) el.classList.add('done');
+    else if(k === i) el.classList.add('active');
+  }
+  document.getElementById('stepIndicator').textContent = 'Langkah ' + i + ' / ' + totalSteps;
+  document.getElementById('nextStep').textContent = (i === totalSteps) ? 'Ulangi ↺' : (i === 0 ? 'Mulai →' : 'Lanjut →');
+}
+document.getElementById('nextStep').addEventListener('click', function(){
+  if(curStep >= totalSteps){ curStep = 0; } else { curStep++; }
+  renderStep(curStep);
+});
+document.getElementById('prevStep').addEventListener('click', function(){
+  if(curStep > 0){ curStep--; }
+  renderStep(curStep);
+});
+renderStep(0);
+
+/* ===== Section 5: Coba sendiri ===== */
+function fmtCoef(c, isFirst){
+  var sign = c < 0 ? '−' : '+';
+  var abs = Math.abs(c);
+  if(isFirst){ return (c < 0 ? '−' : '') + abs; }
+  return ' ' + sign + ' ' + abs;
+}
+function updateSim(){
+  var r1 = +document.getElementById('sr1').value;
+  var r2 = +document.getElementById('sr2').value;
+  var r3 = +document.getElementById('sr3').value;
+  document.getElementById('vr1').textContent = r1;
+  document.getElementById('vr2').textContent = r2;
+  document.getElementById('vr3').textContent = r3;
+
+  var b = -(r1+r2+r3);
+  var c = (r1*r2 + r1*r3 + r2*r3);
+  var d = -(r1*r2*r3);
+
+  var text = 'P(x) = x³';
+  if(b !== 0) text += fmtCoef(b,false) + 'x²';
+  if(c !== 0) text += fmtCoef(c,false) + 'x';
+  if(d !== 0) text += fmtCoef(d,false);
+  document.getElementById('polyResult').innerHTML = text;
+
+  var insight = document.getElementById('insightText');
+  if(r1===r2 || r1===r3 || r2===r3){
+    insight.textContent = 'Ada akar ganda (kembar)! Ini artinya grafik polinomial hanya MENYENTUH sumbu-x di titik itu, tidak memotongnya.';
+  } else if(r1===0 || r2===0 || r3===0){
+    insight.textContent = 'Salah satu akarnya adalah 0. Itu artinya grafik melewati titik asal (0, 0), dan suku tetapnya otomatis jadi 0.';
+  } else {
+    insight.textContent = 'Coba ubah salah satu akar, perhatikan bagaimana ketiga koefisien ikut berubah.';
+  }
+}
+['sr1','sr2','sr3'].forEach(function(id){ document.getElementById(id).addEventListener('input', updateSim); });
+updateSim();
+
+/* ===== Pengiriman ke Google Apps Script ===== */
+/* Tempel URL Web App Google Apps Script di sini (satu URL sama dipakai untuk SEMUA modul) */
+var SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzcK65GHhWieoZ0MgGrIs4YIyYXyR7E1_UlbfH4fL-OD_movoIiUViBK49EA5mFF9jG/exec';
+
+function kirimKeGuru(nomorSoal, jawaban1, jawaban2, benar){
+  var idx = nomorSoal - 1;
+  var statusEl = document.getElementById('send'+idx);
+  if(!SCRIPT_URL){ if(statusEl) statusEl.textContent=''; return; }
+  var id = getIdentitas();
+  var namaKelas = id.nama + ' — ' + id.kelas;
+  var payload = {
+    topik: 'Menentukan Persamaan Polinomial',
+    nama: namaKelas,
+    soal: nomorSoal,
+    jawaban: jawaban1,
+    jawaban2: jawaban2 || '',
+    benar: benar ? 'Benar' : 'Salah',
+    waktu: new Date().toLocaleString('id-ID')
+  };
+  if(statusEl) statusEl.textContent = 'Mengirim ke guru...';
+  fetch(SCRIPT_URL, { method:'POST', mode:'no-cors', headers:{'Content-Type':'text/plain'}, body: JSON.stringify(payload) })
+    .then(function(){ if(statusEl) statusEl.textContent = 'Terkirim ke guru ✓'; })
+    .catch(function(){ if(statusEl) statusEl.textContent = 'Gagal mengirim (periksa koneksi internet).'; });
+}
+
+/* ===== Challenge: pengecekan jawaban ===== */
+function showFeedback(id, correct, msg){
+  var el = document.getElementById(id);
+  el.className = 'feedback show ' + (correct ? 'correct' : 'wrong');
+  el.textContent = msg;
+}
+
+function checkSoal1(){
+  if(!identitasLengkap()) return;
+  var jwb = document.getElementById('jwb1').value;
+  var val = +jwb;
+  var benar = (val === -4);
+  if(benar){
+    showFeedback('fb1', true, 'Betul! Koefisien x² = −(jumlah akar) = −(2 + (−1) + 3) = −4.');
+  } else if(val === 4){
+    showFeedback('fb1', false, 'Hampir! Kamu lupa tanda minus. Koefisien x² itu NEGATIF dari jumlah akar, bukan jumlah akarnya langsung.');
+  } else {
+    showFeedback('fb1', false, 'Belum tepat. Jumlahkan dulu ketiga akarnya (2 + (−1) + 3), lalu berikan tanda negatif di depannya.');
+  }
+  kirimKeGuru(1, jwb, '', benar);
+}
+
+function checkSoal2(){
+  if(!identitasLengkap()) return;
+  var jwb = document.getElementById('jwb2').value;
+  var val = +jwb;
+  var benar = (val === 6);
+  if(benar){
+    showFeedback('fb2', true, 'Tepat! P(x) = (x − 1)(x − 2)(x + 3). Suku tetapnya adalah (−1)×(−2)×3 = 6.');
+  } else if(val === -6){
+    showFeedback('fb2', false, 'Kamu lupa tanda dari faktor akar negatif. Untuk akar r = −3, faktornya adalah (x + 3), bukan (x − 3). Coba hitung ulang (−1)×(−2)×3.');
+  } else {
+    showFeedback('fb2', false, 'Belum tepat. Suku tetap = hasil kali negatif dari tiap akar: (0−1) × (0−2) × (0−(−3)).');
+  }
+  kirimKeGuru(2, jwb, '', benar);
+}
+
+function checkSoal3(){
+  if(!identitasLengkap()) return;
+  var a = document.getElementById('jwb3a').value;
+  var b = document.getElementById('jwb3b').value;
+  var c = document.getElementById('jwb3c').value;
+  var r1 = +a, r2 = +b, r3 = +c;
+  var jawabanGabungan = a + ', ' + b + ', ' + c;
+
+  if(a === '' || b === '' || c === ''){
+    showFeedback('fb3', false, 'Isi ketiga kotak akar dulu ya (r1, r2, r3).');
+    return;
+  }
+
+  var koefX2 = -(r1+r2+r3);
+  var sukuTetap = -(r1*r2*r3);
+  var syarat1 = (koefX2 === -4);
+  var syarat2 = (sukuTetap === 6);
+  var benar = syarat1 && syarat2;
+
+  if(benar){
+    showFeedback('fb3', true, 'Keren, ketemu! r1=' + r1 + ', r2=' + r2 + ', r3=' + r3 + ' menghasilkan koefisien x² = −4 dan suku tetap = 6. Coba cari kombinasi lain juga kalau mau.');
+  } else if(syarat1 && !syarat2){
+    showFeedback('fb3', false, 'Koefisien x²-mu sudah pas (jumlah akarmu sudah 4). Tapi suku tetapnya belum sesuai — cek lagi hasil kali ketiga akarmu, targetnya harus 6.');
+  } else if(!syarat1 && syarat2){
+    showFeedback('fb3', false, 'Suku tetapnya sudah pas (hasil kali akarmu sudah tepat). Tapi koefisien x²-nya belum sesuai — cek lagi jumlah ketiga akarmu, targetnya harus berjumlah 4.');
+  } else {
+    showFeedback('fb3', false, 'Belum sesuai keduanya. Ingat, koefisien x² = −(jumlah akar) dan suku tetap = −(hasil kali akar). Coba beberapa kombinasi bilangan bulat lagi.');
+  }
+  kirimKeGuru(3, jawabanGabungan, '', benar);
+}
+</script>
+
+</body>
+</html>

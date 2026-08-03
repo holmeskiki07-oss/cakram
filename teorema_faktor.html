@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Teorema Faktor — Cakrawala Matematika</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --primary:#2563EB;
+  --primary-hover:#1D4ED8;
+  --primary-light:#DBEAFE;
+  --bg:#F8FAFC;
+  --card:#FFFFFF;
+  --text:#0F172A;
+  --text-soft:#64748B;
+  --border:#E2E8F0;
+  --success:#10B981;
+  --success-bg:#ECFDF5;
+  --warning:#F59E0B;
+  --warning-bg:#FFFBEB;
+  --error:#EF4444;
+  --error-bg:#FEF2F2;
+  --radius-card:18px;
+  --radius-btn:12px;
+  --shadow:0 1px 2px rgba(15,23,42,.04), 0 4px 16px rgba(15,23,42,.06);
+  --sp-1:6px; --sp-2:10px; --sp-3:16px; --sp-4:24px; --sp-5:36px; --sp-6:52px;
+  --max-w:900px;
+}
+*{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
+html{scroll-behavior:smooth;}
+body{
+  margin:0; background:var(--bg); color:var(--text);
+  font-family:'Inter',sans-serif; line-height:1.65; font-size:16px;
+  overflow-x:hidden;
+}
+.wrap{max-width:var(--max-w); margin:0 auto; padding:0 20px;}
+
+/* ---------- top bar ---------- */
+.topbar{
+  position:sticky; top:0; z-index:50; background:rgba(248,250,252,.85); backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--border);
+}
+.topbar-inner{max-width:var(--max-w); margin:0 auto; padding:12px 20px; display:flex; align-items:center; justify-content:space-between;}
+.brand{font-size:13px; font-weight:700; color:var(--primary); letter-spacing:.02em;}
+.brand span{color:var(--text-soft); font-weight:500;}
+.progress-track{height:3px; background:var(--border);}
+.progress-fill{height:100%; width:0%; background:var(--primary); transition:width .1s linear;}
+
+/* ---------- header / hero ---------- */
+.hero{padding:var(--sp-6) 0 var(--sp-5);}
+.eyebrow{
+  display:inline-block; font-size:12.5px; font-weight:700; color:var(--primary);
+  background:var(--primary-light); padding:5px 14px; border-radius:999px; margin-bottom:var(--sp-3);
+  letter-spacing:.02em;
+}
+.hero h1{font-size:32px; font-weight:800; margin:0 0 var(--sp-2); letter-spacing:-.02em;}
+.hero-meta{display:flex; gap:10px; flex-wrap:wrap; margin-bottom:var(--sp-4);}
+.meta-chip{
+  font-size:13px; font-weight:600; color:var(--text-soft); background:var(--card);
+  border:1px solid var(--border); padding:6px 12px; border-radius:999px;
+}
+.goal-card{
+  background:var(--card); border:1px solid var(--border); border-radius:var(--radius-card);
+  padding:var(--sp-4); box-shadow:var(--shadow);
+}
+.goal-card h3{font-size:14px; margin:0 0 10px; color:var(--text-soft); font-weight:700; text-transform:uppercase; letter-spacing:.03em;}
+.goal-card ul{margin:0; padding-left:0; list-style:none;}
+.goal-card li{display:flex; gap:10px; align-items:flex-start; font-size:14.5px; margin-bottom:8px; color:var(--text);}
+.goal-card li:last-child{margin-bottom:0;}
+.goal-card li::before{content:'✓'; color:var(--success); font-weight:800; flex-shrink:0;}
+
+/* ---------- identitas siswa ---------- */
+.id-card{
+  background:var(--primary-light); border:1px solid #BFDBFE; border-radius:var(--radius-card);
+  padding:var(--sp-4); margin-top:var(--sp-3);
+}
+.id-card h3{font-size:14px; margin:0 0 4px; color:var(--primary-hover); font-weight:700;}
+.id-card p{font-size:13px; color:#1E40AF; margin:0 0 12px;}
+.id-grid{display:grid; grid-template-columns:1fr 1fr; gap:10px;}
+@media(max-width:480px){.id-grid{grid-template-columns:1fr;}}
+.id-grid label{display:block; font-size:12px; font-weight:700; color:#1E40AF; margin-bottom:5px;}
+.id-grid input{
+  width:100%; height:42px; border-radius:10px; border:1px solid #BFDBFE; padding:0 12px;
+  font-size:14.5px; font-weight:600; color:var(--text); background:#fff;
+}
+.id-grid input:focus{outline:2px solid var(--primary); outline-offset:1px;}
+.id-status{font-size:12.5px; margin-top:8px; color:#1E40AF; min-height:16px;}
+
+/* ---------- sections ---------- */
+section.block{padding:var(--sp-6) 0; border-top:1px solid var(--border);}
+.fade-up{opacity:0; transform:translateY(14px); transition:opacity .55s ease, transform .55s ease;}
+.fade-up.in{opacity:1; transform:translateY(0);}
+.section-tag{
+  display:inline-flex; align-items:center; gap:7px; font-size:12.5px; font-weight:700; color:var(--primary);
+  margin-bottom:var(--sp-2); letter-spacing:.02em; text-transform:uppercase;
+}
+.section-tag .num{
+  width:22px; height:22px; border-radius:50%; background:var(--primary); color:#fff;
+  display:flex; align-items:center; justify-content:center; font-size:11.5px;
+}
+h2{font-size:23px; font-weight:800; margin:0 0 var(--sp-3); letter-spacing:-.01em;}
+p{margin:0 0 var(--sp-3); color:var(--text);}
+p.soft{color:var(--text-soft);}
+.lede{font-size:16.5px;}
+
+.card{
+  background:var(--card); border:1px solid var(--border); border-radius:var(--radius-card);
+  padding:var(--sp-4); box-shadow:var(--shadow);
+}
+.card + .card{margin-top:var(--sp-3);}
+
+/* ---------- buttons ---------- */
+button{font-family:'Inter',sans-serif;}
+.btn{
+  border:none; border-radius:var(--radius-btn); padding:11px 20px; font-size:14.5px; font-weight:600;
+  cursor:pointer; transition:all .2s ease; display:inline-flex; align-items:center; gap:6px;
+}
+.btn-primary{background:var(--primary); color:#fff;}
+.btn-primary:hover{background:var(--primary-hover);}
+.btn-primary:disabled{background:var(--border); color:var(--text-soft); cursor:not-allowed;}
+.btn-ghost{background:var(--card); color:var(--text); border:1px solid var(--border);}
+.btn-ghost:hover{background:var(--bg);}
+.btn-ghost:disabled{opacity:.4; cursor:not-allowed;}
+.btn-sm{padding:8px 14px; font-size:13.5px;}
+.choice-btn{
+  border:1px solid var(--border); background:#fff; border-radius:10px; padding:9px 14px; font-size:13.5px;
+  cursor:pointer; color:var(--text); font-weight:600;
+}
+.choice-btn.selected{background:var(--primary); color:#fff; border-color:var(--primary);}
+
+/* ---------- lihat cara kerjanya ---------- */
+.step-shell{position:relative; min-height:190px;}
+.step-panel{display:none; animation:fadeIn .4s ease;}
+.step-panel.active{display:block;}
+@keyframes fadeIn{from{opacity:0; transform:translateX(6px);} to{opacity:1; transform:translateX(0);}}
+.step-label{font-size:12.5px; font-weight:700; color:var(--text-soft); text-transform:uppercase; letter-spacing:.03em; margin-bottom:10px;}
+.formula-line{
+  font-family:'Inter',sans-serif; font-size:19px; font-weight:600; background:var(--bg);
+  border-radius:12px; padding:16px 18px; margin-bottom:12px; text-align:center; letter-spacing:.01em;
+}
+mark{background:var(--primary-light); color:var(--primary-hover); padding:1px 5px; border-radius:5px; font-weight:700;}
+.step-desc{font-size:14.5px; color:var(--text-soft); text-align:center;}
+.step-controls{display:flex; align-items:center; justify-content:space-between; margin-top:var(--sp-3);}
+.step-dots{display:flex; gap:6px;}
+.step-dots .dot{width:7px; height:7px; border-radius:50%; background:var(--border); transition:all .2s;}
+.step-dots .dot.active{background:var(--primary); width:18px; border-radius:4px;}
+
+/* ---------- coba sendiri ---------- */
+.stepper-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:10px; margin-bottom:var(--sp-3);}
+@media(max-width:560px){.stepper-grid{grid-template-columns:repeat(2,1fr);}}
+.stepper{background:var(--bg); border:1px solid var(--border); border-radius:14px; padding:12px; text-align:center;}
+.stepper .lbl{font-size:11.5px; font-weight:700; color:var(--text-soft); margin-bottom:8px; text-transform:uppercase; letter-spacing:.02em;}
+.stepper .row{display:flex; align-items:center; justify-content:center; gap:8px;}
+.stepper button{
+  width:30px; height:30px; border-radius:9px; border:1px solid var(--border); background:#fff; color:var(--primary);
+  font-size:17px; font-weight:700; cursor:pointer; line-height:1;
+}
+.stepper button:active{background:var(--primary-light);}
+.stepper .val{font-size:18px; font-weight:800; min-width:28px; font-variant-numeric:tabular-nums;}
+
+.slider-block{margin-bottom:var(--sp-3);}
+.slider-top{display:flex; justify-content:space-between; font-size:13.5px; font-weight:600; margin-bottom:8px;}
+.slider-top .sval{font-weight:800; color:var(--primary); font-variant-numeric:tabular-nums;}
+input[type=range]{
+  width:100%; -webkit-appearance:none; height:6px; border-radius:999px; background:var(--border); outline:none;
+}
+input[type=range]::-webkit-slider-thumb{
+  -webkit-appearance:none; width:22px; height:22px; border-radius:50%; background:var(--primary);
+  cursor:pointer; border:3px solid #fff; box-shadow:0 1px 4px rgba(15,23,42,.25);
+}
+input[type=range]::-moz-range-thumb{
+  width:22px; height:22px; border-radius:50%; background:var(--primary); cursor:pointer; border:3px solid #fff;
+}
+
+.live-result{background:var(--bg); border-radius:14px; padding:16px 18px; margin-top:var(--sp-3);}
+.live-result .fx{font-size:16px; font-weight:600; margin-bottom:8px; text-align:center;}
+.live-result .steps{font-size:14.5px; color:var(--text-soft); text-align:center; margin-bottom:10px;}
+.live-result .final{
+  font-size:18px; font-weight:800; text-align:center; padding:10px; border-radius:10px;
+}
+.live-result .final.faktor{background:var(--success-bg); color:#047857;}
+.live-result .final.bukan{background:var(--error-bg); color:#B91C1C;}
+.insight{
+  margin-top:12px; background:var(--success-bg); color:#047857; border-radius:12px; padding:10px 14px;
+  font-size:13.5px; font-weight:600; text-align:center; display:none;
+}
+.insight.show{display:block; animation:fadeIn .3s ease;}
+
+/* ---------- challenge ---------- */
+.problem{margin-bottom:var(--sp-3);}
+.problem .qtag-row{display:flex; align-items:center; gap:8px; margin-bottom:8px; flex-wrap:wrap;}
+.qtag{font-size:12px; font-weight:700; color:var(--primary);}
+.diff-badge{font-size:11px; font-weight:700; padding:3px 10px; border-radius:999px; text-transform:uppercase; letter-spacing:.02em;}
+.diff-badge.mudah{background:var(--success-bg); color:#047857;}
+.diff-badge.sedang{background:var(--warning-bg); color:#B45309;}
+.diff-badge.sulit{background:var(--error-bg); color:#B91C1C;}
+.problem .qtext{font-size:16px; font-weight:600; margin-bottom:12px;}
+.answer-row{display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin-bottom:12px;}
+.answer-row input[type=text]{
+  width:110px; height:42px; border-radius:10px; border:1px solid var(--border); text-align:center;
+  font-size:16px; font-weight:700; color:var(--text); background:var(--bg);
+}
+.answer-row input[type=text]:focus{outline:2px solid var(--primary); outline-offset:1px;}
+.feedback-box{margin-top:12px; padding:12px 14px; border-radius:12px; font-size:14px; font-weight:500; display:none;}
+.feedback-box.show{display:block; animation:fadeIn .3s ease;}
+.feedback-box.good{background:var(--success-bg); color:#047857;}
+.feedback-box.bad{background:var(--error-bg); color:#B91C1C;}
+.feedback-box b{font-weight:700;}
+.send-status{font-size:12px; color:var(--text-soft); margin-top:6px; min-height:16px;}
+
+.mini-stepper-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:8px; margin-bottom:var(--sp-3);}
+@media(max-width:480px){.mini-stepper-grid{grid-template-columns:repeat(2,1fr);}}
+.mini-stepper{background:var(--bg); border:1px solid var(--border); border-radius:12px; padding:10px; text-align:center;}
+.mini-stepper .lbl{font-size:11px; font-weight:700; color:var(--text-soft); margin-bottom:6px;}
+.mini-stepper .row{display:flex; align-items:center; justify-content:center; gap:6px;}
+.mini-stepper button{
+  width:26px; height:26px; border-radius:8px; border:1px solid var(--border); background:#fff; color:var(--primary);
+  font-size:15px; font-weight:700; cursor:pointer;
+}
+.mini-stepper .val{font-size:16px; font-weight:800; min-width:22px;}
+
+/* ---------- kesalahan umum ---------- */
+.mistake-card{display:flex; gap:12px; align-items:flex-start;}
+.mistake-card .icon{
+  width:34px; height:34px; border-radius:10px; background:var(--warning-bg); color:var(--warning);
+  display:flex; align-items:center; justify-content:center; font-size:16px; flex-shrink:0;
+}
+.mistake-card .txt b{display:block; font-size:14.5px; margin-bottom:3px;}
+.mistake-card .txt span{font-size:13.5px; color:var(--text-soft);}
+
+/* ---------- ringkasan ---------- */
+.summary-list{display:flex; flex-direction:column; gap:10px;}
+.summary-item{display:flex; gap:12px; align-items:flex-start; background:var(--card); border:1px solid var(--border); border-radius:14px; padding:14px 16px; box-shadow:var(--shadow);}
+.summary-item .n{
+  width:26px; height:26px; border-radius:50%; background:var(--primary); color:#fff; font-size:13px; font-weight:800;
+  display:flex; align-items:center; justify-content:center; flex-shrink:0;
+}
+.summary-item p{margin:0; font-size:14.5px;}
+
+footer{padding:var(--sp-5) 0 var(--sp-6); text-align:center;}
+footer .badge{
+  display:inline-block; font-size:12.5px; font-weight:700; color:var(--text-soft);
+  background:var(--card); border:1px solid var(--border); padding:8px 16px; border-radius:999px;
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <div class="brand">CAKRAWALA MATEMATIKA <span>· Teorema Faktor</span></div>
+  </div>
+  <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+</div>
+
+<div class="wrap">
+
+  <!-- 1. HEADER -->
+  <div class="hero">
+    <span class="eyebrow">Modul Interaktif</span>
+    <h1>Teorema Faktor</h1>
+    <div class="hero-meta">
+      <span class="meta-chip">📘 Kelas XI</span>
+      <span class="meta-chip">⏱ 15–20 menit</span>
+      <span class="meta-chip">🎯 Mandiri</span>
+    </div>
+    <div class="goal-card">
+      <h3>Setelah ini kamu bisa</h3>
+      <ul>
+        <li>Cek apakah (x − k) itu faktor dari suatu polinomial, tanpa membagi</li>
+        <li>Paham hubungan langsung antara Teorema Sisa dan Teorema Faktor</li>
+        <li>Menghindari jebakan tanda pada pembagi (x + k)</li>
+      </ul>
+    </div>
+
+    <div class="id-card">
+      <h3>Isi dulu sebelum mulai 👋</h3>
+      <p>Jawabanmu di bagian Challenge otomatis terkirim ke gurumu. Tidak perlu login atau email apapun.</p>
+      <div class="id-grid">
+        <div><label>Nama lengkap</label><input type="text" id="namaSiswa" placeholder="Tulis namamu"></div>
+        <div><label>Kelas</label><input type="text" id="kelasSiswa" placeholder="Contoh: XI IPA 2"></div>
+      </div>
+      <div class="id-status" id="idStatus"></div>
+    </div>
+  </div>
+
+  <!-- 2. PERNAHKAH KAMU BERPIKIR -->
+  <section class="block fade-up" id="s1">
+    <div class="section-tag"><span class="num">1</span> Pernahkah kamu berpikir?</div>
+    <h2>Kalau sisanya nol, itu artinya apa?</h2>
+    <div class="card">
+      <p class="lede">Ingat Teorema Sisa? Sisa pembagian f(x) oleh (x − k) itu sama dengan f(k).</p>
+      <p>Nah, bagaimana kalau f(k) hasilnya <b>persis 0</b>? Artinya sisanya nol.</p>
+      <p class="soft">Kalau sisa pembagian itu nol... berarti pembagiannya habis tanpa sisa sama sekali. Menurutmu, itu artinya apa buat hubungan antara (x − k) dan f(x)?</p>
+      <p><b>Ternyata itu tandanya (x − k) adalah bagian utuh dari f(x).</b> Yuk kita bongkar lebih dalam.</p>
+    </div>
+  </section>
+
+  <!-- 3. PENJELASAN SEDERHANA -->
+  <section class="block fade-up" id="s2">
+    <div class="section-tag"><span class="num">2</span> Penjelasan sederhana</div>
+    <h2>Sisa nol = terbagi habis</h2>
+    <div class="card">
+      <p>Coba pikir angka biasa dulu. 12 dibagi 4 hasilnya 3, sisa 0. Itu artinya 4 adalah <b>faktor</b> dari 12 — 4 "muat" persis ke dalam 12 tanpa ada yang tersisa.</p>
+      <p>Polinomial juga sama persis. Kalau f(x) dibagi (x − k) sisanya 0, artinya (x − k) "muat" persis ke dalam f(x) — tidak ada sisa sama sekali.</p>
+      <p>Nah, kita sudah tahu dari Teorema Sisa: sisa pembagian f(x) oleh (x − k) itu sama dengan f(k). Jadi kalau sisanya 0, itu sama saja dengan bilang <b>f(k) = 0</b>.</p>
+      <p>Ini yang disebut <b>Teorema Faktor</b>: (x − k) adalah faktor dari f(x), <b>kalau dan hanya kalau</b> f(k) = 0.</p>
+      <p>Artinya dua arah sekaligus: kalau f(k) = 0, pasti (x − k) faktornya. Dan kalau (x − k) itu faktor, pasti f(k) = 0.</p>
+      <p class="soft">Jadi buat cek apakah (x − k) itu faktor, kamu tidak perlu membagi sama sekali — cukup substitusi k ke f(x), lihat hasilnya nol atau bukan.</p>
+    </div>
+  </section>
+
+  <!-- 4. LIHAT CARA KERJANYA -->
+  <section class="block fade-up" id="s3">
+    <div class="section-tag"><span class="num">3</span> Lihat cara kerjanya</div>
+    <h2>Contoh: apakah (x − 1) faktor dari x³ − 2x² − 5x + 6?</h2>
+    <div class="card">
+      <div class="step-shell">
+        <div class="step-panel active" data-step="0">
+          <div class="step-label">Langkah 1 dari 4</div>
+          <div class="formula-line">f(x) = x³ − 2x² − 5x + 6</div>
+          <div class="step-desc">Ini polinomialnya. Kita mau cek apakah (x − 1) adalah faktornya.</div>
+        </div>
+        <div class="step-panel" data-step="1">
+          <div class="step-label">Langkah 2 dari 4</div>
+          <div class="formula-line">x − 1 = 0 &nbsp;→&nbsp; k = <mark>1</mark></div>
+          <div class="step-desc">Cari nilai k dari pembaginya. Pembaginya (x − 1), jadi k = 1.</div>
+        </div>
+        <div class="step-panel" data-step="2">
+          <div class="step-label">Langkah 3 dari 4</div>
+          <div class="formula-line">f(<mark>1</mark>) = (<mark>1</mark>)³ − 2(<mark>1</mark>)² − 5(<mark>1</mark>) + 6</div>
+          <div class="step-desc">Substitusikan k = 1 ke f(x) — ini persis cara Teorema Sisa.</div>
+        </div>
+        <div class="step-panel" data-step="3">
+          <div class="step-label">Langkah 4 dari 4</div>
+          <div class="formula-line">f(1) = 1 − 2 − 5 + 6 = <mark>0</mark></div>
+          <div class="step-desc">Hasilnya 0! Karena f(1) = 0, maka (x − 1) TERBUKTI faktor dari f(x) — tanpa perlu membagi sama sekali.</div>
+        </div>
+      </div>
+      <div class="step-controls">
+        <button class="btn btn-ghost btn-sm" id="prevStep" disabled>← Sebelumnya</button>
+        <div class="step-dots" id="stepDots"></div>
+        <button class="btn btn-primary btn-sm" id="nextStep">Selanjutnya →</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. COBA SENDIRI -->
+  <section class="block fade-up" id="s4">
+    <div class="section-tag"><span class="num">4</span> Coba sendiri</div>
+    <h2>Atur polinomialnya, cek faktornya</h2>
+    <div class="card">
+      <p class="soft">Atur koefisien f(x) = ax³ + bx² + cx + d, lalu geser k untuk mengecek pembagi (x − k).</p>
+      <div class="stepper-grid">
+        <div class="stepper"><div class="lbl">a (x³)</div><div class="row">
+          <button onclick="chg('a',-1)">−</button><span class="val" id="val_a">1</span><button onclick="chg('a',1)">+</button>
+        </div></div>
+        <div class="stepper"><div class="lbl">b (x²)</div><div class="row">
+          <button onclick="chg('b',-1)">−</button><span class="val" id="val_b">-2</span><button onclick="chg('b',1)">+</button>
+        </div></div>
+        <div class="stepper"><div class="lbl">c (x)</div><div class="row">
+          <button onclick="chg('c',-1)">−</button><span class="val" id="val_c">-5</span><button onclick="chg('c',1)">+</button>
+        </div></div>
+        <div class="stepper"><div class="lbl">d</div><div class="row">
+          <button onclick="chg('d',-1)">−</button><span class="val" id="val_d">6</span><button onclick="chg('d',1)">+</button>
+        </div></div>
+      </div>
+      <div class="slider-block">
+        <div class="slider-top"><span>Pembagi: (x − k)</span><span class="sval" id="kval">1</span></div>
+        <input type="range" id="kSlider" min="-6" max="6" step="1" value="1" oninput="updateLive()">
+      </div>
+      <div class="live-result">
+        <div class="fx" id="fxLine">f(x) = x³ − 2x² − 5x + 6</div>
+        <div class="steps" id="subLine">f(1) = (1)³ − 2(1)² − 5(1) + 6</div>
+        <div class="final faktor" id="resultLine">f(1) = 0 → (x − 1) ADALAH faktor</div>
+      </div>
+      <div class="insight" id="insightBox">🎉 f(k) = 0! Ini berarti (x − k) adalah faktor dari f(x) — kamu baru saja membuktikannya tanpa membagi sama sekali.</div>
+    </div>
+  </section>
+
+  <!-- 6. CHALLENGE -->
+  <section class="block fade-up" id="s5">
+    <div class="section-tag"><span class="num">5</span> Challenge</div>
+    <h2>Yuk buktikan kamu sudah paham</h2>
+    <p class="soft">3 soal, makin ke bawah makin menantang. Setiap kamu cek jawaban, hasilnya otomatis terkirim ke gurumu.</p>
+
+    <div class="card">
+      <div class="problem">
+        <div class="qtag-row"><span class="qtag">Soal 1</span><span class="diff-badge mudah">Mudah</span></div>
+        <div class="qtext">f(x) = x³ − 3x² − 4x + 12. Apakah (x − 2) faktor dari f(x)?</div>
+        <div class="answer-row" id="choices0">
+          <button class="choice-btn" onclick="pilih(0,'ya',this)">Ya, faktor</button>
+          <button class="choice-btn" onclick="pilih(0,'tidak',this)">Bukan faktor</button>
+        </div>
+        <div class="answer-row">
+          <input type="text" id="val0" inputmode="numeric" placeholder="nilai f(2)">
+          <button class="btn btn-primary btn-sm" onclick="checkAns(0)">Cek jawaban</button>
+        </div>
+        <div class="feedback-box" id="fb0"></div>
+        <div class="send-status" id="send0"></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="problem" style="margin-bottom:0;">
+        <div class="qtag-row"><span class="qtag">Soal 2</span><span class="diff-badge sedang">Sedang</span></div>
+        <div class="qtext">f(x) = 2x³ + 5x² − 4x − 3. Apakah (x + 3) faktor dari f(x)? <span class="soft" style="font-weight:400; font-size:13.5px;">(Hati-hati tanda k-nya!)</span></div>
+        <div class="answer-row" id="choices1">
+          <button class="choice-btn" onclick="pilih(1,'ya',this)">Ya, faktor</button>
+          <button class="choice-btn" onclick="pilih(1,'tidak',this)">Bukan faktor</button>
+        </div>
+        <div class="answer-row">
+          <input type="text" id="val1" inputmode="numeric" placeholder="nilai f(-3)">
+          <button class="btn btn-primary btn-sm" onclick="checkAns(1)">Cek jawaban</button>
+        </div>
+        <div class="feedback-box" id="fb1"></div>
+        <div class="send-status" id="send1"></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="problem" style="margin-bottom:0;">
+        <div class="qtag-row"><span class="qtag">Soal 3 — Tantangan</span><span class="diff-badge sulit">Sulit</span></div>
+        <div class="qtext">Buat SENDIRI polinomial f(x) = ax³ + bx² + cx + d sehingga (x − 3) adalah faktor dari f(x).</div>
+        <div class="mini-stepper-grid">
+          <div class="mini-stepper"><div class="lbl">a</div><div class="row">
+            <button onclick="chgT('a',-1)">−</button><span class="val" id="t_a">1</span><button onclick="chgT('a',1)">+</button>
+          </div></div>
+          <div class="mini-stepper"><div class="lbl">b</div><div class="row">
+            <button onclick="chgT('b',-1)">−</button><span class="val" id="t_b">0</span><button onclick="chgT('b',1)">+</button>
+          </div></div>
+          <div class="mini-stepper"><div class="lbl">c</div><div class="row">
+            <button onclick="chgT('c',-1)">−</button><span class="val" id="t_c">0</span><button onclick="chgT('c',1)">+</button>
+          </div></div>
+          <div class="mini-stepper"><div class="lbl">d</div><div class="row">
+            <button onclick="chgT('d',-1)">−</button><span class="val" id="t_d">0</span><button onclick="chgT('d',1)">+</button>
+          </div></div>
+        </div>
+        <div class="answer-row">
+          <button class="btn btn-primary btn-sm" onclick="checkTantangan()">Cek jawaban</button>
+        </div>
+        <div class="feedback-box" id="fb2"></div>
+        <div class="send-status" id="send2"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7. KESALAHAN UMUM -->
+  <section class="block fade-up" id="s6">
+    <div class="section-tag"><span class="num">6</span> Kesalahan yang sering terjadi</div>
+    <h2>Biar kamu tidak kejebak juga</h2>
+    <div class="card mistake-card">
+      <div class="icon">⚠️</div>
+      <div class="txt"><b>Salah tanda k</b><span>Pembagi (x + 3) itu artinya k = −3, bukan k = 3. Ubah dulu jadi (x − (−3)) sebelum substitusi.</span></div>
+    </div>
+    <div class="card mistake-card">
+      <div class="icon">⚠️</div>
+      <div class="txt"><b>Menganggap hasil yang "kecil" itu sudah dianggap nol</b><span>f(k) harus TEPAT 0, bukan mendekati 0. Kalau hasilnya −1 atau 2, itu tetap BUKAN faktor.</span></div>
+    </div>
+    <div class="card mistake-card">
+      <div class="icon">⚠️</div>
+      <div class="txt"><b>Tertukar dengan Teorema Sisa</b><span>Teorema Sisa dipakai untuk CARI sisa (boleh berapa saja). Teorema Faktor dipakai untuk CEK apakah sisanya nol (jadi faktor atau bukan).</span></div>
+    </div>
+    <div class="card mistake-card">
+      <div class="icon">⚠️</div>
+      <div class="txt"><b>Lupa suku konstanta saat substitusi</b><span>Suku yang tidak ada x-nya sering kelupaan ikut dijumlahkan, padahal itu sering yang menentukan hasil akhirnya nol atau tidak.</span></div>
+    </div>
+  </section>
+
+  <!-- 8. RINGKASAN -->
+  <section class="block fade-up" id="s7">
+    <div class="section-tag"><span class="num">7</span> Ringkasan</div>
+    <h2>5 hal yang perlu kamu ingat</h2>
+    <div class="summary-list">
+      <div class="summary-item"><div class="n">1</div><p>(x − k) adalah faktor dari f(x) jika dan hanya jika f(k) = 0.</p></div>
+      <div class="summary-item"><div class="n">2</div><p>Ini kelanjutan langsung dari Teorema Sisa — sisa nol artinya terbagi habis.</p></div>
+      <div class="summary-item"><div class="n">3</div><p>Substitusikan k ke f(x). Kalau hasilnya 0, faktor terbukti — tanpa perlu membagi.</p></div>
+      <div class="summary-item"><div class="n">4</div><p>Kalau hasilnya bukan 0 (berapa pun dekatnya ke nol), (x − k) BUKAN faktor.</p></div>
+      <div class="summary-item"><div class="n">5</div><p>Prinsip ini jadi dasar untuk mencari akar-akar polinomial berderajat tinggi nanti.</p></div>
+    </div>
+  </section>
+
+  <footer><span class="badge">✓ Selesai — Teorema Faktor · Cakrawala Matematika</span></footer>
+
+</div>
+
+<script>
+/* ---------- progress bar ---------- */
+window.addEventListener('scroll', function(){
+  var h = document.documentElement;
+  var pct = (h.scrollTop) / (h.scrollHeight - h.clientHeight) * 100;
+  document.getElementById('progressFill').style.width = pct + '%';
+});
+
+/* ---------- fade-up on scroll ---------- */
+var io = new IntersectionObserver(function(entries){
+  entries.forEach(function(e){ if(e.isIntersecting) e.target.classList.add('in'); });
+}, { threshold:0.12 });
+document.querySelectorAll('.fade-up').forEach(function(el){ io.observe(el); });
+
+/* ---------- lihat cara kerjanya (step viewer) ---------- */
+var steps = document.querySelectorAll('.step-panel');
+var curStep = 0;
+var dotsWrap = document.getElementById('stepDots');
+steps.forEach(function(_, i){
+  var d = document.createElement('div');
+  d.className = 'dot' + (i===0 ? ' active' : '');
+  dotsWrap.appendChild(d);
+});
+function renderStep(){
+  steps.forEach(function(p,i){ p.classList.toggle('active', i===curStep); });
+  document.querySelectorAll('.step-dots .dot').forEach(function(d,i){ d.classList.toggle('active', i===curStep); });
+  document.getElementById('prevStep').disabled = curStep===0;
+  document.getElementById('nextStep').disabled = curStep===steps.length-1;
+  document.getElementById('nextStep').textContent = curStep===steps.length-1 ? 'Selesai ✓' : 'Selanjutnya →';
+}
+document.getElementById('nextStep').addEventListener('click', function(){
+  if(curStep < steps.length-1){ curStep++; renderStep(); }
+});
+document.getElementById('prevStep').addEventListener('click', function(){
+  if(curStep > 0){ curStep--; renderStep(); }
+});
+renderStep();
+
+/* ---------- coba sendiri ---------- */
+var coef = { a:1, b:-2, c:-5, d:6 };
+function chg(key, dir){
+  coef[key] = Math.max(-9, Math.min(9, coef[key] + dir));
+  document.getElementById('val_'+key).textContent = coef[key];
+  updateLive();
+}
+function fmtTerm(n, powLabel, isFirst){
+  if(n===0) return '';
+  var sign = n < 0 ? ' − ' : (isFirst ? '' : ' + ');
+  var abs = Math.abs(n);
+  var numPart = (abs===1 && powLabel) ? '' : abs;
+  return sign + numPart + powLabel;
+}
+function updateLive(){
+  var k = parseInt(document.getElementById('kSlider').value);
+  document.getElementById('kval').textContent = k;
+  var a=coef.a,b=coef.b,c=coef.c,d=coef.d;
+
+  var fx = 'f(x) = ' + fmtTerm(a,'x³',true) + fmtTerm(b,'x²',false) + fmtTerm(c,'x',false) + fmtTerm(d,'',false);
+  fx = fx.replace('f(x) =  + ', 'f(x) = ');
+  document.getElementById('fxLine').textContent = fx;
+
+  document.getElementById('subLine').textContent =
+    'f(' + k + ') = (' + k + ')³ + (' + b + ')(' + k + ')² + (' + c + ')(' + k + ') + (' + d + ')';
+
+  var result = a*Math.pow(k,3) + b*Math.pow(k,2) + c*k + d;
+  var isFaktor = result === 0;
+  var finalEl = document.getElementById('resultLine');
+  finalEl.className = 'final ' + (isFaktor ? 'faktor' : 'bukan');
+  finalEl.textContent = 'f(' + k + ') = ' + result + ' → (x − ' + k + ') ' + (isFaktor ? 'ADALAH faktor' : 'BUKAN faktor');
+
+  document.getElementById('insightBox').classList.toggle('show', isFaktor);
+}
+updateLive();
+
+/* ---------- identitas siswa ---------- */
+function getIdentitas(){
+  var nama = document.getElementById('namaSiswa').value.trim();
+  var kelas = document.getElementById('kelasSiswa').value.trim();
+  return { nama: nama, kelas: kelas };
+}
+function identitasLengkap(){
+  var id = getIdentitas();
+  var statusEl = document.getElementById('idStatus');
+  if(!id.nama || !id.kelas){
+    statusEl.textContent = 'Isi nama dan kelas dulu ya, sebelum cek jawaban.';
+    statusEl.style.color = '#B91C1C';
+    document.getElementById('namaSiswa').focus();
+    return false;
+  }
+  statusEl.textContent = '';
+  return true;
+}
+
+/* ---------- challenge soal 1 & 2 ---------- */
+var pilihan = {};
+function pilih(idx, val, btnEl){
+  pilihan[idx]=val;
+  var wrap = document.getElementById('choices'+idx);
+  Array.prototype.forEach.call(wrap.children, function(btn){
+    btn.classList.toggle('selected', btn === btnEl);
+  });
+}
+var answerKey = [
+  { jawab:'ya', val:0, common:{ } },
+  { jawab:'ya', val:0, common:{ '48':'Sepertinya kamu pakai k = 3 (bukan k = −3). Ingat, pembagi (x + 3) artinya k = −3.' } }
+];
+function checkAns(idx){
+  if(!identitasLengkap()) return;
+  var key = answerKey[idx];
+  var userJawab = pilihan[idx];
+  var userVal = document.getElementById('val'+idx).value.trim();
+  var fb = document.getElementById('fb'+idx);
+  fb.classList.remove('good','bad');
+  if(!userJawab || userVal===''){
+    fb.classList.add('show','bad');
+    fb.innerHTML = 'Pilih dulu jawabannya dan isi nilai f(k) yang kamu hitung ya.';
+    return;
+  }
+  var num = parseFloat(userVal);
+  var benar = (userJawab===key.jawab) && (Math.abs(num-key.val) < 0.5);
+  if(benar){
+    fb.classList.add('show','good');
+    fb.innerHTML = '<b>Benar!</b> Hasilnya '+key.val+', jadi memang '+(key.jawab==='ya'?'faktor':'bukan faktor')+'.';
+  } else {
+    fb.classList.add('show','bad');
+    var hint = key.common[userVal];
+    fb.innerHTML = '<b>Belum tepat.</b> ' + (hint || 'Coba substitusi ulang nilai k ke tiap suku f(x), lalu jumlahkan pelan-pelan.');
+  }
+  kirimKeGuru(idx+1, (userJawab||'-')+' / f='+userVal, '', benar);
+}
+
+/* ---------- challenge soal 3: tantangan buat-sendiri ---------- */
+var tcoef = { a:1, b:0, c:0, d:0 };
+function chgT(key, dir){
+  tcoef[key] = Math.max(-9, Math.min(9, tcoef[key] + dir));
+  document.getElementById('t_'+key).textContent = tcoef[key];
+}
+function checkTantangan(){
+  if(!identitasLengkap()) return;
+  var a=tcoef.a,b=tcoef.b,c=tcoef.c,d=tcoef.d;
+  var hasil = a*27 + b*9 + c*3 + d;
+  var fb = document.getElementById('fb2');
+  fb.classList.remove('good','bad');
+  var benar = (hasil === 0);
+  if(benar){
+    fb.classList.add('show','good');
+    fb.innerHTML = '<b>Keren, berhasil!</b> f(3) = ' + a + '(27) + ' + b + '(9) + ' + c + '(3) + ' + d + ' = 0. (x − 3) memang faktor dari polinomialmu.';
+  } else {
+    fb.classList.add('show','bad');
+    fb.innerHTML = 'Polinomialmu saat ini menghasilkan f(3) = <b>' + hasil + '</b> (bukan 0), jadi (x − 3) belum jadi faktor. Coba ubah salah satu koefisiennya.';
+  }
+  var polyStr = a+'x³ + '+b+'x² + '+c+'x + '+d;
+  kirimKeGuru(3, polyStr + ' (f(3) = ' + hasil + ')', '', benar);
+}
+
+/* ---------- kirim hasil ke guru (Google Apps Script) ---------- */
+/* Tempel URL Web App yang sama seperti modul lain */
+var SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzcK65GHhWieoZ0MgGrIs4YIyYXyR7E1_UlbfH4fL-OD_movoIiUViBK49EA5mFF9jG/exec';
+
+function kirimKeGuru(nomorSoal, jawaban1, jawaban2, benar){
+  var idx = nomorSoal - 1;
+  var statusEl = document.getElementById('send'+idx);
+  if(!SCRIPT_URL){ if(statusEl) statusEl.textContent=''; return; }
+  var id = getIdentitas();
+  var namaKelas = id.nama + ' — ' + id.kelas;
+  var payload = {
+    topik: 'Teorema Faktor',
+    nama: namaKelas,
+    soal: nomorSoal,
+    jawaban: jawaban1,
+    jawaban2: jawaban2 || '',
+    benar: benar ? 'Benar' : 'Salah',
+    waktu: new Date().toLocaleString('id-ID')
+  };
+  if(statusEl) statusEl.textContent = 'Mengirim ke guru...';
+  fetch(SCRIPT_URL, { method:'POST', mode:'no-cors', headers:{'Content-Type':'text/plain'}, body: JSON.stringify(payload) })
+    .then(function(){ if(statusEl) statusEl.textContent = 'Terkirim ke guru ✓'; })
+    .catch(function(){ if(statusEl) statusEl.textContent = 'Gagal mengirim (periksa koneksi internet).'; });
+}
+</script>
+
+</body>
+</html>

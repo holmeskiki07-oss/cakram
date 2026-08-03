@@ -1,0 +1,610 @@
+<!--
+==========================================================
+CAKRAWALA MATEMATIKA
+
+Judul      : Perkalian Polinomial
+Jenis      : Modul Interaktif
+Versi      : 1.0
+
+Dikembangkan oleh
+Kiki Herdiansyah
+
+Copyright © 2026
+
+Website ini merupakan bagian dari proyek
+"Cakrawala Matematika".
+==========================================================
+-->
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+<title>Perkalian Polinomial — Cakrawala Matematika</title>
+<meta name="description" content="Modul interaktif belajar Perkalian Polinomial, bagian dari Cakrawala Matematika.">
+<meta name="author" content="Kiki Herdiansyah">
+<meta name="application-name" content="Cakrawala Matematika">
+<meta name="copyright" content="© 2026 Kiki Herdiansyah">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --primary:#2563EB;
+  --primary-hover:#1D4ED8;
+  --primary-light:#DBEAFE;
+  --bg:#F8FAFC;
+  --card:#FFFFFF;
+  --text:#0F172A;
+  --text-soft:#64748B;
+  --border:#E2E8F0;
+  --success:#10B981;
+  --warning:#F59E0B;
+  --error:#EF4444;
+  --sp-1:4px; --sp-2:8px; --sp-3:12px; --sp-4:16px; --sp-5:24px; --sp-6:32px; --sp-7:48px;
+  --radius-card:18px; --radius-btn:12px;
+}
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  margin:0; background:var(--bg); color:var(--text);
+  font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
+  -webkit-font-smoothing:antialiased; line-height:1.6; overflow-x:hidden;
+}
+.wrap{max-width:900px; margin:0 auto; padding:0 20px;}
+img,svg{max-width:100%;}
+
+/* Topbar */
+.topbar{position:sticky; top:0; z-index:50; background:rgba(248,250,252,.92); backdrop-filter:blur(8px); border-bottom:1px solid var(--border);}
+.topbar-inner{display:flex; align-items:center; justify-content:space-between; padding:12px 20px; max-width:900px; margin:0 auto;}
+.topbar-brand{font-size:13px; font-weight:700; color:var(--primary); letter-spacing:.02em;}
+.topbar-material{font-size:13px; color:var(--text-soft); font-weight:500;}
+.progress-track{height:3px; background:var(--border);}
+.progress-fill{height:100%; width:0%; background:var(--primary); transition:width 80ms linear;}
+
+/* Sections */
+.section{padding:var(--sp-7) 0;}
+.section.first{padding-top:var(--sp-6);}
+.fade-up{opacity:0; transform:translateY(16px); transition:opacity .5s ease, transform .5s ease;}
+.fade-up.visible{opacity:1; transform:translateY(0);}
+.eyebrow{font-size:12.5px; font-weight:700; color:var(--primary); text-transform:uppercase; letter-spacing:.06em; margin:0 0 var(--sp-2);}
+h1{font-size:26px; font-weight:800; margin:0 0 var(--sp-2); letter-spacing:-.02em;}
+h2{font-size:20px; font-weight:700; margin:0 0 var(--sp-3); letter-spacing:-.01em;}
+h3{font-size:16px; font-weight:700; margin:0 0 var(--sp-2);}
+p{margin:0 0 var(--sp-3); color:var(--text);}
+.soft{color:var(--text-soft);}
+
+.card{
+  background:var(--card); border:1px solid var(--border); border-radius:var(--radius-card);
+  padding:var(--sp-5); box-shadow:0 1px 2px rgba(15,23,42,.04), 0 4px 16px rgba(15,23,42,.06);
+}
+
+/* Header */
+.meta-row{display:flex; flex-wrap:wrap; gap:var(--sp-2); margin-bottom:var(--sp-4);}
+.chip{font-size:12.5px; font-weight:600; color:var(--primary); background:var(--primary-light); padding:6px 12px; border-radius:999px;}
+.goal-list{margin:0; padding-left:20px; color:var(--text-soft); font-size:14.5px;}
+.goal-list li{margin-bottom:6px;}
+
+/* ID card */
+.id-card{background:var(--primary-light); border:1px solid #BFDBFE; border-radius:var(--radius-card); padding:var(--sp-4) var(--sp-5); margin-top:var(--sp-5);}
+.id-card h3{margin-bottom:4px;}
+.id-card p{font-size:13.5px; color:#1E3A8A; margin-bottom:var(--sp-3);}
+.id-grid{display:grid; grid-template-columns:1fr 1fr; gap:var(--sp-3);}
+.id-grid label{display:block; font-size:12.5px; font-weight:600; color:#1E3A8A; margin-bottom:4px;}
+.id-grid input{width:100%; padding:10px 12px; border-radius:10px; border:1px solid #BFDBFE; font-size:14px; font-family:inherit; background:#fff;}
+.id-grid input:focus{outline:none; border-color:var(--primary);}
+.id-status{font-size:13px; margin-top:var(--sp-2); min-height:18px; font-weight:600;}
+@media(max-width:480px){.id-grid{grid-template-columns:1fr;}}
+
+/* Buttons */
+.btn{display:inline-flex; align-items:center; justify-content:center; gap:6px; border:none; cursor:pointer; font-family:inherit; font-weight:600; font-size:14.5px; border-radius:var(--radius-btn); min-height:40px; padding:0 18px; transition:all .2s ease;}
+.btn-primary{background:var(--primary); color:#fff;}
+.btn-primary:hover{background:var(--primary-hover);}
+.btn-primary:disabled{background:#94A3B8; cursor:not-allowed;}
+.btn-ghost{background:var(--card); color:var(--primary); border:1px solid var(--border);}
+.btn-ghost:hover{border-color:var(--primary);}
+.btn-row{display:flex; gap:var(--sp-3); margin-top:var(--sp-4); flex-wrap:wrap;}
+
+/* Section 4 - step viewer */
+.step-viz{background:var(--bg); border:1px solid var(--border); border-radius:14px; padding:var(--sp-5); text-align:center; margin:var(--sp-4) 0;}
+.expr{font-size:22px; font-weight:700; letter-spacing:.02em;}
+.expr mark{background:var(--primary-light); color:var(--primary-hover); padding:2px 6px; border-radius:6px;}
+.step-caption{font-size:14px; color:var(--text-soft); margin-top:var(--sp-3); min-height:40px;}
+.step-dots{display:flex; justify-content:center; gap:6px; margin-top:var(--sp-3);}
+.step-dot{width:7px; height:7px; border-radius:50%; background:var(--border);}
+.step-dot.active{background:var(--primary);}
+
+/* Section 5 - interactive */
+.poly-display{text-align:center; font-size:22px; font-weight:700; padding:var(--sp-4) 0; word-break:break-word;}
+.sliders-grid{display:grid; grid-template-columns:1fr 1fr; gap:var(--sp-4) var(--sp-5); margin:var(--sp-4) 0;}
+.slider-item label{display:flex; justify-content:space-between; font-size:13.5px; font-weight:600; margin-bottom:6px;}
+.slider-item label span{color:var(--primary); font-weight:700;}
+input[type=range]{width:100%; accent-color:var(--primary); height:6px;}
+@media(max-width:480px){.sliders-grid{grid-template-columns:1fr;}}
+.insight-box{margin-top:var(--sp-4); padding:var(--sp-4); border-radius:14px; background:#ECFDF5; border:1px solid #A7F3D0; color:#065F46; font-size:14px; font-weight:600; display:none;}
+.insight-box.show{display:block;}
+
+/* Challenge */
+.badge{display:inline-block; font-size:11.5px; font-weight:700; padding:4px 10px; border-radius:999px; margin-bottom:var(--sp-3); letter-spacing:.02em;}
+.badge-easy{background:#D1FAE5; color:#065F46;}
+.badge-medium{background:#FEF3C7; color:#92400E;}
+.badge-hard{background:#FEE2E2; color:#991B1B;}
+.challenge-card{margin-bottom:var(--sp-5);}
+.answer-row{display:flex; gap:var(--sp-3); flex-wrap:wrap; align-items:center; margin:var(--sp-4) 0;}
+.answer-field{display:flex; align-items:center; gap:6px;}
+.answer-field input{width:70px; padding:9px 10px; border:1px solid var(--border); border-radius:10px; font-family:inherit; font-size:14.5px; text-align:center;}
+.answer-field input:focus{outline:none; border-color:var(--primary);}
+.answer-field span{font-size:14.5px; color:var(--text-soft);}
+.feedback-box{margin-top:var(--sp-3); padding:var(--sp-3) var(--sp-4); border-radius:12px; font-size:14px; font-weight:500; display:none;}
+.feedback-box.show{display:block;}
+.feedback-correct{background:#D1FAE5; color:#065F46;}
+.feedback-wrong{background:#FEE2E2; color:#991B1B;}
+.send-status{font-size:12.5px; color:var(--text-soft); margin-top:6px; min-height:16px;}
+
+/* Mistakes */
+.mistake-item{display:flex; gap:var(--sp-3); padding:var(--sp-4) 0; border-bottom:1px solid var(--border);}
+.mistake-item:last-child{border-bottom:none;}
+.mistake-icon{font-size:18px; flex-shrink:0;}
+.mistake-item h3{margin-bottom:4px; color:#991B1B; font-size:15px;}
+
+/* Summary */
+.summary-list{list-style:none; margin:0; padding:0;}
+.summary-list li{display:flex; gap:var(--sp-3); padding:var(--sp-3) 0; border-bottom:1px solid var(--border); font-size:14.5px;}
+.summary-list li:last-child{border-bottom:none;}
+.summary-num{flex-shrink:0; width:26px; height:26px; border-radius:50%; background:var(--primary-light); color:var(--primary); font-weight:700; font-size:13px; display:flex; align-items:center; justify-content:center;}
+.done-badge{text-align:center; margin-top:var(--sp-5); font-weight:700; color:var(--success); font-size:14.5px;}
+
+/* Footer */
+.site-footer{padding:var(--sp-5) 0 var(--sp-6); text-align:center;}
+.footer-divider{height:1px; background:var(--border); margin-bottom:var(--sp-4);}
+.footer-brand{font-size:13.5px; font-weight:700; color:var(--primary); margin:0 0 4px;}
+.footer-text{font-size:13px; color:var(--text-soft); margin:0 0 2px;}
+.footer-meta{font-size:12.5px; color:var(--text-soft); margin:0; opacity:.85;}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <span class="topbar-brand">CAKRAWALA MATEMATIKA</span>
+    <span class="topbar-material">Perkalian Polinomial</span>
+  </div>
+  <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+</div>
+
+<!-- 1. HEADER -->
+<section class="section first">
+  <div class="wrap">
+    <p class="eyebrow">Modul Interaktif</p>
+    <h1>Perkalian Polinomial</h1>
+    <div class="meta-row">
+      <span class="chip">Kelas X SMA/MA</span>
+      <span class="chip">⏱ 15–20 menit</span>
+    </div>
+    <p class="soft">Setelah modul ini selesai, kamu akan bisa:</p>
+    <ul class="goal-list">
+      <li>Memahami kenapa perkalian polinomial itu sebenarnya cuma sifat distributif yang dipakai berulang</li>
+      <li>Mengalikan dua suku dua (binom) dengan rapi, termasuk hati-hati sama tanda negatif</li>
+      <li>Mengenali pola khusus seperti kuadrat sempurna dan selisih kuadrat</li>
+      <li>Menebak balik bentuk polinomial kalau hasil kalinya sudah diketahui</li>
+    </ul>
+
+    <div class="id-card">
+      <h3>Isi dulu sebelum mulai 👋</h3>
+      <p>Jawabanmu di bagian Challenge otomatis terkirim ke gurumu. Tidak perlu login atau email apapun.</p>
+      <div class="id-grid">
+        <div><label>Nama lengkap</label><input type="text" id="namaSiswa" placeholder="Tulis namamu"></div>
+        <div><label>Kelas</label><input type="text" id="kelasSiswa" placeholder="Contoh: X IPA 2"></div>
+      </div>
+      <div class="id-status" id="idStatus"></div>
+    </div>
+  </div>
+</section>
+
+<!-- 2. PERNAHKAH KAMU BERPIKIR -->
+<section class="section">
+  <div class="wrap">
+    <div class="card fade-up">
+      <p class="eyebrow">Pernahkah Kamu Berpikir?</p>
+      <h2>Berapa luas lantai kamar yang panjangnya belum pasti?</h2>
+      <p>Bayangkan sebuah kamar. Lebarnya <strong>(x + 2)</strong> meter, panjangnya <strong>(x + 3)</strong> meter.</p>
+      <p>Kamu belum tahu berapa nilai <em>x</em>-nya. Tapi kamu tetap disuruh menghitung luas lantainya.</p>
+      <p>Coba perhatikan... luas itu kan panjang dikali lebar. Jadi luasnya adalah <strong>(x + 2) × (x + 3)</strong>.</p>
+      <p>Nah, pertanyaannya: gimana caranya mengalikan dua bentuk yang isinya lebih dari satu suku seperti itu?</p>
+      <p>Sampai sini masih masuk akal? Yuk kita bongkar pelan-pelan.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 3. PENJELASAN SEDERHANA -->
+<section class="section">
+  <div class="wrap">
+    <div class="card fade-up">
+      <p class="eyebrow">Penjelasan Sederhana</p>
+      <h2>Sebenarnya cuma sifat distributif, diulang-ulang</h2>
+      <p>Kamu pasti sudah kenal sifat distributif: <strong>a(b + c) = ab + ac</strong>. Satu angka disebar ke dua suku di dalam kurung.</p>
+      <p>Nah, perkalian polinomial cuma memperluas ide itu. Kalau yang di luar kurung juga punya dua suku, misalnya <strong>(x + 2)</strong>, maka setiap suku di <strong>(x + 2)</strong> harus disebar satu-satu ke <strong>(x + 3)</strong>.</p>
+      <p>Jadi <strong>x</strong> disebar dulu ke <strong>(x + 3)</strong>, menghasilkan <strong>x·x + x·3</strong>. Setelah itu <strong>2</strong> juga disebar ke <strong>(x + 3)</strong>, menghasilkan <strong>2·x + 2·3</strong>.</p>
+      <p>Total ada <strong>empat</strong> hasil kali kecil yang harus kamu jumlahkan. Orang sering menyebut urutannya: suku pertama × pertama, luar, dalam, lalu terakhir × terakhir — tapi kamu tidak perlu menghafal nama itu. Yang penting: <mark>setiap suku ketemu setiap suku, tidak boleh ada yang kelewat</mark>.</p>
+      <p>Langkah terakhir, kamu gabungkan suku-suku yang sejenis (pangkat <em>x</em>-nya sama) menjadi satu. Itu saja intinya.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 4. LIHAT CARA KERJANYA -->
+<section class="section">
+  <div class="wrap">
+    <div class="card fade-up">
+      <p class="eyebrow">Lihat Cara Kerjanya</p>
+      <h2>Kita bongkar (x + 2)(x + 3) langkah demi langkah</h2>
+      <div class="step-viz">
+        <div class="expr" id="stepExpr">(x + 2)(x + 3)</div>
+        <div class="step-caption" id="stepCaption">Ini bentuk awal yang mau kita kalikan. Tekan "Lanjut" untuk mulai membongkarnya.</div>
+        <div class="step-dots" id="stepDots"></div>
+      </div>
+      <div class="btn-row">
+        <button class="btn btn-ghost" id="btnPrevStep" disabled>← Sebelumnya</button>
+        <button class="btn btn-primary" id="btnNextStep">Lanjut →</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 5. COBA SENDIRI -->
+<section class="section">
+  <div class="wrap">
+    <div class="card fade-up">
+      <p class="eyebrow">Coba Sendiri</p>
+      <h2>Geser angkanya, lihat hasil kalinya berubah otomatis</h2>
+      <p class="soft">Bentuk umumnya: <strong>(ax + b)(cx + d)</strong>. Atur nilai a, b, c, d, lalu perhatikan hasilnya.</p>
+
+      <div class="poly-display" id="polyExprDisplay">(x + 2)(x + 3)</div>
+      <div style="text-align:center;" class="soft">hasil kali →</div>
+      <div class="poly-display" id="polyResultDisplay" style="color:var(--primary);">x² + 5x + 6</div>
+
+      <div class="sliders-grid">
+        <div class="slider-item">
+          <label>a (koefisien x di kurung 1) <span id="valA">1</span></label>
+          <input type="range" id="sliderA" min="-6" max="6" step="1" value="1">
+        </div>
+        <div class="slider-item">
+          <label>b (konstanta di kurung 1) <span id="valB">2</span></label>
+          <input type="range" id="sliderB" min="-6" max="6" step="1" value="2">
+        </div>
+        <div class="slider-item">
+          <label>c (koefisien x di kurung 2) <span id="valC">1</span></label>
+          <input type="range" id="sliderC" min="-6" max="6" step="1" value="1">
+        </div>
+        <div class="slider-item">
+          <label>d (konstanta di kurung 2) <span id="valD">3</span></label>
+          <input type="range" id="sliderD" min="-6" max="6" step="1" value="3">
+        </div>
+      </div>
+
+      <div class="insight-box" id="insightBox"></div>
+    </div>
+  </div>
+</section>
+
+<!-- 6. CHALLENGE -->
+<section class="section">
+  <div class="wrap">
+    <p class="eyebrow">Challenge</p>
+    <h2 style="margin-bottom:var(--sp-4);">Tiga soal, makin lama makin menantang</h2>
+
+    <!-- Soal 1 - Mudah -->
+    <div class="card challenge-card fade-up">
+      <span class="badge badge-easy">Level Mudah</span>
+      <h3>Soal 1</h3>
+      <p>Kalikan <strong>(x + 4)(x + 5)</strong>. Isi hasilnya dalam bentuk <strong>ax² + bx + c</strong>.</p>
+      <div class="answer-row">
+        <div class="answer-field"><input type="number" id="s1a"><span>x² +</span></div>
+        <div class="answer-field"><input type="number" id="s1b"><span>x +</span></div>
+        <div class="answer-field"><input type="number" id="s1c"></div>
+      </div>
+      <button class="btn btn-primary" onclick="checkSoal1()">Cek jawaban</button>
+      <div class="feedback-box" id="fb1"></div>
+      <div class="send-status" id="send0"></div>
+    </div>
+
+    <!-- Soal 2 - Sedang -->
+    <div class="card challenge-card fade-up">
+      <span class="badge badge-medium">Level Sedang</span>
+      <h3>Soal 2</h3>
+      <p>Kalikan <strong>(2x − 3)(x + 4)</strong>. Hati-hati dengan tandanya. Isi hasilnya dalam bentuk <strong>ax² + bx + c</strong>.</p>
+      <div class="answer-row">
+        <div class="answer-field"><input type="number" id="s2a"><span>x² +</span></div>
+        <div class="answer-field"><input type="number" id="s2b"><span>x +</span></div>
+        <div class="answer-field"><input type="number" id="s2c"></div>
+      </div>
+      <button class="btn btn-primary" onclick="checkSoal2()">Cek jawaban</button>
+      <div class="feedback-box" id="fb2"></div>
+      <div class="send-status" id="send1"></div>
+    </div>
+
+    <!-- Soal 3 - Sulit (cari nilai pembatas k) -->
+    <div class="card challenge-card fade-up">
+      <span class="badge badge-hard">Level Sulit</span>
+      <h3>Soal 3</h3>
+      <p>Diketahui <strong>(2x + k)(x + 3) = 2x² + 10x + 12</strong>. Berapa nilai <strong>k</strong> supaya persamaan itu benar?</p>
+      <div class="answer-row">
+        <div class="answer-field"><span>k =</span><input type="number" id="s3k"></div>
+      </div>
+      <button class="btn btn-primary" onclick="checkSoal3()">Cek jawaban</button>
+      <div class="feedback-box" id="fb3"></div>
+      <div class="send-status" id="send2"></div>
+    </div>
+
+    <div class="done-badge" id="doneBadge" style="display:none;">✓ Selesai — Perkalian Polinomial</div>
+  </div>
+</section>
+
+<!-- 7. KESALAHAN YANG SERING TERJADI -->
+<section class="section">
+  <div class="wrap">
+    <div class="card fade-up">
+      <p class="eyebrow">Kesalahan yang Sering Terjadi</p>
+      <h2>Tiga jebakan yang paling sering bikin siswa salah</h2>
+      <div class="mistake-item">
+        <div class="mistake-icon">⚠️</div>
+        <div>
+          <h3>Cuma mengalikan suku pertama dan terakhir</h3>
+          <p class="soft">Banyak siswa hanya mengalikan x·x dan 2·3, lalu lupa suku "luar" dan "dalam". Padahal harus ada empat hasil kali, bukan dua.</p>
+        </div>
+      </div>
+      <div class="mistake-item">
+        <div class="mistake-icon">⚠️</div>
+        <div>
+          <h3>Salah tanda saat ada suku negatif</h3>
+          <p class="soft">Kalau ada (2x − 3), tanda minusnya harus ikut terbawa saat dikalikan. Sering kali tandanya "hilang" di tengah jalan.</p>
+        </div>
+      </div>
+      <div class="mistake-item">
+        <div class="mistake-icon">⚠️</div>
+        <div>
+          <h3>Menjumlahkan suku yang pangkatnya beda</h3>
+          <p class="soft">x² dan x itu suku yang berbeda, tidak boleh digabung jadi satu. Hanya suku dengan pangkat x yang sama persis yang boleh dijumlahkan.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 8. RINGKASAN -->
+<section class="section">
+  <div class="wrap">
+    <div class="card fade-up">
+      <p class="eyebrow">Ringkasan</p>
+      <h2>Lima hal yang perlu kamu ingat</h2>
+      <ul class="summary-list">
+        <li><span class="summary-num">1</span><span>Perkalian polinomial adalah sifat distributif yang dipakai berulang, setiap suku bertemu setiap suku.</span></li>
+        <li><span class="summary-num">2</span><span>Untuk (ax+b)(cx+d), selalu ada empat hasil kali kecil sebelum digabungkan.</span></li>
+        <li><span class="summary-num">3</span><span>Tanda negatif harus dibawa terus sampai langkah terakhir, jangan sampai hilang.</span></li>
+        <li><span class="summary-num">4</span><span>Hanya suku dengan pangkat x yang sama yang boleh dijumlahkan jadi satu.</span></li>
+        <li><span class="summary-num">5</span><span>Kalau hasil kalinya sudah diketahui, kamu bisa menebak balik bentuk polinomial pembentuknya dengan mencocokkan koefisien.</span></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-divider"></div>
+    <p class="footer-brand">Cakrawala Matematika</p>
+    <p class="footer-text">Dikembangkan oleh <strong>Kiki Herdiansyah</strong></p>
+    <p class="footer-meta">Versi 1.0 · © 2026</p>
+  </div>
+</footer>
+
+<script>
+/* ===== Progress bar ===== */
+function updateProgress(){
+  var st = window.scrollY;
+  var dh = document.documentElement.scrollHeight - window.innerHeight;
+  var pct = dh > 0 ? (st/dh)*100 : 0;
+  document.getElementById('progressFill').style.width = pct + '%';
+}
+window.addEventListener('scroll', updateProgress);
+updateProgress();
+
+/* ===== Fade up on scroll ===== */
+(function(){
+  var els = document.querySelectorAll('.fade-up');
+  var obs = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){ e.target.classList.add('visible'); obs.unobserve(e.target); }
+    });
+  }, {threshold:0.15});
+  els.forEach(function(el){ obs.observe(el); });
+})();
+
+/* ===== Identitas siswa ===== */
+function getIdentitas(){
+  var nama = document.getElementById('namaSiswa').value.trim();
+  var kelas = document.getElementById('kelasSiswa').value.trim();
+  return { nama: nama, kelas: kelas };
+}
+function identitasLengkap(){
+  var id = getIdentitas();
+  var statusEl = document.getElementById('idStatus');
+  if(!id.nama || !id.kelas){
+    statusEl.textContent = 'Isi nama dan kelas dulu ya, sebelum cek jawaban.';
+    statusEl.style.color = '#B91C1C';
+    document.getElementById('namaSiswa').focus();
+    return false;
+  }
+  statusEl.textContent = '';
+  return true;
+}
+
+/* ===== Section 4: step by step (x+2)(x+3) ===== */
+var steps = [
+  { expr:'(x + 2)(x + 3)', caption:'Ini bentuk awal yang mau kita kalikan.' },
+  { expr:'(<mark>x</mark> + 2)(<mark>x</mark> + 3)', caption:'Kalikan dulu suku pertama dengan suku pertama: x · x = x².' },
+  { expr:'(<mark>x</mark> + 2)(x + <mark>3</mark>)', caption:'Sekarang suku pertama dengan suku kedua di kurung dua: x · 3 = 3x.' },
+  { expr:'(x + <mark>2</mark>)(<mark>x</mark> + 3)', caption:'Lanjut suku kedua di kurung satu dengan suku pertama di kurung dua: 2 · x = 2x.' },
+  { expr:'(x + <mark>2</mark>)(x + <mark>3</mark>)', caption:'Terakhir, suku kedua dengan suku kedua: 2 · 3 = 6.' },
+  { expr:'x² + 3x + 2x + 6', caption:'Sekarang kita punya empat suku. Gabungkan yang sejenis: 3x + 2x = 5x.' },
+  { expr:'x² + 5x + 6', caption:'Selesai! Itulah hasil dari (x + 2)(x + 3). Sesederhana itu, kan?' }
+];
+var stepIndex = 0;
+function renderStep(){
+  document.getElementById('stepExpr').innerHTML = steps[stepIndex].expr;
+  document.getElementById('stepCaption').textContent = steps[stepIndex].caption;
+  document.getElementById('btnPrevStep').disabled = stepIndex === 0;
+  document.getElementById('btnNextStep').textContent = stepIndex === steps.length-1 ? 'Ulangi dari awal' : 'Lanjut →';
+  var dotsEl = document.getElementById('stepDots');
+  dotsEl.innerHTML = '';
+  steps.forEach(function(_, i){
+    var d = document.createElement('div');
+    d.className = 'step-dot' + (i === stepIndex ? ' active' : '');
+    dotsEl.appendChild(d);
+  });
+}
+document.getElementById('btnNextStep').addEventListener('click', function(){
+  if(stepIndex === steps.length-1){ stepIndex = 0; } else { stepIndex++; }
+  renderStep();
+});
+document.getElementById('btnPrevStep').addEventListener('click', function(){
+  if(stepIndex > 0){ stepIndex--; renderStep(); }
+});
+renderStep();
+
+/* ===== Section 5: interactive sliders ===== */
+function binomStr(a,b){
+  var t1 = a === 0 ? '' : ((a<0?'−':'') + (Math.abs(a)===1?'':Math.abs(a)) + 'x');
+  var t2 = '';
+  if(b !== 0){ t2 = (b<0?' − ':' + ') + Math.abs(b); }
+  if(t1 === '' && t2 === '') return '0';
+  if(t1 === '') return t2.replace(/^ \+ /,'').replace(/^ − /,'−');
+  return t1 + t2;
+}
+function resultStr(a,b,c,d){
+  var A = a*c, B = a*d + b*c, C = b*d;
+  var parts = [];
+  if(A !== 0) parts.push((A<0?'−':'') + (Math.abs(A)===1?'':Math.abs(A)) + 'x²');
+  if(B !== 0) parts.push((parts.length?(B<0?' − ':' + '):(B<0?'−':'')) + (Math.abs(B)===1?'':Math.abs(B)) + 'x');
+  if(C !== 0) parts.push((parts.length?(C<0?' − ':' + '):(C<0?'−':'')) + Math.abs(C));
+  if(parts.length === 0) return '0';
+  return parts.join('');
+}
+function updatePolyInteractive(){
+  var a = parseInt(document.getElementById('sliderA').value,10);
+  var b = parseInt(document.getElementById('sliderB').value,10);
+  var c = parseInt(document.getElementById('sliderC').value,10);
+  var d = parseInt(document.getElementById('sliderD').value,10);
+  document.getElementById('valA').textContent = a;
+  document.getElementById('valB').textContent = b;
+  document.getElementById('valC').textContent = c;
+  document.getElementById('valD').textContent = d;
+  document.getElementById('polyExprDisplay').textContent = '(' + binomStr(a,b) + ')(' + binomStr(c,d) + ')';
+  document.getElementById('polyResultDisplay').textContent = resultStr(a,b,c,d);
+
+  var box = document.getElementById('insightBox');
+  if(a === c && b === d && (a!==0 || b!==0)){
+    box.textContent = '✨ Kamu sedang mengkuadratkan (ax + b)² — perhatikan suku tengahnya selalu 2 kali hasil kali a dan b!';
+    box.classList.add('show');
+  } else if(a === c && b === -d && b !== 0){
+    box.textContent = '✨ Ini pola selisih kuadrat! Suku tengahnya hilang total karena saling meniadakan.';
+    box.classList.add('show');
+  } else if(b === 0 && d === 0 && a!==0 && c!==0){
+    box.textContent = '✨ Karena b dan d sama-sama 0, hasilnya tidak punya suku konstanta — bentuknya jadi acx².';
+    box.classList.add('show');
+  } else {
+    box.classList.remove('show');
+  }
+}
+['sliderA','sliderB','sliderC','sliderD'].forEach(function(id){
+  document.getElementById(id).addEventListener('input', updatePolyInteractive);
+});
+updatePolyInteractive();
+
+/* ===== Kirim ke guru ===== */
+var SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzcK65GHhWieoZ0MgGrIs4YIyYXyR7E1_UlbfH4fL-OD_movoIiUViBK49EA5mFF9jG/exec';
+function kirimKeGuru(nomorSoal, jawaban1, jawaban2, benar){
+  var idx = nomorSoal - 1;
+  var statusEl = document.getElementById('send'+idx);
+  if(!SCRIPT_URL){ if(statusEl) statusEl.textContent=''; return; }
+  var id = getIdentitas();
+  var namaKelas = id.nama + ' — ' + id.kelas;
+  var payload = {
+    topik: 'Perkalian Polinomial',
+    nama: namaKelas,
+    soal: nomorSoal,
+    jawaban: jawaban1,
+    jawaban2: jawaban2 || '',
+    benar: benar ? 'Benar' : 'Salah',
+    waktu: new Date().toLocaleString('id-ID')
+  };
+  if(statusEl) statusEl.textContent = 'Mengirim ke guru...';
+  fetch(SCRIPT_URL, { method:'POST', mode:'no-cors', headers:{'Content-Type':'text/plain'}, body: JSON.stringify(payload) })
+    .then(function(){ if(statusEl) statusEl.textContent = 'Terkirim ke guru ✓'; })
+    .catch(function(){ if(statusEl) statusEl.textContent = 'Gagal mengirim (periksa koneksi internet).'; });
+}
+
+/* ===== Challenge check functions ===== */
+var soalSelesai = [false,false,false];
+function checkAllDone(){
+  if(soalSelesai[0] && soalSelesai[1] && soalSelesai[2]){
+    document.getElementById('doneBadge').style.display = 'block';
+  }
+}
+function showFeedback(id, correct, msg){
+  var el = document.getElementById(id);
+  el.textContent = msg;
+  el.className = 'feedback-box show ' + (correct ? 'feedback-correct' : 'feedback-wrong');
+}
+
+function checkSoal1(){
+  if(!identitasLengkap()) return;
+  var a = parseFloat(document.getElementById('s1a').value);
+  var b = parseFloat(document.getElementById('s1b').value);
+  var c = parseFloat(document.getElementById('s1c').value);
+  var correct = (a === 1 && b === 9 && c === 20);
+  if(correct){
+    showFeedback('fb1', true, 'Benar! (x+4)(x+5) = x² + 9x + 20. Kamu sudah menyebar keempat hasil kalinya dengan tepat.');
+    soalSelesai[0] = true; checkAllDone();
+  } else if(!isNaN(c) && c === 9){
+    showFeedback('fb1', false, 'Hampir. Sepertinya kamu menjumlahkan 4 + 5 = 9 untuk konstantanya. Padahal konstanta hasil kali harusnya dikalikan: 4 × 5 = 20, bukan dijumlahkan.');
+  } else {
+    showFeedback('fb1', false, 'Belum tepat. Coba sebar lagi satu-satu: x·x, x·5, 4·x, 4·5 — lalu gabungkan suku sejenis.');
+  }
+  kirimKeGuru(1, a+','+b+','+c, '', correct);
+}
+
+function checkSoal2(){
+  if(!identitasLengkap()) return;
+  var a = parseFloat(document.getElementById('s2a').value);
+  var b = parseFloat(document.getElementById('s2b').value);
+  var c = parseFloat(document.getElementById('s2c').value);
+  var correct = (a === 2 && b === 5 && c === -12);
+  if(correct){
+    showFeedback('fb2', true, 'Benar! (2x−3)(x+4) = 2x² + 5x − 12. Tanda negatifnya berhasil kamu jaga sampai akhir.');
+    soalSelesai[1] = true; checkAllDone();
+  } else if(!isNaN(c) && c === 12){
+    showFeedback('fb2', false, 'Perhatikan tandanya lagi. −3 dikali 4 itu hasilnya −12, bukan +12 — tanda minus pada 3 harus tetap terbawa.');
+  } else if(!isNaN(b) && b === 8){
+    showFeedback('fb2', false, 'Sepertinya kamu lupa suku −3·x saat menjumlahkan suku tengah. Suku tengahnya adalah 2x·4 + (−3)·x = 8x − 3x = 5x.');
+  } else {
+    showFeedback('fb2', false, 'Belum tepat. Coba sebar ulang: (2x)(x), (2x)(4), (−3)(x), (−3)(4), lalu gabungkan suku sejenis dengan tanda yang tepat.');
+  }
+  kirimKeGuru(2, a+','+b+','+c, '', correct);
+}
+
+function checkSoal3(){
+  if(!identitasLengkap()) return;
+  var k = parseFloat(document.getElementById('s3k').value);
+  var correct = (k === 4);
+  if(correct){
+    showFeedback('fb3', true, 'Benar! k = 4. Kalau dicek: (2x+4)(x+3) = 2x² + 6x + 4x + 12 = 2x² + 10x + 12, persis seperti yang diminta.');
+    soalSelesai[2] = true; checkAllDone();
+  } else if(!isNaN(k) && k === 6){
+    showFeedback('fb3', false, 'Coba periksa lagi. Suku tengah berasal dari (2x)(3) + (k)(x) = 6x + kx = (6+k)x. Supaya (6+k) = 10, maka k harus 4, bukan 6.');
+  } else {
+    showFeedback('fb3', false, 'Belum tepat. Kalikan dulu (2x+k)(x+3) secara umum, cocokkan hasilnya suku demi suku dengan 2x² + 10x + 12, baru cari k.');
+  }
+  kirimKeGuru(3, k, '', correct);
+}
+</script>
+</body>
+</html>
