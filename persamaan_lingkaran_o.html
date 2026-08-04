@@ -1,0 +1,803 @@
+<!--
+==========================================================
+CAKRAWALA MATEMATIKA
+
+Judul      : Persamaan Lingkaran Berpusat O(0, 0)
+Jenis      : Modul Interaktif
+Versi      : 1.0
+
+Dikembangkan oleh
+Kiki Herdiansyah
+
+Copyright © 2026
+
+Website ini merupakan bagian dari proyek
+"Cakrawala Matematika".
+==========================================================
+-->
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Persamaan Lingkaran Berpusat O(0,0) · Cakrawala Matematika</title>
+<meta name="description" content="Modul interaktif belajar persamaan lingkaran berpusat di O(0,0) — Cakrawala Matematika">
+<meta name="author" content="Kiki Herdiansyah">
+<meta name="application-name" content="Cakrawala Matematika">
+<meta name="copyright" content="© 2026 Kiki Herdiansyah">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --primary:#2563EB;
+  --primary-hover:#1D4ED8;
+  --primary-light:#DBEAFE;
+  --bg:#F8FAFC;
+  --card:#FFFFFF;
+  --text:#0F172A;
+  --text-soft:#64748B;
+  --border:#E2E8F0;
+  --success:#10B981;
+  --warning:#F59E0B;
+  --error:#EF4444;
+  --radius-card:18px;
+  --radius-btn:12px;
+  --shadow:0 1px 2px rgba(15,23,42,.04), 0 4px 16px rgba(15,23,42,.06);
+  --sp-1:4px; --sp-2:8px; --sp-3:12px; --sp-4:16px; --sp-5:24px; --sp-6:40px;
+}
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  margin:0;
+  font-family:'Inter',sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+.wrap{max-width:900px; margin:0 auto; padding:0 var(--sp-4);}
+
+/* Topbar */
+.topbar{
+  position:sticky; top:0; z-index:50;
+  background:rgba(248,250,252,.92);
+  backdrop-filter:blur(8px);
+  border-bottom:1px solid var(--border);
+}
+.topbar-inner{
+  max-width:900px; margin:0 auto; padding:10px var(--sp-4);
+  font-size:13px; font-weight:600; color:var(--primary);
+  letter-spacing:.2px;
+}
+.progress-track{height:3px; background:var(--border); width:100%;}
+.progress-bar{height:100%; width:0%; background:var(--primary); transition:width .1s linear;}
+
+/* Sections */
+section{padding:var(--sp-6) 0;}
+.card{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:var(--radius-card);
+  box-shadow:var(--shadow);
+  padding:var(--sp-5);
+}
+.fade-up{opacity:0; transform:translateY(16px); transition:opacity .5s ease, transform .5s ease;}
+.fade-up.visible{opacity:1; transform:translateY(0);}
+
+.eyebrow{
+  display:inline-flex; align-items:center; gap:6px;
+  font-size:12.5px; font-weight:700; color:var(--primary);
+  background:var(--primary-light); padding:4px 10px; border-radius:999px;
+  margin-bottom:var(--sp-3);
+}
+h1{font-size:26px; font-weight:800; margin:0 0 var(--sp-2); line-height:1.25;}
+h2{font-size:20px; font-weight:700; margin:0 0 var(--sp-3); line-height:1.3;}
+h3{font-size:16px; font-weight:700; margin:0 0 var(--sp-2);}
+p{font-size:15px; line-height:1.65; color:var(--text); margin:0 0 var(--sp-3);}
+.text-soft{color:var(--text-soft);}
+.small{font-size:13px;}
+mark{background:var(--primary-light); color:var(--primary-hover); padding:1px 5px; border-radius:6px; font-weight:600;}
+
+/* Header meta chips */
+.meta-row{display:flex; flex-wrap:wrap; gap:8px; margin-bottom:var(--sp-4);}
+.chip{
+  font-size:12.5px; font-weight:600; color:var(--text-soft);
+  background:var(--bg); border:1px solid var(--border);
+  padding:5px 12px; border-radius:999px;
+}
+.goals{margin:0; padding-left:20px;}
+.goals li{font-size:14.5px; line-height:1.6; margin-bottom:4px; color:var(--text);}
+
+/* Identity card */
+.id-card{
+  margin-top:var(--sp-5);
+  background:var(--primary-light);
+  border:1px solid #BFDBFE;
+  border-radius:var(--radius-card);
+  padding:var(--sp-4);
+}
+.id-card h3{color:var(--primary-hover); margin-bottom:4px;}
+.id-card p{font-size:13.5px; color:#1E3A8A; margin-bottom:var(--sp-3);}
+.id-grid{display:grid; grid-template-columns:1fr 1fr; gap:var(--sp-3);}
+.id-grid label{display:block; font-size:12.5px; font-weight:600; color:#1E3A8A; margin-bottom:4px;}
+.id-grid input{
+  width:100%; padding:10px 12px; border-radius:10px; border:1px solid #BFDBFE;
+  font-family:inherit; font-size:14px; background:#fff; color:var(--text);
+}
+.id-grid input:focus{outline:2px solid var(--primary); outline-offset:1px;}
+.id-status{font-size:13px; font-weight:600; margin-top:8px; min-height:18px;}
+@media (max-width:520px){.id-grid{grid-template-columns:1fr;}}
+
+/* Buttons */
+button{
+  font-family:inherit; font-size:14.5px; font-weight:600;
+  border-radius:var(--radius-btn); border:none; cursor:pointer;
+  padding:10px 18px; min-height:40px;
+  transition:background .2s ease, transform .1s ease, opacity .2s ease;
+}
+button:active{transform:scale(.97);}
+.btn-primary{background:var(--primary); color:#fff;}
+.btn-primary:hover{background:var(--primary-hover);}
+.btn-secondary{background:var(--bg); color:var(--text); border:1px solid var(--border);}
+.btn-secondary:hover{background:#EEF2F7;}
+.btn-secondary:disabled{opacity:.4; cursor:not-allowed;}
+.btn-row{display:flex; gap:10px; align-items:center; margin-top:var(--sp-4); flex-wrap:wrap;}
+
+/* Sliders */
+.slider-row{margin-bottom:var(--sp-4);}
+.slider-label{display:flex; justify-content:space-between; font-size:14px; font-weight:600; margin-bottom:6px;}
+.slider-label span.val{color:var(--primary); font-weight:800;}
+input[type=range]{
+  width:100%; -webkit-appearance:none; appearance:none;
+  height:6px; border-radius:999px; background:var(--border); outline:none;
+}
+input[type=range]::-webkit-slider-thumb{
+  -webkit-appearance:none; appearance:none;
+  width:22px; height:22px; border-radius:50%;
+  background:var(--primary); border:3px solid #fff; box-shadow:0 1px 4px rgba(15,23,42,.25);
+  cursor:pointer;
+}
+input[type=range]::-moz-range-thumb{
+  width:22px; height:22px; border-radius:50%;
+  background:var(--primary); border:3px solid #fff; box-shadow:0 1px 4px rgba(15,23,42,.25);
+  cursor:pointer;
+}
+
+/* SVG stage */
+.stage{
+  background:var(--bg); border:1px solid var(--border); border-radius:14px;
+  display:flex; justify-content:center; padding:var(--sp-3); margin-bottom:var(--sp-4);
+}
+.stage svg{width:100%; max-width:320px; height:auto; display:block;}
+.equation-box{
+  display:flex; justify-content:center; gap:var(--sp-5); flex-wrap:wrap;
+  background:var(--bg); border:1px solid var(--border); border-radius:12px;
+  padding:var(--sp-3) var(--sp-4); margin-bottom:var(--sp-4); text-align:center;
+}
+.equation-box .item .label{font-size:12px; color:var(--text-soft); font-weight:600;}
+.equation-box .item .value{font-size:19px; font-weight:800; color:var(--text);}
+.equation-box .item .value.match{color:var(--success);}
+
+.insight-box{
+  display:none;
+  background:#ECFDF5; border:1px solid #A7F3D0; border-radius:12px;
+  padding:var(--sp-3) var(--sp-4); margin-top:var(--sp-3);
+  font-size:14px; color:#065F46; font-weight:600;
+}
+.insight-box.show{display:block;}
+
+/* Step nav */
+.step-desc{min-height:70px;}
+.step-dots{display:flex; gap:6px; margin-top:var(--sp-2);}
+.step-dots .dot{width:7px; height:7px; border-radius:50%; background:var(--border);}
+.step-dots .dot.active{background:var(--primary);}
+
+/* Challenge */
+.badge{
+  display:inline-block; font-size:11.5px; font-weight:800; padding:3px 10px;
+  border-radius:999px; margin-bottom:var(--sp-2); letter-spacing:.3px;
+}
+.badge-easy{background:#D1FAE5; color:#065F46;}
+.badge-medium{background:#FEF3C7; color:#92400E;}
+.badge-hard{background:#FEE2E2; color:#991B1B;}
+.challenge-card{margin-bottom:var(--sp-5);}
+.challenge-card:last-child{margin-bottom:0;}
+.opt-grid{display:grid; grid-template-columns:1fr 1fr; gap:10px; margin:var(--sp-3) 0;}
+.opt-btn{
+  background:var(--bg); border:1.5px solid var(--border); border-radius:12px;
+  padding:12px; font-size:14.5px; font-weight:600; text-align:center; color:var(--text);
+  cursor:pointer; transition:all .15s ease;
+}
+.opt-btn:hover{border-color:var(--primary);}
+.opt-btn.correct{background:#D1FAE5; border-color:var(--success); color:#065F46;}
+.opt-btn.wrong{background:#FEE2E2; border-color:var(--error); color:#991B1B;}
+@media (max-width:480px){.opt-grid{grid-template-columns:1fr;}}
+.input-row{display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin:var(--sp-3) 0;}
+.input-row input[type=text]{
+  width:100px; padding:10px 12px; border-radius:10px; border:1.5px solid var(--border);
+  font-family:inherit; font-size:15px; text-align:center;
+}
+.input-row input[type=text]:focus{outline:2px solid var(--primary); border-color:var(--primary);}
+.feedback{
+  font-size:14px; font-weight:600; padding:10px 12px; border-radius:10px;
+  margin-top:var(--sp-2); display:none;
+}
+.feedback.show{display:block;}
+.feedback.ok{background:#D1FAE5; color:#065F46;}
+.feedback.bad{background:#FEE2E2; color:#991B1B;}
+.send-status{font-size:12.5px; color:var(--text-soft); margin-top:6px; min-height:16px;}
+
+/* Kesalahan umum */
+.mistake{
+  border-left:3px solid var(--error); background:#FEF2F2; border-radius:0 12px 12px 0;
+  padding:var(--sp-3) var(--sp-4); margin-bottom:var(--sp-3);
+}
+.mistake:last-child{margin-bottom:0;}
+.mistake .why{color:#7F1D1D; font-size:13.5px; margin:4px 0 0;}
+.mistake .fix{color:#065F46; font-size:13.5px; margin:6px 0 0; font-weight:600;}
+
+/* Ringkasan */
+.summary-list{list-style:none; margin:0; padding:0; counter-reset:sum;}
+.summary-list li{
+  counter-increment:sum; position:relative; padding-left:36px; margin-bottom:var(--sp-3);
+  font-size:14.5px; line-height:1.6;
+}
+.summary-list li:last-child{margin-bottom:0;}
+.summary-list li::before{
+  content:counter(sum); position:absolute; left:0; top:0;
+  width:24px; height:24px; border-radius:50%; background:var(--primary-light); color:var(--primary-hover);
+  font-size:12.5px; font-weight:800; display:flex; align-items:center; justify-content:center;
+}
+.done-badge{
+  text-align:center; font-size:14px; font-weight:700; color:var(--success);
+  background:#D1FAE5; border-radius:12px; padding:12px; margin-top:var(--sp-4);
+}
+
+/* Footer identitas */
+.site-footer{padding: var(--sp-5) 0 var(--sp-6); text-align:center;}
+.footer-divider{height:1px; background:var(--border); margin-bottom:var(--sp-4);}
+.footer-brand{font-size:13.5px; font-weight:700; color:var(--primary); margin:0 0 4px;}
+.footer-text{font-size:13px; color:var(--text-soft); margin:0 0 2px;}
+.footer-meta{font-size:12.5px; color:var(--text-soft); margin:0; opacity:.85;}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-inner">CAKRAWALA MATEMATIKA · Persamaan Lingkaran Berpusat O(0,0)</div>
+  <div class="progress-track"><div class="progress-bar" id="progressBar"></div></div>
+</div>
+
+<div class="wrap">
+
+  <!-- 1. HEADER -->
+  <section>
+    <div class="card">
+      <span class="eyebrow">📐 Modul Interaktif</span>
+      <h1>Persamaan Lingkaran Berpusat O(0, 0)</h1>
+      <p class="text-soft">Kenapa titik-titik di pinggir lingkaran punya "aturan rahasia" yang sama? Yuk kita bongkar bareng-bareng.</p>
+      <div class="meta-row">
+        <span class="chip">🎓 Kelas XI</span>
+        <span class="chip">⏱️ 15–20 menit</span>
+        <span class="chip">🧩 8 bagian belajar</span>
+      </div>
+      <h3>Setelah belajar ini, kamu akan bisa:</h3>
+      <ul class="goals">
+        <li>Menjelaskan syarat sebuah titik terletak pada lingkaran berpusat O(0,0).</li>
+        <li>Menurunkan sendiri rumus <strong>x² + y² = r²</strong> pakai teorema Pythagoras.</li>
+        <li>Mengecek apakah suatu titik ada di lingkaran, dan mencari jari-jarinya.</li>
+      </ul>
+
+      <div class="id-card">
+        <h3>Isi dulu sebelum mulai 👋</h3>
+        <p>Jawabanmu di bagian Challenge otomatis terkirim ke gurumu. Tidak perlu login atau email apapun.</p>
+        <div class="id-grid">
+          <div><label>Nama lengkap</label><input type="text" id="namaSiswa" placeholder="Tulis namamu"></div>
+          <div><label>Kelas</label><input type="text" id="kelasSiswa" placeholder="Contoh: XI IPA 2"></div>
+        </div>
+        <div class="id-status" id="idStatus"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. PERNAHKAH KAMU BERPIKIR? -->
+  <section class="fade-up">
+    <div class="card">
+      <span class="eyebrow">🤔 Pernahkah Kamu Berpikir?</span>
+      <h2>Kenapa roda sepeda bisa bulat sempurna?</h2>
+      <p>Coba bayangkan roda sepeda yang sedang berputar. Semua titik di pinggir velg-nya bergerak, tapi bentuknya tetap bulat sempurna.</p>
+      <p>Pernah kepikiran tidak, apa sebenarnya yang membuat semua titik itu "sepakat" membentuk lingkaran, bukan bentuk lain?</p>
+      <p>Sekarang bayangkan pusat roda itu kita taruh tepat di titik <mark>O(0, 0)</mark> pada bidang koordinat. Menurutmu, apa yang sama dari <em>setiap</em> titik di pinggir roda itu, dilihat dari pusatnya?</p>
+    </div>
+  </section>
+
+  <!-- 3. PENJELASAN SEDERHANA -->
+  <section class="fade-up">
+    <div class="card">
+      <span class="eyebrow">💡 Penjelasan Sederhana</span>
+      <h2>Semua titik di lingkaran, jaraknya ke pusat selalu sama</h2>
+      <p>Nah, itu dia jawabannya. Lingkaran itu sebenarnya cuma kumpulan titik yang <strong>jaraknya ke satu titik pusat selalu sama</strong>. Jarak itu kita sebut <mark>jari-jari (r)</mark>.</p>
+      <p>Sekarang, ambil satu titik sembarang di lingkaran, namakan P(x, y). Titik pusatnya O(0, 0). Coba tarik garis lurus dari P turun ke sumbu-x, dan garis dari P ke sumbu-y.</p>
+      <p>Ternyata, garis-garis itu membentuk <strong>segitiga siku-siku</strong>! Sisi mendatarnya panjangnya <mark>x</mark>, sisi tegaknya panjangnya <mark>y</mark>, dan sisi miringnya adalah jarak dari O ke P, yaitu <mark>r</mark>.</p>
+      <p>Ingat teorema Pythagoras kan? Untuk segitiga siku-siku, kuadrat sisi miring sama dengan jumlah kuadrat dua sisi lainnya. Jadi kita dapat:</p>
+      <p style="text-align:center; font-size:20px; font-weight:800; color:var(--primary);">x² + y² = r²</p>
+      <p>Yang keren, rumus ini berlaku untuk titik di mana pun di lingkaran itu — mau di kanan, kiri, atas, atau bawah sumbu, karena hasil kuadrat selalu membuang tanda negatifnya. Sampai sini masih masuk akal?</p>
+    </div>
+  </section>
+
+  <!-- 4. LIHAT CARA KERJANYA -->
+  <section class="fade-up">
+    <div class="card">
+      <span class="eyebrow">🔍 Lihat Cara Kerjanya</span>
+      <h2>Dari titik di lingkaran, sampai jadi rumus</h2>
+      <div class="stage">
+        <svg id="stepSvg" viewBox="0 0 300 300">
+          <line x1="20" y1="150" x2="280" y2="150" stroke="#CBD5E1" stroke-width="1.5"/>
+          <line x1="150" y1="20" x2="150" y2="280" stroke="#CBD5E1" stroke-width="1.5"/>
+          <circle cx="150" cy="150" r="96" fill="none" stroke="#CBD5E1" stroke-width="1.5" stroke-dasharray="3 4"/>
+          <text x="270" y="145" font-size="11" fill="#64748B">x</text>
+          <text x="156" y="30" font-size="11" fill="#64748B">y</text>
+          <text x="140" y="164" font-size="10" fill="#64748B">O</text>
+
+          <!-- radius line O to P -->
+          <line id="lineR" x1="150" y1="150" x2="222" y2="78" stroke="var(--primary)" stroke-width="2.5" opacity="0.15"/>
+          <!-- vertical drop (y) -->
+          <line id="lineY" x1="222" y1="78" x2="222" y2="150" stroke="var(--warning)" stroke-width="2.5" stroke-dasharray="4 3" opacity="0.15"/>
+          <!-- horizontal (x) -->
+          <line id="lineX" x1="150" y1="150" x2="222" y2="150" stroke="var(--success)" stroke-width="2.5" stroke-dasharray="4 3" opacity="0.15"/>
+
+          <circle id="pointP" cx="222" cy="78" r="6" fill="#EF4444" opacity="0.25"/>
+          <text id="labelP" x="228" y="72" font-size="12" font-weight="700" fill="#0F172A" opacity="0.25">P(x, y)</text>
+          <text id="labelX" x="180" y="166" font-size="12" font-weight="700" fill="#059669" opacity="0">x</text>
+          <text id="labelY" x="228" y="115" font-size="12" font-weight="700" fill="#B45309" opacity="0">y</text>
+          <text id="labelRr" x="178" y="105" font-size="12" font-weight="700" fill="#1D4ED8" opacity="0">r</text>
+        </svg>
+      </div>
+      <div class="step-desc" id="stepDesc">
+        <p><strong>Langkah 1.</strong> Ambil satu titik sembarang <mark>P(x, y)</mark> yang terletak pada lingkaran berpusat O(0,0).</p>
+      </div>
+      <div class="step-dots" id="stepDots"></div>
+      <div class="btn-row">
+        <button class="btn-secondary" id="prevStep" disabled>← Sebelumnya</button>
+        <button class="btn-primary" id="nextStep">Selanjutnya →</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. COBA SENDIRI -->
+  <section class="fade-up">
+    <div class="card">
+      <span class="eyebrow">🎛️ Coba Sendiri</span>
+      <h2>Geser titiknya, lihat pola apa yang selalu muncul</h2>
+      <p>Geser dua slider di bawah: <strong>jari-jari (r)</strong> dan <strong>posisi sudut titik P</strong>. Perhatikan nilai x² + y² dibandingkan r² — apakah selalu sama?</p>
+
+      <div class="stage">
+        <svg id="tryitSvg" viewBox="0 0 300 300">
+          <line x1="20" y1="150" x2="280" y2="150" stroke="#CBD5E1" stroke-width="1.5"/>
+          <line x1="150" y1="20" x2="150" y2="280" stroke="#CBD5E1" stroke-width="1.5"/>
+          <circle id="tryitCircle" cx="150" cy="150" r="96" fill="none" stroke="var(--primary)" stroke-width="1.5" stroke-dasharray="3 4"/>
+          <line id="tryitLineX" x1="150" y1="150" x2="222" y2="150" stroke="var(--success)" stroke-width="2" stroke-dasharray="4 3"/>
+          <line id="tryitLineY" x1="222" y1="150" x2="222" y2="78" stroke="var(--warning)" stroke-width="2" stroke-dasharray="4 3"/>
+          <line id="tryitLineR" x1="150" y1="150" x2="222" y2="78" stroke="var(--primary)" stroke-width="2.5"/>
+          <circle id="tryitPoint" cx="222" cy="78" r="6.5" fill="#EF4444"/>
+        </svg>
+      </div>
+
+      <div class="slider-row">
+        <div class="slider-label">Jari-jari (r) <span class="val" id="rVal">8</span></div>
+        <input type="range" id="rSlider" min="1" max="10" step="1" value="8">
+      </div>
+      <div class="slider-row">
+        <div class="slider-label">Sudut titik P <span class="val" id="angleVal">70°</span></div>
+        <input type="range" id="angleSlider" min="0" max="360" step="1" value="70">
+      </div>
+
+      <div class="equation-box">
+        <div class="item"><div class="label">x</div><div class="value" id="xVal">2.74</div></div>
+        <div class="item"><div class="label">y</div><div class="value" id="yVal">7.52</div></div>
+        <div class="item"><div class="label">x² + y²</div><div class="value" id="sumVal">64.00</div></div>
+        <div class="item"><div class="label">r²</div><div class="value match" id="rsqVal">64</div></div>
+      </div>
+
+      <div class="insight-box" id="insightBox">✨ Insight: kamu baru saja menemukan tripel Pythagoras! Nilai x, y, dan r semuanya bilangan bulat.</div>
+    </div>
+  </section>
+
+  <!-- 6. CHALLENGE -->
+  <section class="fade-up">
+    <div class="card">
+      <span class="eyebrow">🏆 Challenge</span>
+      <h2>Saatnya buktikan pemahamanmu — 3 soal</h2>
+
+      <!-- Soal 1 -->
+      <div class="challenge-card">
+        <span class="badge badge-easy">Level Mudah</span>
+        <h3>Soal 1</h3>
+        <p>Lingkaran berpusat O(0,0) punya persamaan <strong>x² + y² = 25</strong>. Titik manakah yang terletak pada lingkaran ini?</p>
+        <div class="opt-grid" id="opt1">
+          <div class="opt-btn" data-val="a">A. (3, 4)</div>
+          <div class="opt-btn" data-val="b">B. (4, 4)</div>
+          <div class="opt-btn" data-val="c">C. (0, 6)</div>
+          <div class="opt-btn" data-val="d">D. (5, 5)</div>
+        </div>
+        <div class="feedback" id="fb1"></div>
+        <div class="send-status" id="send0"></div>
+      </div>
+
+      <!-- Soal 2 -->
+      <div class="challenge-card">
+        <span class="badge badge-medium">Level Sedang</span>
+        <h3>Soal 2</h3>
+        <p>Titik (x, −5) terletak pada lingkaran berpusat O(0,0) dengan persamaan <strong>x² + y² = 169</strong>. Tentukan <em>semua</em> nilai x yang mungkin (isi dua kotak, urutan bebas).</p>
+        <div class="input-row">
+          <span class="small text-soft">x =</span>
+          <input type="text" id="ans2a" placeholder="nilai 1">
+          <span class="small text-soft">atau x =</span>
+          <input type="text" id="ans2b" placeholder="nilai 2">
+          <button class="btn-primary" id="check2">Cek Jawaban</button>
+        </div>
+        <div class="feedback" id="fb2"></div>
+        <div class="send-status" id="send1"></div>
+      </div>
+
+      <!-- Soal 3 -->
+      <div class="challenge-card">
+        <span class="badge badge-hard">Level Sulit</span>
+        <h3>Soal 3</h3>
+        <p>Titik P(k, k+1) terletak pada lingkaran berpusat O(0,0) dengan persamaan <strong>x² + y² = 25</strong>. Tentukan <em>semua</em> nilai k yang memenuhi (isi dua kotak, urutan bebas).</p>
+        <div class="input-row">
+          <span class="small text-soft">k =</span>
+          <input type="text" id="ans3a" placeholder="nilai 1">
+          <span class="small text-soft">atau k =</span>
+          <input type="text" id="ans3b" placeholder="nilai 2">
+          <button class="btn-primary" id="check3">Cek Jawaban</button>
+        </div>
+        <div class="feedback" id="fb3"></div>
+        <div class="send-status" id="send2"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7. KESALAHAN YANG SERING TERJADI -->
+  <section class="fade-up">
+    <div class="card">
+      <span class="eyebrow">⚠️ Kesalahan yang Sering Terjadi</span>
+      <h2>Empat jebakan yang paling sering bikin salah</h2>
+
+      <div class="mistake">
+        <strong>1. Lupa mengakarkan r²</strong>
+        <p class="why">Kalau persamaannya x² + y² = 25, banyak siswa langsung jawab r = 25.</p>
+        <p class="fix">✅ Ingat, 25 itu adalah r², jadi r = √25 = 5, bukan 25.</p>
+      </div>
+      <div class="mistake">
+        <strong>2. Lupa tanda ± saat mencari x atau y</strong>
+        <p class="why">Kalau x² = 144, jawabannya bukan cuma x = 12. Ada juga x = −12.</p>
+        <p class="fix">✅ Selalu cek dua kemungkinan: akar positif dan akar negatif.</p>
+      </div>
+      <div class="mistake">
+        <strong>3. Salah kira pusatnya bukan di O(0,0)</strong>
+        <p class="why">Nanti kamu akan ketemu bentuk (x−a)² + (y−b)² = r² untuk pusat di titik lain.</p>
+        <p class="fix">✅ Modul ini khusus membahas pusat di O(0,0), jadi rumusnya cukup x² + y² = r².</p>
+      </div>
+      <div class="mistake">
+        <strong>4. Salah substitusi nilai ke rumus</strong>
+        <p class="why">Terburu-buru memasukkan angka tanpa mengecek dulu mana yang x dan mana yang y.</p>
+        <p class="fix">✅ Tuliskan dulu titiknya sebagai (x, y), baru substitusi pelan-pelan ke x² + y² = r².</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8. RINGKASAN -->
+  <section class="fade-up">
+    <div class="card">
+      <span class="eyebrow">📌 Ringkasan</span>
+      <h2>5 poin penting hari ini</h2>
+      <ol class="summary-list">
+        <li>Lingkaran adalah kumpulan titik yang jaraknya ke pusat selalu sama, jarak itu disebut jari-jari (r).</li>
+        <li>Untuk lingkaran berpusat di O(0,0), persamaannya adalah <strong>x² + y² = r²</strong>.</li>
+        <li>Rumus ini didapat dari teorema Pythagoras, dari segitiga siku-siku dengan sisi x, y, dan r.</li>
+        <li>Untuk mengecek apakah titik (x, y) ada di lingkaran, substitusikan ke rumus — kalau hasilnya sama dengan r², titik itu ada di lingkaran.</li>
+        <li>Untuk mencari r dari bentuk x² + y² = angka, jangan lupa akarkan angkanya, dan ingat kemungkinan tanda ± saat mencari x atau y.</li>
+      </ol>
+      <div class="done-badge" id="doneBadge">✓ Selesai — Persamaan Lingkaran Berpusat O(0,0)</div>
+    </div>
+  </section>
+
+</div>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-divider"></div>
+    <p class="footer-brand">Cakrawala Matematika</p>
+    <p class="footer-text">Dikembangkan oleh <strong>Kiki Herdiansyah</strong></p>
+    <p class="footer-meta">Versi 1.0 · © 2026</p>
+  </div>
+</footer>
+
+<script>
+/* ===== Progress bar ===== */
+(function(){
+  var bar = document.getElementById('progressBar');
+  function update(){
+    var h = document.documentElement;
+    var scrolled = h.scrollTop;
+    var max = h.scrollHeight - h.clientHeight;
+    var pct = max > 0 ? (scrolled / max) * 100 : 0;
+    bar.style.width = pct + '%';
+  }
+  document.addEventListener('scroll', update, {passive:true});
+  update();
+})();
+
+/* ===== Fade-up on scroll ===== */
+(function(){
+  var els = document.querySelectorAll('.fade-up');
+  if(!('IntersectionObserver' in window)){
+    els.forEach(function(e){ e.classList.add('visible'); });
+    return;
+  }
+  var obs = new IntersectionObserver(function(entries){
+    entries.forEach(function(entry){
+      if(entry.isIntersecting){
+        entry.target.classList.add('visible');
+        obs.unobserve(entry.target);
+      }
+    });
+  }, {threshold:0.15});
+  els.forEach(function(e){ obs.observe(e); });
+})();
+
+/* ===== Identitas siswa ===== */
+function getIdentitas(){
+  var nama = document.getElementById('namaSiswa').value.trim();
+  var kelas = document.getElementById('kelasSiswa').value.trim();
+  return { nama: nama, kelas: kelas };
+}
+function identitasLengkap(){
+  var id = getIdentitas();
+  var statusEl = document.getElementById('idStatus');
+  if(!id.nama || !id.kelas){
+    statusEl.textContent = 'Isi nama dan kelas dulu ya, sebelum cek jawaban.';
+    statusEl.style.color = '#B91C1C';
+    document.getElementById('namaSiswa').focus();
+    return false;
+  }
+  statusEl.textContent = '';
+  return true;
+}
+
+/* ===== Section 4: Lihat Cara Kerjanya ===== */
+(function(){
+  var steps = [
+    {
+      html: '<p><strong>Langkah 1.</strong> Ambil satu titik sembarang <mark>P(x, y)</mark> yang terletak pada lingkaran berpusat O(0,0).</p>',
+      show: ['pointP','labelP']
+    },
+    {
+      html: '<p><strong>Langkah 2.</strong> Tarik garis dari P tegak lurus ke sumbu-x dan sumbu-y. Panjang sisi mendatar adalah <mark>x</mark>, dan panjang sisi tegak adalah <mark>y</mark>.</p>',
+      show: ['pointP','labelP','lineX','lineY','labelX','labelY']
+    },
+    {
+      html: '<p><strong>Langkah 3.</strong> Garis dari O ke P adalah jari-jari lingkaran, panjangnya <mark>r</mark>. Sekarang terbentuk segitiga siku-siku dengan sisi x, y, dan r.</p>',
+      show: ['pointP','labelP','lineX','lineY','labelX','labelY','lineR','labelRr']
+    },
+    {
+      html: '<p><strong>Langkah 4.</strong> Terapkan teorema Pythagoras pada segitiga itu: kuadrat sisi miring = jumlah kuadrat dua sisi lainnya. Jadi <mark>x² + y² = r²</mark> — inilah persamaan lingkaran berpusat O(0,0).</p>',
+      show: ['pointP','labelP','lineX','lineY','labelX','labelY','lineR','labelRr']
+    }
+  ];
+  var allIds = ['pointP','labelP','lineX','lineY','labelX','labelY','lineR','labelRr'];
+  var idx = 0;
+  var desc = document.getElementById('stepDesc');
+  var dotsWrap = document.getElementById('stepDots');
+  var prevBtn = document.getElementById('prevStep');
+  var nextBtn = document.getElementById('nextStep');
+
+  steps.forEach(function(_, i){
+    var d = document.createElement('div');
+    d.className = 'dot' + (i===0 ? ' active' : '');
+    dotsWrap.appendChild(d);
+  });
+
+  function render(){
+    desc.innerHTML = steps[idx].html;
+    var activeSet = steps[idx].show;
+    allIds.forEach(function(id){
+      var el = document.getElementById(id);
+      if(!el) return;
+      el.setAttribute('opacity', activeSet.indexOf(id) > -1 ? '1' : '0.15');
+    });
+    var dots = dotsWrap.querySelectorAll('.dot');
+    dots.forEach(function(d, i){ d.classList.toggle('active', i === idx); });
+    prevBtn.disabled = idx === 0;
+    nextBtn.textContent = idx === steps.length - 1 ? 'Ulangi dari awal ↺' : 'Selanjutnya →';
+  }
+  prevBtn.addEventListener('click', function(){
+    if(idx > 0){ idx--; render(); }
+  });
+  nextBtn.addEventListener('click', function(){
+    if(idx === steps.length - 1){ idx = 0; } else { idx++; }
+    render();
+  });
+  render();
+})();
+
+/* ===== Section 5: Coba Sendiri ===== */
+(function(){
+  var rSlider = document.getElementById('rSlider');
+  var angleSlider = document.getElementById('angleSlider');
+  var rVal = document.getElementById('rVal');
+  var angleVal = document.getElementById('angleVal');
+  var xVal = document.getElementById('xVal');
+  var yVal = document.getElementById('yVal');
+  var sumVal = document.getElementById('sumVal');
+  var rsqVal = document.getElementById('rsqVal');
+  var insightBox = document.getElementById('insightBox');
+
+  var scale = 9.6; // px per unit, circle max radius 10 -> 96px, fits viewBox 300
+  var cx = 150, cy = 150;
+
+  function isNearInt(n){ return Math.abs(n - Math.round(n)) < 0.05; }
+
+  function update(){
+    var r = parseInt(rSlider.value, 10);
+    var angleDeg = parseInt(angleSlider.value, 10);
+    var rad = angleDeg * Math.PI / 180;
+    var x = r * Math.cos(rad);
+    var y = r * Math.sin(rad);
+
+    rVal.textContent = r;
+    angleVal.textContent = angleDeg + '°';
+    xVal.textContent = x.toFixed(2);
+    yVal.textContent = y.toFixed(2);
+    var sum = x*x + y*y;
+    sumVal.textContent = sum.toFixed(2);
+    rsqVal.textContent = (r*r);
+
+    // svg coords: y axis flipped
+    var px = cx + x * scale;
+    var py = cy - y * scale;
+
+    document.getElementById('tryitCircle').setAttribute('r', r * scale);
+    document.getElementById('tryitPoint').setAttribute('cx', px);
+    document.getElementById('tryitPoint').setAttribute('cy', py);
+    document.getElementById('tryitLineR').setAttribute('x2', px);
+    document.getElementById('tryitLineR').setAttribute('y2', py);
+    document.getElementById('tryitLineX').setAttribute('x2', px);
+    document.getElementById('tryitLineY').setAttribute('x1', px);
+    document.getElementById('tryitLineY').setAttribute('y1', cy);
+    document.getElementById('tryitLineY').setAttribute('x2', px);
+    document.getElementById('tryitLineY').setAttribute('y2', py);
+
+    if(isNearInt(x) && isNearInt(y) && Math.round(x) !== 0 && Math.round(y) !== 0){
+      insightBox.textContent = '✨ Insight: kamu menemukan tripel Pythagoras (x, y, r) = (' + Math.round(x) + ', ' + Math.round(y) + ', ' + r + ')! Semuanya bilangan bulat.';
+      insightBox.classList.add('show');
+    } else {
+      insightBox.classList.remove('show');
+    }
+  }
+  rSlider.addEventListener('input', update);
+  angleSlider.addEventListener('input', update);
+  update();
+})();
+
+/* ===== Pengiriman ke Google Apps Script ===== */
+/* Tempel URL Web App Google Apps Script di sini (satu URL sama dipakai untuk SEMUA modul) */
+var SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzcK65GHhWieoZ0MgGrIs4YIyYXyR7E1_UlbfH4fL-OD_movoIiUViBK49EA5mFF9jG/exec';
+
+function kirimKeGuru(nomorSoal, jawaban1, jawaban2, benar){
+  var idx = nomorSoal - 1;
+  var statusEl = document.getElementById('send'+idx);
+  if(!SCRIPT_URL){ if(statusEl) statusEl.textContent=''; return; }
+  var id = getIdentitas();
+  var namaKelas = id.nama + ' — ' + id.kelas;
+  var payload = {
+    topik: 'Persamaan Lingkaran Berpusat O(0,0)',
+    nama: namaKelas,
+    soal: nomorSoal,
+    jawaban: jawaban1,
+    jawaban2: jawaban2 || '',
+    benar: benar ? 'Benar' : 'Salah',
+    waktu: new Date().toLocaleString('id-ID')
+  };
+  if(statusEl) statusEl.textContent = 'Mengirim ke guru...';
+  fetch(SCRIPT_URL, { method:'POST', mode:'no-cors', headers:{'Content-Type':'text/plain'}, body: JSON.stringify(payload) })
+    .then(function(){ if(statusEl) statusEl.textContent = 'Terkirim ke guru ✓'; })
+    .catch(function(){ if(statusEl) statusEl.textContent = 'Gagal mengirim (periksa koneksi internet).'; });
+}
+
+/* ===== Soal 1 (Mudah) — Pilihan Ganda ===== */
+(function(){
+  var opts = document.querySelectorAll('#opt1 .opt-btn');
+  var fb = document.getElementById('fb1');
+  var answered = false;
+  opts.forEach(function(btn){
+    btn.addEventListener('click', function(){
+      if(!identitasLengkap()) return;
+      if(answered) return;
+      answered = true;
+      var val = btn.getAttribute('data-val');
+      var correct = val === 'a';
+      opts.forEach(function(o){
+        if(o.getAttribute('data-val') === 'a') o.classList.add('correct');
+        if(o === btn && !correct) o.classList.add('wrong');
+      });
+      fb.classList.add('show');
+      if(correct){
+        fb.classList.add('ok'); fb.classList.remove('bad');
+        fb.textContent = 'Betul! 3² + 4² = 9 + 16 = 25, sama persis dengan r² = 25. Titik itu memang ada di lingkaran.';
+      } else if(val === 'b'){
+        fb.classList.add('bad'); fb.classList.remove('ok');
+        fb.textContent = 'Belum tepat. Coba hitung 4² + 4² = 16 + 16 = 32, itu tidak sama dengan 25 — jadi (4,4) TIDAK ada di lingkaran.';
+      } else if(val === 'c'){
+        fb.classList.add('bad'); fb.classList.remove('ok');
+        fb.textContent = 'Belum tepat. 0² + 6² = 36, bukan 25. Titik (0,6) ada di lingkaran dengan r yang lebih besar, bukan r = 5.';
+      } else {
+        fb.classList.add('bad'); fb.classList.remove('ok');
+        fb.textContent = 'Belum tepat. 5² + 5² = 50, jauh dari 25. Coba hitung ulang tiap opsi dengan x² + y².';
+      }
+      kirimKeGuru(1, 'Pilih: ' + val.toUpperCase(), '', correct);
+    });
+  });
+})();
+
+/* ===== Soal 2 (Sedang) — dua nilai x ===== */
+document.getElementById('check2').addEventListener('click', function(){
+  if(!identitasLengkap()) return;
+  var a = parseFloat(document.getElementById('ans2a').value);
+  var b = parseFloat(document.getElementById('ans2b').value);
+  var fb = document.getElementById('fb2');
+  fb.classList.add('show');
+  if(isNaN(a) || isNaN(b)){
+    fb.classList.add('bad'); fb.classList.remove('ok');
+    fb.textContent = 'Isi dulu kedua kotak dengan angka ya.';
+    return;
+  }
+  var vals = [a, b].sort(function(x,y){return x-y;});
+  var correctVals = [-12, 12];
+  var isCorrect = vals[0] === correctVals[0] && vals[1] === correctVals[1];
+  if(isCorrect){
+    fb.classList.add('ok'); fb.classList.remove('bad');
+    fb.textContent = 'Tepat sekali! x² + (−5)² = 169 → x² = 144 → x = 12 atau x = −12. Dua-duanya valid.';
+  } else if(a === b && (a === 12 || a === -12)){
+    fb.classList.add('bad'); fb.classList.remove('ok');
+    fb.textContent = 'Kamu baru menemukan satu nilai. Ingat, x² = 144 punya DUA akar: positif dan negatif.';
+  } else if(vals[0] === 25 || vals[1] === 25 || vals[0] === 144 || vals[1] === 144){
+    fb.classList.add('bad'); fb.classList.remove('ok');
+    fb.textContent = 'Sepertinya kamu lupa mengakarkan. x² = 144, jadi x-nya adalah √144 = 12 (dan −12), bukan 144.';
+  } else {
+    fb.classList.add('bad'); fb.classList.remove('ok');
+    fb.textContent = 'Belum tepat. Coba substitusi y = −5 ke x² + y² = 169, lalu selesaikan x².';
+  }
+  kirimKeGuru(2, a, b, isCorrect);
+});
+
+/* ===== Soal 3 (Sulit) — dua nilai k ===== */
+document.getElementById('check3').addEventListener('click', function(){
+  if(!identitasLengkap()) return;
+  var a = parseFloat(document.getElementById('ans3a').value);
+  var b = parseFloat(document.getElementById('ans3b').value);
+  var fb = document.getElementById('fb3');
+  fb.classList.add('show');
+  if(isNaN(a) || isNaN(b)){
+    fb.classList.add('bad'); fb.classList.remove('ok');
+    fb.textContent = 'Isi dulu kedua kotak dengan angka ya.';
+    return;
+  }
+  var vals = [a, b].sort(function(x,y){return x-y;});
+  var correctVals = [-4, 3];
+  var isCorrect = vals[0] === correctVals[0] && vals[1] === correctVals[1];
+  if(isCorrect){
+    fb.classList.add('ok'); fb.classList.remove('bad');
+    fb.textContent = 'Keren, tepat! k² + (k+1)² = 25 → 2k² + 2k − 24 = 0 → k² + k − 12 = 0 → (k+4)(k−3) = 0 → k = −4 atau k = 3.';
+  } else {
+    fb.classList.add('bad'); fb.classList.remove('ok');
+    fb.textContent = 'Belum tepat. Coba substitusi x = k dan y = k+1 ke x² + y² = 25, lalu jabarkan (k+1)² dan selesaikan persamaan kuadratnya.';
+  }
+  kirimKeGuru(3, a, b, isCorrect);
+});
+</script>
+
+</body>
+</html>

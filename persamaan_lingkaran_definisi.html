@@ -1,0 +1,756 @@
+<!--
+==========================================================
+CAKRAWALA MATEMATIKA
+
+Judul      : Definisi Persamaan Lingkaran
+Jenis      : Modul Interaktif
+Versi      : 1.0
+
+Dikembangkan oleh
+Kiki Herdiansyah
+
+Copyright © 2026
+
+Website ini merupakan bagian dari proyek
+"Cakrawala Matematika".
+==========================================================
+-->
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title>Definisi Persamaan Lingkaran · Cakrawala Matematika</title>
+<meta name="author" content="Kiki Herdiansyah">
+<meta name="application-name" content="Cakrawala Matematika">
+<meta name="copyright" content="© 2026 Kiki Herdiansyah">
+<meta name="description" content="Modul interaktif Definisi Persamaan Lingkaran - Cakrawala Matematika">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --primary:#2563EB;
+    --primary-hover:#1D4ED8;
+    --primary-light:#DBEAFE;
+    --bg:#F8FAFC;
+    --card:#FFFFFF;
+    --text:#0F172A;
+    --text-soft:#64748B;
+    --border:#E2E8F0;
+    --success:#10B981;
+    --warning:#F59E0B;
+    --error:#EF4444;
+    --radius-card:18px;
+    --radius-btn:12px;
+    --shadow-card:0 1px 2px rgba(15,23,42,.04), 0 4px 16px rgba(15,23,42,.06);
+    --sp-1:4px; --sp-2:8px; --sp-3:16px; --sp-4:24px; --sp-5:32px; --sp-6:48px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    font-family:'Inter', sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  .wrap{max-width:900px; margin:0 auto; padding:0 var(--sp-4);}
+
+  /* Topbar & progress */
+  .topbar{
+    position:sticky; top:0; z-index:50;
+    background:rgba(248,250,252,.9);
+    backdrop-filter:saturate(180%) blur(8px);
+    border-bottom:1px solid var(--border);
+  }
+  .topbar-inner{
+    max-width:900px; margin:0 auto; padding:12px var(--sp-4);
+    font-size:13.5px; font-weight:600; color:var(--primary);
+    letter-spacing:.2px;
+  }
+  .progress-track{height:3px; width:100%; background:var(--border);}
+  .progress-bar{height:100%; width:0%; background:var(--primary); transition:width 80ms linear;}
+
+  section{padding:var(--sp-6) 0;}
+  .fade-up{opacity:0; transform:translateY(16px); transition:opacity .5s ease, transform .5s ease;}
+  .fade-up.visible{opacity:1; transform:translateY(0);}
+
+  .card{
+    background:var(--card);
+    border-radius:var(--radius-card);
+    box-shadow:var(--shadow-card);
+    padding:var(--sp-5);
+    border:1px solid var(--border);
+  }
+
+  h1{font-size:26px; font-weight:800; margin:0 0 var(--sp-2); letter-spacing:-.3px;}
+  h2{font-size:20px; font-weight:700; margin:0 0 var(--sp-3);}
+  h3{font-size:16px; font-weight:600; margin:0 0 var(--sp-2);}
+  p{margin:0 0 var(--sp-2); color:var(--text);}
+  .soft{color:var(--text-soft);}
+  .eyebrow{
+    display:inline-block; font-size:12.5px; font-weight:700; color:var(--primary);
+    background:var(--primary-light); padding:4px 10px; border-radius:999px; margin-bottom:var(--sp-3);
+    letter-spacing:.3px;
+  }
+  mark{
+    background:var(--primary-light); color:var(--primary-hover);
+    padding:1px 5px; border-radius:6px; font-weight:600;
+  }
+
+  /* Header */
+  .hero-meta{display:flex; flex-wrap:wrap; gap:10px; margin:var(--sp-3) 0 var(--sp-4);}
+  .meta-chip{
+    font-size:13px; font-weight:600; color:var(--text-soft);
+    background:var(--card); border:1px solid var(--border);
+    padding:6px 12px; border-radius:999px;
+  }
+  .goal-list{margin:0; padding-left:20px;}
+  .goal-list li{margin-bottom:6px; font-size:14.5px;}
+
+  /* Kotak identitas siswa */
+  .id-card{
+    background:var(--card); border:1px solid var(--border); border-radius:var(--radius-card);
+    padding:var(--sp-4); margin-top:var(--sp-4); box-shadow:var(--shadow-card);
+  }
+  .id-card h3{margin-bottom:4px;}
+  .id-card p{font-size:13.5px; color:var(--text-soft); margin-bottom:var(--sp-3);}
+  .id-grid{display:grid; grid-template-columns:1fr 1fr; gap:12px;}
+  .id-grid label{display:block; font-size:12.5px; font-weight:600; color:var(--text-soft); margin-bottom:4px;}
+  .id-grid input{
+    width:100%; padding:10px 12px; border-radius:10px; border:1px solid var(--border);
+    font-family:inherit; font-size:14.5px; background:var(--bg); color:var(--text);
+  }
+  .id-grid input:focus{outline:2px solid var(--primary); outline-offset:1px; background:#fff;}
+  .id-status{font-size:13px; font-weight:600; margin-top:8px; min-height:16px;}
+
+  /* Buttons */
+  .btn{
+    display:inline-flex; align-items:center; justify-content:center; gap:6px;
+    min-height:40px; padding:9px 18px; border-radius:var(--radius-btn);
+    border:none; font-family:inherit; font-size:14px; font-weight:600;
+    cursor:pointer; transition:all 200ms ease; background:var(--primary); color:#fff;
+  }
+  .btn:hover{background:var(--primary-hover);}
+  .btn:disabled{background:var(--border); color:var(--text-soft); cursor:not-allowed;}
+  .btn-outline{background:transparent; color:var(--primary); border:1px solid var(--primary);}
+  .btn-outline:hover{background:var(--primary-light);}
+
+  /* Section 4: cara kerja */
+  .step-nav{display:flex; align-items:center; justify-content:space-between; margin-top:var(--sp-4); gap:10px;}
+  .step-dots{display:flex; gap:6px;}
+  .dot{width:7px; height:7px; border-radius:50%; background:var(--border);}
+  .dot.active{background:var(--primary);}
+  .step-box{min-height:150px;}
+  .step-num{font-size:12.5px; font-weight:700; color:var(--primary); margin-bottom:6px;}
+
+  svg.plane{width:100%; height:auto; display:block;}
+  .grid-line{stroke:var(--border); stroke-width:1;}
+  .axis-line{stroke:#94A3B8; stroke-width:1.4;}
+  .circle-shape{fill:var(--primary-light); fill-opacity:.55; stroke:var(--primary); stroke-width:2.2;}
+  .center-dot{fill:var(--primary);}
+  .radius-line{stroke:var(--primary); stroke-width:1.6; stroke-dasharray:4 3;}
+  .point-dot{fill:var(--error);}
+
+  /* Section 5: coba sendiri */
+  .sim-grid{display:grid; grid-template-columns:1fr; gap:var(--sp-4);}
+  @media(min-width:640px){ .sim-grid{grid-template-columns:1.1fr 1fr;} }
+  .slider-group{margin-bottom:var(--sp-4);}
+  .slider-group label{display:flex; justify-content:space-between; font-size:13.5px; font-weight:600; margin-bottom:6px;}
+  .slider-group label span{color:var(--primary); font-weight:700;}
+  input[type=range]{width:100%; accent-color:var(--primary);}
+  .eq-box{
+    background:var(--bg); border:1px solid var(--border); border-radius:14px;
+    padding:16px; text-align:center; font-size:19px; font-weight:700; letter-spacing:.3px;
+    margin-top:var(--sp-3);
+  }
+  .eq-box sup{font-size:12px;}
+  .insight-box{
+    display:none; margin-top:var(--sp-3); padding:14px 16px; border-radius:14px;
+    background:#ECFDF5; border:1px solid #A7F3D0; color:#065F46; font-size:13.5px; font-weight:600;
+  }
+  .insight-box.show{display:block;}
+
+  /* Challenge */
+  .badge{
+    display:inline-block; font-size:11.5px; font-weight:700; padding:3px 10px;
+    border-radius:999px; margin-bottom:10px; letter-spacing:.3px;
+  }
+  .badge-mudah{background:#DCFCE7; color:#166534;}
+  .badge-sedang{background:#FEF3C7; color:#92400E;}
+  .badge-sulit{background:#FEE2E2; color:#991B1B;}
+  .challenge-card{margin-bottom:var(--sp-4);}
+  .ans-grid{display:grid; grid-template-columns:1fr; gap:12px; margin:var(--sp-3) 0;}
+  @media(min-width:480px){ .ans-grid.cols-3{grid-template-columns:1fr 1fr 1fr;} }
+  @media(min-width:480px){ .ans-grid.cols-2{grid-template-columns:1fr 1fr;} }
+  .ans-field label{display:block; font-size:12.5px; font-weight:600; color:var(--text-soft); margin-bottom:4px;}
+  .ans-field input{
+    width:100%; padding:10px 12px; border-radius:10px; border:1px solid var(--border);
+    font-family:inherit; font-size:14.5px;
+  }
+  .ans-field input:focus{outline:2px solid var(--primary); outline-offset:1px;}
+  .feedback{margin-top:12px; padding:12px 14px; border-radius:12px; font-size:13.5px; font-weight:600; display:none;}
+  .feedback.show{display:block;}
+  .feedback.ok{background:#ECFDF5; color:#065F46; border:1px solid #A7F3D0;}
+  .feedback.bad{background:#FEF2F2; color:#991B1B; border:1px solid #FECACA;}
+  .send-status{font-size:12px; color:var(--text-soft); margin-top:6px; min-height:14px;}
+
+  /* Kesalahan umum */
+  .mistake{display:flex; gap:12px; padding:14px 0; border-bottom:1px solid var(--border);}
+  .mistake:last-child{border-bottom:none;}
+  .mistake-icon{
+    flex:0 0 30px; height:30px; width:30px; border-radius:9px; background:#FEF2F2; color:var(--error);
+    display:flex; align-items:center; justify-content:center; font-weight:800; font-size:14px;
+  }
+
+  /* Ringkasan */
+  .summary-list{list-style:none; margin:0; padding:0; display:grid; gap:12px;}
+  .summary-list li{display:flex; gap:12px; align-items:flex-start; font-size:14.5px;}
+  .summary-num{
+    flex:0 0 26px; height:26px; width:26px; border-radius:8px; background:var(--primary-light);
+    color:var(--primary); font-weight:800; font-size:13px; display:flex; align-items:center; justify-content:center;
+  }
+  .done-badge{
+    text-align:center; margin-top:var(--sp-4); font-weight:700; color:var(--success);
+    background:#ECFDF5; border:1px solid #A7F3D0; padding:12px; border-radius:14px; font-size:14px;
+  }
+
+  /* Footer identitas */
+  .site-footer{padding: var(--sp-5) 0 var(--sp-6); text-align:center;}
+  .footer-divider{height:1px; background:var(--border); margin-bottom:var(--sp-4);}
+  .footer-brand{font-size:13.5px; font-weight:700; color:var(--primary); margin:0 0 4px;}
+  .footer-text{font-size:13px; color:var(--text-soft); margin:0 0 2px;}
+  .footer-meta{font-size:12.5px; color:var(--text-soft); margin:0; opacity:.85;}
+
+  ::selection{background:var(--primary-light);}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-inner">CAKRAWALA MATEMATIKA · Definisi Persamaan Lingkaran</div>
+  <div class="progress-track"><div class="progress-bar" id="progressBar"></div></div>
+</div>
+
+<div class="wrap">
+
+  <!-- 1. HEADER -->
+  <section id="header">
+    <div class="eyebrow">Modul Interaktif</div>
+    <h1>Definisi Persamaan Lingkaran</h1>
+    <p class="soft">Belajar dari nol, tanpa perlu buku paket. Cukup ikuti alurnya.</p>
+    <div class="hero-meta">
+      <span class="meta-chip">🎓 Kelas XI</span>
+      <span class="meta-chip">⏱️ 15–20 menit</span>
+      <span class="meta-chip">📍 Geometri Analitik</span>
+    </div>
+    <div class="card">
+      <h3>Setelah modul ini selesai, kamu bisa:</h3>
+      <ul class="goal-list">
+        <li>Menjelaskan apa itu lingkaran, murni dari definisi jarak — bukan cuma menghafal bentuknya.</li>
+        <li>Menurunkan sendiri rumus <mark>(x − a)² + (y − b)² = r²</mark> dari definisi tersebut.</li>
+        <li>Menentukan pusat dan jari-jari lingkaran dari persamaannya, dan sebaliknya.</li>
+      </ul>
+    </div>
+
+    <div class="id-card">
+      <h3>Isi dulu sebelum mulai 👋</h3>
+      <p>Jawabanmu di bagian Challenge otomatis terkirim ke gurumu. Tidak perlu login atau email apapun.</p>
+      <div class="id-grid">
+        <div><label>Nama lengkap</label><input type="text" id="namaSiswa" placeholder="Tulis namamu"></div>
+        <div><label>Kelas</label><input type="text" id="kelasSiswa" placeholder="Contoh: XI IPA 2"></div>
+      </div>
+      <div class="id-status" id="idStatus"></div>
+    </div>
+  </section>
+
+  <!-- 2. PERNAHKAH KAMU BERPIKIR -->
+  <section class="fade-up">
+    <div class="card">
+      <div class="eyebrow">Pernahkah kamu berpikir?</div>
+      <h2>Bagaimana caranya komputer menggambar lingkaran yang sempurna bulat?</h2>
+      <p>Coba perhatikan jam dinding, roda sepeda, atau tutup botol. Semuanya bulat sempurna.</p>
+      <p>Kalau kamu diminta menggambar lingkaran tanpa jangka, hanya pakai titik-titik di kertas berpetak, apa syaratnya supaya bentuknya benar-benar bulat?</p>
+      <p>Menurutmu, apa yang membuat sebuah titik "boleh" jadi bagian dari lingkaran, dan titik lain tidak boleh?</p>
+      <p><strong>Jawabannya cuma satu kata: jarak.</strong> Yuk kita bongkar pelan-pelan.</p>
+    </div>
+  </section>
+
+  <!-- 3. PENJELASAN SEDERHANA -->
+  <section class="fade-up">
+    <div class="card">
+      <div class="eyebrow">Penjelasan sederhana</div>
+      <h2>Lingkaran itu sebenarnya cuma kumpulan titik yang "adil"</h2>
+      <p>Bayangkan kamu menancapkan paku di kertas, lalu mengikat tali sepanjang <mark>r</mark> ke pensil. Kalau tali itu kamu tarik tegang dan diputar 360°, ujung pensil akan menggambar lingkaran.</p>
+      <p>Nah, paku tadi kita sebut <mark>pusat lingkaran</mark>, dan panjang tali kita sebut <mark>jari-jari (r)</mark>.</p>
+      <p>Ternyata, setiap titik yang dilewati pensil punya satu kesamaan: jaraknya ke paku selalu sama persis, yaitu sepanjang tali.</p>
+      <p>Itulah definisi lingkaran: <strong>himpunan semua titik yang berjarak sama (yaitu r) terhadap satu titik tertentu (pusat)</strong>.</p>
+      <p>Sekarang, kalau pusatnya ada di titik <mark>(a, b)</mark> dan sembarang titik di lingkaran itu kita sebut <mark>(x, y)</mark>, kita tinggal pakai rumus jarak dua titik biasa. Hasilnya, setelah kedua ruas dikuadratkan supaya tidak ada akar, jadilah:</p>
+      <div class="eq-box">(x − a)² + (y − b)² = r²</div>
+      <p class="soft">Sampai sini masih masuk akal? Kalau iya, lanjut ke bagian berikutnya — kita lihat cara kerjanya langkah demi langkah.</p>
+    </div>
+  </section>
+
+  <!-- 4. LIHAT CARA KERJANYA -->
+  <section class="fade-up">
+    <div class="card">
+      <div class="eyebrow">Lihat cara kerjanya</div>
+      <h2>Menurunkan rumus lingkaran, selangkah demi selangkah</h2>
+      <svg class="plane" viewBox="0 0 300 220" id="stepSvg">
+        <!-- grid -->
+        <g id="stepGrid"></g>
+        <line class="axis-line" x1="20" y1="110" x2="280" y2="110"></line>
+        <line class="axis-line" x1="150" y1="10" x2="150" y2="210"></line>
+        <circle class="circle-shape" cx="150" cy="110" r="0" id="stepCircle"></circle>
+        <line class="radius-line" x1="150" y1="110" x2="150" y2="110" id="stepRadiusLine" opacity="0"></line>
+        <circle class="center-dot" cx="150" cy="110" r="4" id="stepCenterDot"></circle>
+        <circle class="point-dot" cx="150" cy="110" r="4" id="stepPointDot" opacity="0"></circle>
+        <text id="stepLabelCenter" x="150" y="128" font-size="10" fill="#2563EB" font-weight="700" opacity="0">P(a, b)</text>
+        <text id="stepLabelPoint" x="150" y="128" font-size="10" fill="#EF4444" font-weight="700" opacity="0">Q(x, y)</text>
+      </svg>
+      <div class="step-box">
+        <div class="step-num" id="stepNum">Langkah 1 dari 4</div>
+        <div id="stepText"><p>Kita mulai dengan menaruh <mark>pusat lingkaran P(a, b)</mark> di bidang koordinat.</p></div>
+      </div>
+      <div class="step-nav">
+        <button class="btn btn-outline" id="prevStep" onclick="changeStep(-1)" disabled>← Sebelumnya</button>
+        <div class="step-dots" id="stepDots"></div>
+        <button class="btn" id="nextStep" onclick="changeStep(1)">Selanjutnya →</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. COBA SENDIRI -->
+  <section class="fade-up">
+    <div class="card">
+      <div class="eyebrow">Coba sendiri</div>
+      <h2>Geser slidernya, lihat apa yang berubah</h2>
+      <p>Ubah posisi pusat lingkaran dan panjang jari-jarinya. Perhatikan: persamaan di bawah akan ikut berubah, real-time.</p>
+      <div class="sim-grid">
+        <div>
+          <svg class="plane" viewBox="0 0 300 300" id="simSvg">
+            <g id="simGrid"></g>
+            <line class="axis-line" x1="15" y1="150" x2="285" y2="150"></line>
+            <line class="axis-line" x1="150" y1="15" x2="150" y2="285"></line>
+            <circle class="circle-shape" cx="150" cy="150" r="30" id="simCircle"></circle>
+            <circle class="center-dot" cx="150" cy="150" r="4.5" id="simCenter"></circle>
+            <circle class="point-dot" r="4" cx="150" cy="150" id="originDot" opacity="0"></circle>
+          </svg>
+        </div>
+        <div>
+          <div class="slider-group">
+            <label>Pusat sumbu-X (a) <span id="valA">0</span></label>
+            <input type="range" id="sliderA" min="-6" max="6" value="0" step="1">
+          </div>
+          <div class="slider-group">
+            <label>Pusat sumbu-Y (b) <span id="valB">0</span></label>
+            <input type="range" id="sliderB" min="-6" max="6" value="0" step="1">
+          </div>
+          <div class="slider-group">
+            <label>Jari-jari (r) <span id="valR">3</span></label>
+            <input type="range" id="sliderR" min="1" max="6" value="3" step="1">
+          </div>
+          <div class="eq-box" id="simEq">(x − 0)² + (y − 0)² = 3²</div>
+          <div class="insight-box" id="insightBox"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. CHALLENGE -->
+  <section class="fade-up">
+    <div class="card">
+      <div class="eyebrow">Challenge</div>
+      <h2>Saatnya buktikan kamu paham</h2>
+      <p class="soft">3 soal, makin ke bawah makin menantang. Jawabanmu otomatis terkirim ke guru.</p>
+    </div>
+
+    <!-- Soal 1: Mudah -->
+    <div class="card challenge-card">
+      <span class="badge badge-mudah">MUDAH</span>
+      <h3>Soal 1</h3>
+      <p>Sebuah lingkaran punya <strong>pusat (3, −2)</strong> dan <strong>jari-jari 4</strong>.</p>
+      <p>Lengkapi persamaan lingkarannya: (x − <em>a</em>)² + (y − <em>b</em>)² = <em>r²</em></p>
+      <div class="ans-grid cols-3">
+        <div class="ans-field"><label>Nilai a</label><input type="number" id="s1a" placeholder="a"></div>
+        <div class="ans-field"><label>Nilai b</label><input type="number" id="s1b" placeholder="b"></div>
+        <div class="ans-field"><label>Nilai r² (ruas kanan)</label><input type="number" id="s1r2" placeholder="r²"></div>
+      </div>
+      <button class="btn" onclick="checkAns1()">Cek jawaban</button>
+      <div class="feedback" id="fb1"></div>
+      <div class="send-status" id="send0"></div>
+    </div>
+
+    <!-- Soal 2: Sedang -->
+    <div class="card challenge-card">
+      <span class="badge badge-sedang">SEDANG</span>
+      <h3>Soal 2</h3>
+      <p>Diketahui persamaan lingkaran: <strong>(x + 5)² + (y − 1)² = 9</strong></p>
+      <p>Tentukan pusat (a, b) dan jari-jari r lingkaran tersebut.</p>
+      <div class="ans-grid cols-3">
+        <div class="ans-field"><label>Nilai a</label><input type="number" id="s2a" placeholder="a"></div>
+        <div class="ans-field"><label>Nilai b</label><input type="number" id="s2b" placeholder="b"></div>
+        <div class="ans-field"><label>Nilai r</label><input type="number" id="s2r" placeholder="r"></div>
+      </div>
+      <button class="btn" onclick="checkAns2()">Cek jawaban</button>
+      <div class="feedback" id="fb2"></div>
+      <div class="send-status" id="send1"></div>
+    </div>
+
+    <!-- Soal 3: Sulit -->
+    <div class="card challenge-card">
+      <span class="badge badge-sulit">SULIT</span>
+      <h3>Soal 3</h3>
+      <p>Sebuah lingkaran berpusat di <strong>(1, 2)</strong> dan diketahui <strong>melalui titik (4, 6)</strong>.</p>
+      <p>Karena titik itu ada tepat di lingkaran, jaraknya ke pusat pasti sama dengan jari-jari. Berapa nilai <strong>r</strong>?</p>
+      <div class="ans-grid cols-2">
+        <div class="ans-field"><label>Nilai r</label><input type="number" id="s3r" placeholder="r" step="0.01"></div>
+      </div>
+      <button class="btn" onclick="checkAns3()">Cek jawaban</button>
+      <div class="feedback" id="fb3"></div>
+      <div class="send-status" id="send2"></div>
+    </div>
+  </section>
+
+  <!-- 7. KESALAHAN YANG SERING TERJADI -->
+  <section class="fade-up">
+    <div class="card">
+      <div class="eyebrow">Kesalahan yang sering terjadi</div>
+      <h2>Hati-hati di sini</h2>
+      <div class="mistake">
+        <div class="mistake-icon">✕</div>
+        <div>
+          <p><strong>Tanda pusat kebalik.</strong> Kalau persamaannya (x + 5)², pusatnya BUKAN 5, tapi <mark>−5</mark>. Ingat, rumusnya (x − a), jadi (x + 5) = (x − (−5)).</p>
+        </div>
+      </div>
+      <div class="mistake">
+        <div class="mistake-icon">✕</div>
+        <div>
+          <p><strong>Lupa mengakarkan.</strong> Ruas kanan persamaan itu <mark>r²</mark>, bukan r. Kalau ruas kanan angkanya 25, jari-jarinya adalah √25 = 5, bukan 25.</p>
+        </div>
+      </div>
+      <div class="mistake">
+        <div class="mistake-icon">✕</div>
+        <div>
+          <p><strong>Tertukar posisi x dan y.</strong> Suku dengan x selalu berpasangan dengan a (pusat sumbu-X), suku dengan y berpasangan dengan b (pusat sumbu-Y). Jangan sampai tertukar saat membaca soal.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8. RINGKASAN -->
+  <section class="fade-up">
+    <div class="card">
+      <div class="eyebrow">Ringkasan</div>
+      <h2>5 hal penting hari ini</h2>
+      <ul class="summary-list">
+        <li><span class="summary-num">1</span><span>Lingkaran adalah kumpulan titik yang jaraknya sama (r) terhadap satu titik pusat.</span></li>
+        <li><span class="summary-num">2</span><span>Rumusnya: <strong>(x − a)² + (y − b)² = r²</strong>, dengan (a, b) adalah pusat dan r jari-jari.</span></li>
+        <li><span class="summary-num">3</span><span>Tanda di dalam kurung berlawanan dengan koordinat pusat sebenarnya — (x + 5) berarti a = −5.</span></li>
+        <li><span class="summary-num">4</span><span>Ruas kanan persamaan adalah r², bukan r. Harus diakarkan dulu untuk dapat jari-jari.</span></li>
+        <li><span class="summary-num">5</span><span>Kalau sebuah titik memenuhi persamaan lingkaran, artinya jaraknya ke pusat sama persis dengan r.</span></li>
+      </ul>
+      <div class="done-badge">✓ Selesai — Definisi Persamaan Lingkaran</div>
+    </div>
+  </section>
+
+</div>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-divider"></div>
+    <p class="footer-brand">Cakrawala Matematika</p>
+    <p class="footer-text">Dikembangkan oleh <strong>Kiki Herdiansyah</strong></p>
+    <p class="footer-meta">Versi 1.0 · © 2026</p>
+  </div>
+</footer>
+
+<script>
+/* ===== Progress bar ===== */
+function updateProgress(){
+  var h = document.documentElement;
+  var scrolled = h.scrollTop;
+  var height = h.scrollHeight - h.clientHeight;
+  var pct = height > 0 ? (scrolled / height) * 100 : 0;
+  document.getElementById('progressBar').style.width = pct + '%';
+}
+document.addEventListener('scroll', updateProgress);
+updateProgress();
+
+/* ===== Fade-up on scroll ===== */
+var observer = new IntersectionObserver(function(entries){
+  entries.forEach(function(e){
+    if(e.isIntersecting){ e.target.classList.add('visible'); }
+  });
+}, {threshold:0.12});
+document.querySelectorAll('.fade-up').forEach(function(el){ observer.observe(el); });
+
+/* ===== Identitas siswa ===== */
+function getIdentitas(){
+  var nama = document.getElementById('namaSiswa').value.trim();
+  var kelas = document.getElementById('kelasSiswa').value.trim();
+  return { nama: nama, kelas: kelas };
+}
+function identitasLengkap(){
+  var id = getIdentitas();
+  var statusEl = document.getElementById('idStatus');
+  if(!id.nama || !id.kelas){
+    statusEl.textContent = 'Isi nama dan kelas dulu ya, sebelum cek jawaban.';
+    statusEl.style.color = '#B91C1C';
+    document.getElementById('namaSiswa').focus();
+    return false;
+  }
+  statusEl.textContent = '';
+  return true;
+}
+
+/* ===== Section 4: Lihat cara kerjanya ===== */
+var steps = [
+  {
+    text: '<p>Kita mulai dengan menaruh <mark>pusat lingkaran P(a, b)</mark> di bidang koordinat.</p>',
+    draw: function(){
+      setSvg('stepCenterDot', 150, 110);
+      setAttr('stepLabelCenter', 'opacity', 1);
+      setAttr('stepPointDot', 'opacity', 0);
+      setAttr('stepLabelPoint', 'opacity', 0);
+      setAttr('stepRadiusLine', 'opacity', 0);
+      document.getElementById('stepCircle').setAttribute('r', 0);
+    }
+  },
+  {
+    text: '<p>Sekarang ambil <mark>sembarang titik Q(x, y)</mark> yang ada di lingkaran itu.</p>',
+    draw: function(){
+      setSvg('stepPointDot', 210, 70);
+      setAttr('stepLabelPoint', 'opacity', 1);
+      document.getElementById('stepLabelPoint').setAttribute('x', 210);
+      document.getElementById('stepLabelPoint').setAttribute('y', 88);
+      setAttr('stepRadiusLine', 'opacity', 0);
+    }
+  },
+  {
+    text: '<p>Jarak dari P ke Q itulah <mark>jari-jari (r)</mark>. Kita tarik garis penghubungnya.</p>',
+    draw: function(){
+      var line = document.getElementById('stepRadiusLine');
+      line.setAttribute('x1', 150); line.setAttribute('y1', 110);
+      line.setAttribute('x2', 210); line.setAttribute('y2', 70);
+      line.setAttribute('opacity', 1);
+    }
+  },
+  {
+    text: '<p>Pakai <mark>rumus jarak dua titik</mark>: r = √[(x−a)² + (y−b)²]. Kuadratkan kedua ruas supaya akarnya hilang, jadilah rumus lingkaran: <strong>(x−a)² + (y−b)² = r²</strong></p>',
+    draw: function(){
+      document.getElementById('stepCircle').setAttribute('r', 67);
+    }
+  }
+];
+var currentStep = 0;
+function setSvg(id,x,y){ var el=document.getElementById(id); el.setAttribute('cx',x); el.setAttribute('cy',y); }
+function setAttr(id,attr,val){ document.getElementById(id).setAttribute(attr,val); }
+
+function renderStep(){
+  document.getElementById('stepNum').textContent = 'Langkah ' + (currentStep+1) + ' dari ' + steps.length;
+  document.getElementById('stepText').innerHTML = steps[currentStep].text;
+  steps[currentStep].draw();
+  document.getElementById('prevStep').disabled = currentStep === 0;
+  document.getElementById('nextStep').disabled = currentStep === steps.length - 1;
+  var dotsWrap = document.getElementById('stepDots');
+  dotsWrap.innerHTML = '';
+  for(var i=0;i<steps.length;i++){
+    var d = document.createElement('div');
+    d.className = 'dot' + (i===currentStep ? ' active' : '');
+    dotsWrap.appendChild(d);
+  }
+}
+function changeStep(dir){
+  var next = currentStep + dir;
+  if(next < 0 || next >= steps.length) return;
+  currentStep = next;
+  renderStep();
+}
+/* grid lines for step svg */
+(function(){
+  var g = document.getElementById('stepGrid');
+  for(var i=20;i<=280;i+=30){
+    var l = document.createElementNS('http://www.w3.org/2000/svg','line');
+    l.setAttribute('x1',i); l.setAttribute('y1',10); l.setAttribute('x2',i); l.setAttribute('y2',210);
+    l.setAttribute('class','grid-line');
+    g.appendChild(l);
+  }
+  for(var j=10;j<=210;j+=30){
+    var m = document.createElementNS('http://www.w3.org/2000/svg','line');
+    m.setAttribute('x1',20); m.setAttribute('y1',j); m.setAttribute('x2',280); m.setAttribute('y2',j);
+    m.setAttribute('class','grid-line');
+    g.appendChild(m);
+  }
+})();
+renderStep();
+
+/* ===== Section 5: Coba sendiri ===== */
+(function(){
+  var g = document.getElementById('simGrid');
+  for(var i=15;i<=285;i+=30){
+    var l = document.createElementNS('http://www.w3.org/2000/svg','line');
+    l.setAttribute('x1',i); l.setAttribute('y1',15); l.setAttribute('x2',i); l.setAttribute('y2',285);
+    l.setAttribute('class','grid-line');
+    g.appendChild(l);
+  }
+  for(var j=15;j<=285;j+=30){
+    var m = document.createElementNS('http://www.w3.org/2000/svg','line');
+    m.setAttribute('x1',15); m.setAttribute('y1',j); m.setAttribute('x2',285); m.setAttribute('y2',j);
+    m.setAttribute('class','grid-line');
+    g.appendChild(m);
+  }
+})();
+
+var sliderA = document.getElementById('sliderA');
+var sliderB = document.getElementById('sliderB');
+var sliderR = document.getElementById('sliderR');
+var SCALE = 22; /* px per unit */
+
+function fmtSign(v){ return v < 0 ? (' + ' + Math.abs(v)) : (' − ' + v); }
+
+function updateSim(){
+  var a = parseInt(sliderA.value, 10);
+  var b = parseInt(sliderB.value, 10);
+  var r = parseInt(sliderR.value, 10);
+  document.getElementById('valA').textContent = a;
+  document.getElementById('valB').textContent = b;
+  document.getElementById('valR').textContent = r;
+
+  var cx = 150 + a * SCALE;
+  var cy = 150 - b * SCALE;
+  var circ = document.getElementById('simCircle');
+  circ.setAttribute('cx', cx); circ.setAttribute('cy', cy); circ.setAttribute('r', r * SCALE);
+  var center = document.getElementById('simCenter');
+  center.setAttribute('cx', cx); center.setAttribute('cy', cy);
+
+  document.getElementById('simEq').innerHTML =
+    '(x' + fmtSign(a) + ')<sup>2</sup> + (y' + fmtSign(b) + ')<sup>2</sup> = ' + r + '<sup>2</sup>';
+
+  var insight = document.getElementById('insightBox');
+  var origin = document.getElementById('originDot');
+  var distToOrigin = Math.sqrt(a*a + b*b);
+
+  if(a === 0 && b === 0){
+    insight.textContent = '💡 Kalau pusatnya tepat di titik asal (0,0), rumusnya jadi lebih sederhana: x² + y² = r² — tanpa perlu (x−a) atau (y−b) lagi!';
+    insight.classList.add('show');
+    origin.setAttribute('opacity', 0);
+  } else if(Math.abs(distToOrigin - r) < 0.4){
+    insight.textContent = '💡 Menarik! Lingkaran ini melewati tepat titik asal (0,0), karena jarak pusat ke (0,0) sama persis dengan jari-jarinya.';
+    insight.classList.add('show');
+    origin.setAttribute('cx', 150); origin.setAttribute('cy', 150); origin.setAttribute('opacity', 1);
+  } else {
+    insight.classList.remove('show');
+    origin.setAttribute('opacity', 0);
+  }
+}
+sliderA.addEventListener('input', updateSim);
+sliderB.addEventListener('input', updateSim);
+sliderR.addEventListener('input', updateSim);
+updateSim();
+
+/* ===== Pengiriman ke Google Apps Script ===== */
+var SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzcK65GHhWieoZ0MgGrIs4YIyYXyR7E1_UlbfH4fL-OD_movoIiUViBK49EA5mFF9jG/exec';
+
+function kirimKeGuru(nomorSoal, jawaban1, jawaban2, benar){
+  var idx = nomorSoal - 1;
+  var statusEl = document.getElementById('send'+idx);
+  if(!SCRIPT_URL){ if(statusEl) statusEl.textContent=''; return; }
+  var id = getIdentitas();
+  var namaKelas = id.nama + ' — ' + id.kelas;
+  var payload = {
+    topik: 'Definisi Persamaan Lingkaran',
+    nama: namaKelas,
+    soal: nomorSoal,
+    jawaban: jawaban1,
+    jawaban2: jawaban2 || '',
+    benar: benar ? 'Benar' : 'Salah',
+    waktu: new Date().toLocaleString('id-ID')
+  };
+  if(statusEl) statusEl.textContent = 'Mengirim ke guru...';
+  fetch(SCRIPT_URL, { method:'POST', mode:'no-cors', headers:{'Content-Type':'text/plain'}, body: JSON.stringify(payload) })
+    .then(function(){ if(statusEl) statusEl.textContent = 'Terkirim ke guru ✓'; })
+    .catch(function(){ if(statusEl) statusEl.textContent = 'Gagal mengirim (periksa koneksi internet).'; });
+}
+
+/* ===== Challenge: Soal 1 (Mudah) ===== */
+function checkAns1(){
+  if(!identitasLengkap()) return;
+  var a = parseFloat(document.getElementById('s1a').value);
+  var b = parseFloat(document.getElementById('s1b').value);
+  var r2 = parseFloat(document.getElementById('s1r2').value);
+  var fb = document.getElementById('fb1');
+  fb.classList.remove('ok','bad'); fb.classList.add('show');
+
+  var correct = (a === 3) && (b === -2) && (r2 === 16);
+  if(correct){
+    fb.classList.add('ok');
+    fb.textContent = 'Betul! Pusat (3, −2) dan r = 4, jadi r² = 16. Persamaannya (x − 3)² + (y + 2)² = 16.';
+  } else {
+    fb.classList.add('bad');
+    if(r2 !== 16){
+      fb.textContent = 'Hampir! Cek lagi ruas kanannya — itu harus r², bukan r. Karena r = 4, maka r² = 16.';
+    } else if(a !== 3 || b !== -2){
+      fb.textContent = 'Cek lagi nilai a dan b. Pusatnya (3, −2), jadi a = 3 dan b = −2 (bukan dibalik tandanya).';
+    } else {
+      fb.textContent = 'Belum tepat, coba periksa lagi ketiga nilainya satu per satu.';
+    }
+  }
+  kirimKeGuru(1, 'a=' + a + ', b=' + b + ', r2=' + r2, '', correct);
+}
+
+/* ===== Challenge: Soal 2 (Sedang) ===== */
+function checkAns2(){
+  if(!identitasLengkap()) return;
+  var a = parseFloat(document.getElementById('s2a').value);
+  var b = parseFloat(document.getElementById('s2b').value);
+  var r = parseFloat(document.getElementById('s2r').value);
+  var fb = document.getElementById('fb2');
+  fb.classList.remove('ok','bad'); fb.classList.add('show');
+
+  var correct = (a === -5) && (b === 1) && (r === 3);
+  if(correct){
+    fb.classList.add('ok');
+    fb.textContent = 'Tepat! (x + 5)² berarti a = −5, (y − 1)² berarti b = 1, dan r = √9 = 3.';
+  } else {
+    fb.classList.add('bad');
+    if(a === 5){
+      fb.textContent = 'Ini jebakan tandanya! (x + 5)² sebenarnya (x − (−5))², jadi a = −5, bukan 5.';
+    } else if(r === 9){
+      fb.textContent = 'Ingat, ruas kanan itu r², bukan r. Karena r² = 9, maka r = √9 = 3.';
+    } else {
+      fb.textContent = 'Belum tepat. Coba cek tanda pada a, dan jangan lupa akarkan ruas kanan untuk cari r.';
+    }
+  }
+  kirimKeGuru(2, 'a=' + a + ', b=' + b + ', r=' + r, '', correct);
+}
+
+/* ===== Challenge: Soal 3 (Sulit) ===== */
+function checkAns3(){
+  if(!identitasLengkap()) return;
+  var rInput = parseFloat(document.getElementById('s3r').value);
+  var fb = document.getElementById('fb3');
+  fb.classList.remove('ok','bad'); fb.classList.add('show');
+
+  var rActual = Math.sqrt(Math.pow(4-1,2) + Math.pow(6-2,2)); /* = 5 */
+  var correct = Math.abs(rInput - rActual) < 0.05;
+
+  if(correct){
+    fb.classList.add('ok');
+    fb.textContent = 'Benar, r = 5! Jarak dari (1,2) ke (4,6) adalah √[(4−1)² + (6−2)²] = √(9+16) = √25 = 5.';
+  } else {
+    fb.classList.add('bad');
+    if(Math.abs(rInput - 25) < 0.5){
+      fb.textContent = 'Kamu berhenti di r², padahal itu belum diakarkan. √25 = 5, jadi jawabannya r = 5.';
+    } else {
+      fb.textContent = 'Belum tepat. Gunakan rumus jarak dua titik antara pusat (1,2) dan titik (4,6): r = √[(x−a)² + (y−b)²].';
+    }
+  }
+  kirimKeGuru(3, 'r=' + rInput, '', correct);
+}
+</script>
+</body>
+</html>

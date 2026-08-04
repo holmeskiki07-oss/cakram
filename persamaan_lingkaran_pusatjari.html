@@ -1,0 +1,832 @@
+<!--
+==========================================================
+CAKRAWALA MATEMATIKA
+
+Judul      : Menentukan Pusat dan Jari-jari dari Bentuk Umum Lingkaran
+Jenis      : Modul Interaktif (pakai KaTeX)
+Versi      : 1.0
+
+Dikembangkan oleh
+Kiki Herdiansyah
+
+Copyright © 2026
+
+Website ini merupakan bagian dari proyek
+"Cakrawala Matematika".
+==========================================================
+-->
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pusat &amp; Jari-jari Bentuk Umum Lingkaran — Cakrawala Matematika</title>
+<meta name="description" content="Modul interaktif: menentukan pusat dan jari-jari lingkaran dari bentuk umum x² + y² + Ax + By + C = 0.">
+<meta name="author" content="Kiki Herdiansyah">
+<meta name="application-name" content="Cakrawala Matematika">
+<meta name="copyright" content="© 2026 Kiki Herdiansyah">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" crossorigin="anonymous"></script>
+
+<style>
+:root{
+  --primary:#2563EB;
+  --primary-hover:#1D4ED8;
+  --primary-light:#DBEAFE;
+  --bg:#F8FAFC;
+  --card:#FFFFFF;
+  --text:#0F172A;
+  --text-soft:#64748B;
+  --border:#E2E8F0;
+  --success:#10B981;
+  --warning:#F59E0B;
+  --error:#EF4444;
+  --sp-1:6px; --sp-2:10px; --sp-3:16px; --sp-4:22px; --sp-5:32px; --sp-6:48px;
+  --radius-card:18px;
+  --radius-btn:12px;
+}
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  margin:0;
+  font-family:'Inter',sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+.wrap{max-width:900px; margin:0 auto; padding:0 var(--sp-3);}
+
+/* Topbar */
+.topbar{
+  position:sticky; top:0; z-index:50;
+  background:rgba(248,250,252,.92);
+  backdrop-filter:blur(8px);
+  border-bottom:1px solid var(--border);
+}
+.topbar-inner{
+  max-width:900px; margin:0 auto; padding:12px 16px;
+  font-size:13.5px; font-weight:600; color:var(--primary);
+  letter-spacing:.2px;
+}
+.progress-track{height:3px; background:var(--border);}
+.progress-fill{height:100%; width:0%; background:var(--primary); transition:width .1s linear;}
+
+/* Sections */
+section{padding:var(--sp-6) 0;}
+.card{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:var(--radius-card);
+  box-shadow:0 1px 2px rgba(15,23,42,.04), 0 4px 16px rgba(15,23,42,.06);
+  padding:var(--sp-5);
+}
+.fade-up{opacity:0; transform:translateY(18px); transition:opacity .6s ease, transform .6s ease;}
+.fade-up.in-view{opacity:1; transform:translateY(0);}
+
+.eyebrow{
+  display:inline-block; font-size:12.5px; font-weight:700; color:var(--primary);
+  background:var(--primary-light); padding:4px 12px; border-radius:999px; margin-bottom:var(--sp-2);
+  letter-spacing:.3px;
+}
+h1{font-size:26px; font-weight:800; line-height:1.3; margin:0 0 var(--sp-2);}
+h2{font-size:21px; font-weight:700; margin:0 0 var(--sp-3);}
+h3{font-size:16.5px; font-weight:700; margin:0 0 8px;}
+p{font-size:15.5px; line-height:1.65; color:var(--text); margin:0 0 var(--sp-2);}
+.soft{color:var(--text-soft);}
+mark{background:var(--primary-light); color:var(--primary-hover); padding:1px 5px; border-radius:5px; font-weight:600;}
+
+.meta-row{display:flex; flex-wrap:wrap; gap:10px; margin:var(--sp-3) 0;}
+.meta-chip{
+  font-size:13px; font-weight:600; color:var(--text-soft);
+  background:var(--bg); border:1px solid var(--border); border-radius:999px; padding:6px 14px;
+}
+.tujuan-box{background:var(--primary-light); border-radius:14px; padding:14px 16px; margin-top:var(--sp-2);}
+.tujuan-box p{color:var(--primary-hover); margin:0; font-weight:500; font-size:14.5px;}
+
+/* ID card */
+.id-card{
+  background:var(--card); border:1.5px dashed var(--primary); border-radius:16px;
+  padding:var(--sp-4); margin-top:var(--sp-4);
+}
+.id-card h3{color:var(--primary-hover);}
+.id-grid{display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:10px;}
+.id-grid label{display:block; font-size:12.5px; font-weight:600; color:var(--text-soft); margin-bottom:5px;}
+.id-grid input{
+  width:100%; padding:10px 12px; border:1px solid var(--border); border-radius:10px;
+  font-family:inherit; font-size:14.5px; background:var(--bg); color:var(--text);
+}
+.id-grid input:focus{outline:2px solid var(--primary); outline-offset:1px; background:var(--card);}
+.id-status{font-size:13px; font-weight:600; margin-top:8px; min-height:16px;}
+
+/* buttons */
+.btn{
+  display:inline-flex; align-items:center; justify-content:center; gap:6px;
+  border:none; border-radius:var(--radius-btn); font-family:inherit;
+  font-size:14.5px; font-weight:600; padding:0 20px; height:42px; cursor:pointer;
+  transition:all .2s ease;
+}
+.btn-primary{background:var(--primary); color:#fff;}
+.btn-primary:hover{background:var(--primary-hover);}
+.btn-primary:disabled{background:var(--border); color:var(--text-soft); cursor:not-allowed;}
+.btn-outline{background:var(--card); color:var(--primary); border:1.5px solid var(--primary);}
+.btn-outline:hover{background:var(--primary-light);}
+.btn-outline:disabled{color:var(--text-soft); border-color:var(--border); cursor:not-allowed;}
+.btn-row{display:flex; gap:10px; margin-top:var(--sp-3); flex-wrap:wrap;}
+
+/* Section 4 - step viz */
+.step-box{
+  border:1px solid var(--border); border-radius:14px; padding:var(--sp-4);
+  background:var(--bg); min-height:150px;
+}
+.step-dots{display:flex; gap:6px; margin-bottom:var(--sp-3);}
+.step-dot{width:8px; height:8px; border-radius:50%; background:var(--border); transition:background .25s;}
+.step-dot.active{background:var(--primary); width:22px; border-radius:5px;}
+.step-formula{text-align:center; font-size:17px; margin:14px 0;}
+.step-label{font-size:12.5px; font-weight:700; color:var(--primary); text-transform:uppercase; letter-spacing:.4px; margin-bottom:6px;}
+
+/* Section 5 - interactive */
+.sim-grid{display:grid; grid-template-columns:1fr; gap:var(--sp-4);}
+@media(min-width:680px){.sim-grid{grid-template-columns:1fr 1.05fr;}}
+.slider-group{margin-bottom:var(--sp-4);}
+.slider-head{display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;}
+.slider-head span:first-child{font-size:13.5px; font-weight:600; color:var(--text);}
+.slider-val{font-size:13.5px; font-weight:700; color:var(--primary); background:var(--primary-light); padding:2px 10px; border-radius:999px;}
+input[type=range]{
+  -webkit-appearance:none; width:100%; height:5px; border-radius:999px; background:var(--border); outline:none;
+}
+input[type=range]::-webkit-slider-thumb{
+  -webkit-appearance:none; width:20px; height:20px; border-radius:50%; background:var(--primary);
+  cursor:pointer; border:3px solid #fff; box-shadow:0 1px 4px rgba(15,23,42,.25);
+}
+input[type=range]::-moz-range-thumb{
+  width:20px; height:20px; border-radius:50%; background:var(--primary); cursor:pointer; border:3px solid #fff;
+}
+.formula-live{background:var(--bg); border:1px solid var(--border); border-radius:14px; padding:var(--sp-3); margin-top:var(--sp-3); text-align:center; font-size:16px;}
+.svg-holder{background:var(--bg); border:1px solid var(--border); border-radius:14px; overflow:hidden;}
+.insight-box{
+  margin-top:var(--sp-3); border-radius:14px; padding:14px 16px; font-size:14px; font-weight:500;
+  display:none; align-items:flex-start; gap:10px; line-height:1.5;
+}
+.insight-box.show{display:flex;}
+.insight-box.good{background:#ECFDF5; color:#065F46; border:1px solid #A7F3D0;}
+.insight-box.warn{background:#FEF3C7; color:#92400E; border:1px solid #FDE68A;}
+
+/* Challenge */
+.badge-level{
+  display:inline-block; font-size:11.5px; font-weight:700; padding:3px 11px; border-radius:999px; margin-bottom:10px; letter-spacing:.3px;
+}
+.badge-mudah{background:#D1FAE5; color:#065F46;}
+.badge-sedang{background:#FEF3C7; color:#92400E;}
+.badge-sulit{background:#FEE2E2; color:#991B1B;}
+.q-card{margin-bottom:var(--sp-4);}
+.q-form{display:grid; grid-template-columns:repeat(auto-fit,minmax(130px,1fr)); gap:12px; margin:var(--sp-3) 0;}
+.q-form label{display:block; font-size:12.5px; font-weight:600; color:var(--text-soft); margin-bottom:5px;}
+.q-form input, .q-form select{
+  width:100%; padding:10px 12px; border:1px solid var(--border); border-radius:10px;
+  font-family:inherit; font-size:14.5px; background:var(--bg); color:var(--text);
+}
+.q-form input:focus, .q-form select:focus{outline:2px solid var(--primary); outline-offset:1px; background:var(--card);}
+.feedback{
+  margin-top:12px; padding:12px 14px; border-radius:12px; font-size:14px; line-height:1.55; font-weight:500; display:none;
+}
+.feedback.show{display:block;}
+.feedback.correct{background:#ECFDF5; color:#065F46; border:1px solid #A7F3D0;}
+.feedback.wrong{background:#FEF2F2; color:#991B1B; border:1px solid #FECACA;}
+.send-status{font-size:12.5px; color:var(--text-soft); margin-top:6px; min-height:14px;}
+
+/* mistakes */
+.mistake-item{display:flex; gap:12px; padding:14px 0; border-bottom:1px solid var(--border);}
+.mistake-item:last-child{border-bottom:none;}
+.mistake-x{
+  flex-shrink:0; width:30px; height:30px; border-radius:9px; background:#FEF2F2; color:var(--error);
+  display:flex; align-items:center; justify-content:center; font-weight:800; font-size:15px;
+}
+
+/* summary */
+.summary-list{list-style:none; padding:0; margin:0; counter-reset:sumcount;}
+.summary-list li{
+  counter-increment:sumcount; position:relative; padding:12px 0 12px 40px; font-size:15px; line-height:1.55;
+  border-bottom:1px solid var(--border);
+}
+.summary-list li:last-child{border-bottom:none;}
+.summary-list li::before{
+  content:counter(sumcount); position:absolute; left:0; top:10px; width:26px; height:26px; border-radius:8px;
+  background:var(--primary); color:#fff; font-size:13px; font-weight:700; display:flex; align-items:center; justify-content:center;
+}
+.done-badge{
+  text-align:center; margin-top:var(--sp-4); font-size:13.5px; font-weight:700; color:var(--success);
+  background:#ECFDF5; border:1px solid #A7F3D0; padding:10px; border-radius:12px;
+}
+
+/* Footer */
+.site-footer{padding:var(--sp-5) 0 var(--sp-6); text-align:center;}
+.footer-divider{height:1px; background:var(--border); margin-bottom:var(--sp-4);}
+.footer-brand{font-size:13.5px; font-weight:700; color:var(--primary); margin:0 0 4px;}
+.footer-text{font-size:13px; color:var(--text-soft); margin:0 0 2px;}
+.footer-meta{font-size:12.5px; color:var(--text-soft); margin:0; opacity:.85;}
+
+hr.sep{border:none; height:1px; background:var(--border); margin:var(--sp-4) 0;}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-inner">CAKRAWALA MATEMATIKA · Pusat &amp; Jari-jari Bentuk Umum Lingkaran</div>
+  <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+</div>
+
+<div class="wrap">
+
+  <!-- 1. HEADER -->
+  <section id="sec-header">
+    <span class="eyebrow">Modul Interaktif</span>
+    <h1>Menentukan Pusat dan Jari-jari dari Bentuk Umum Lingkaran</h1>
+    <p class="soft">Belajar membongkar bentuk umum lingkaran jadi informasi yang kita cari: titik pusat dan panjang jari-jari.</p>
+    <div class="meta-row">
+      <span class="meta-chip">🎓 Kelas XI</span>
+      <span class="meta-chip">⏱️ 15–20 menit</span>
+      <span class="meta-chip">📐 Geometri Analitik</span>
+    </div>
+    <div class="tujuan-box">
+      <p>🎯 Tujuan: setelah belajar ini, kamu bisa menemukan pusat dan jari-jari lingkaran hanya dari bentuk umumnya — tanpa perlu menghafal rumus, karena kamu paham dari mana rumus itu berasal.</p>
+    </div>
+
+    <div class="id-card">
+      <h3>Isi dulu sebelum mulai 👋</h3>
+      <p>Jawabanmu di bagian Challenge otomatis terkirim ke gurumu. Tidak perlu login atau email apapun.</p>
+      <div class="id-grid">
+        <div><label>Nama lengkap</label><input type="text" id="namaSiswa" placeholder="Tulis namamu"></div>
+        <div><label>Kelas</label><input type="text" id="kelasSiswa" placeholder="Contoh: XI IPA 2"></div>
+      </div>
+      <div class="id-status" id="idStatus"></div>
+    </div>
+  </section>
+
+  <!-- 2. PERNAHKAH KAMU BERPIKIR? -->
+  <section>
+    <div class="card fade-up">
+      <span class="eyebrow">Pemantik</span>
+      <h2>Pernahkah kamu berpikir?</h2>
+      <p>Coba perhatikan persamaan ini:</p>
+      <div class="formula-live" style="margin-top:0;">\( x^2 + y^2 - 6x + 4y - 12 = 0 \)</div>
+      <p>Kalau kamu sudah belajar lingkaran dengan bentuk <mark>\( (x-a)^2 + (y-b)^2 = r^2 \)</mark>, harusnya gampang: tinggal baca pusatnya \( (a,b) \) dan jari-jarinya \( r \).</p>
+      <p>Tapi persamaan di atas tidak berbentuk seperti itu. Tidak ada kurung, tidak ada kuadrat yang rapi.</p>
+      <p><strong>Menurutmu</strong>, apakah persamaan itu tetap sebuah lingkaran? Kalau iya, di mana pusatnya, dan berapa jari-jarinya?</p>
+      <p class="soft">Yuk kita bongkar pelan-pelan.</p>
+    </div>
+  </section>
+
+  <!-- 3. PENJELASAN SEDERHANA -->
+  <section>
+    <div class="card fade-up">
+      <span class="eyebrow">Konsep Utama</span>
+      <h2>Penjelasan sederhana</h2>
+      <p>Bentuk yang tadi kita lihat punya nama: <strong>bentuk umum lingkaran</strong>.</p>
+      <div class="formula-live" style="margin-top:0;">\( x^2 + y^2 + Ax + By + C = 0 \)</div>
+      <p>Coba bayangkan begini: bentuk standar \( (x-a)^2+(y-b)^2=r^2 \) itu seperti kado yang sudah rapi dibungkus. Kamu langsung tahu isinya (pusat dan jari-jari) hanya dengan melihat.</p>
+      <p>Bentuk umum itu <mark>kado yang sama, tapi belum dibungkus rapi</mark> — masih berupa suku-suku yang berserakan. Isinya tetap sama, cuma bentuknya belum kelihatan.</p>
+      <p>Nah, ternyata dari bentuk umum ini, kita bisa langsung "mengintip isi kado" tanpa perlu membongkarnya satu-satu setiap kali. Ada dua rumus jalan pintas:</p>
+      <div class="formula-live">
+        <div>Pusat: \( P\left(-\dfrac{A}{2},\ -\dfrac{B}{2}\right) \)</div>
+        <div style="margin-top:10px;">Jari-jari: \( r = \sqrt{\left(\dfrac{A}{2}\right)^2 + \left(\dfrac{B}{2}\right)^2 - C} \)</div>
+      </div>
+      <p>Ingat: <mark>A dan B dibagi 2 dulu, lalu diberi tanda minus</mark> untuk pusat. Sedangkan jari-jari selalu dikuadratkan dulu bagian dalam akarnya sebelum diakar.</p>
+      <p class="soft">Sampai sini masih masuk akal? Tenang, di bagian berikutnya kita lihat dari mana rumus ini datang.</p>
+    </div>
+  </section>
+
+  <!-- 4. LIHAT CARA KERJANYA -->
+  <section>
+    <div class="card fade-up">
+      <span class="eyebrow">Visualisasi</span>
+      <h2>Lihat cara kerjanya</h2>
+      <p>Kita bongkar bareng-bareng persamaan yang tadi kita lihat di awal:</p>
+      <div class="formula-live" style="margin-top:0;">\( x^2 + y^2 - 6x + 4y - 12 = 0 \)</div>
+
+      <div class="step-box">
+        <div class="step-dots" id="stepDots"></div>
+        <div class="step-label" id="stepLabel">Langkah 1 dari 5</div>
+        <div id="stepContent"></div>
+      </div>
+      <div class="btn-row">
+        <button class="btn btn-outline" id="btnPrev" onclick="stepNav(-1)">← Sebelumnya</button>
+        <button class="btn btn-primary" id="btnNext" onclick="stepNav(1)">Selanjutnya →</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. COBA SENDIRI -->
+  <section>
+    <div class="card fade-up">
+      <span class="eyebrow">Coba Sendiri</span>
+      <h2>Sekarang giliranmu</h2>
+      <p>Geser slider di bawah untuk mengubah nilai <mark>A</mark>, <mark>B</mark>, dan <mark>C</mark> pada bentuk umum \( x^2+y^2+Ax+By+C=0 \). Lihat bagaimana pusat, jari-jari, dan gambar lingkarannya berubah <strong>langsung</strong>.</p>
+
+      <div class="sim-grid">
+        <div>
+          <div class="slider-group">
+            <div class="slider-head"><span>Koefisien A</span><span class="slider-val" id="valA">-6</span></div>
+            <input type="range" id="sliderA" min="-8" max="8" step="1" value="-6">
+          </div>
+          <div class="slider-group">
+            <div class="slider-head"><span>Koefisien B</span><span class="slider-val" id="valB">4</span></div>
+            <input type="range" id="sliderB" min="-8" max="8" step="1" value="4">
+          </div>
+          <div class="slider-group">
+            <div class="slider-head"><span>Konstanta C</span><span class="slider-val" id="valC">-12</span></div>
+            <input type="range" id="sliderC" min="-15" max="15" step="1" value="-12">
+          </div>
+          <div class="formula-live" id="liveFormula"></div>
+        </div>
+        <div>
+          <div class="svg-holder">
+            <svg id="circleSvg" viewBox="0 0 300 300" width="100%" height="280">
+              <defs>
+                <pattern id="grid" width="15" height="15" patternUnits="userSpaceOnUse">
+                  <path d="M 15 0 L 0 0 0 15" fill="none" stroke="#E2E8F0" stroke-width="1"/>
+                </pattern>
+              </defs>
+              <rect width="300" height="300" fill="url(#grid)"/>
+              <line x1="0" y1="150" x2="300" y2="150" stroke="#94A3B8" stroke-width="1.5"/>
+              <line x1="150" y1="0" x2="150" y2="300" stroke="#94A3B8" stroke-width="1.5"/>
+              <circle id="dynCircle" cx="150" cy="150" r="0" fill="#DBEAFE" stroke="#2563EB" stroke-width="2.5"/>
+              <line id="radiusLine" x1="150" y1="150" x2="150" y2="150" stroke="#EF4444" stroke-width="2" stroke-dasharray="4 3"/>
+              <circle id="centerDot" cx="150" cy="150" r="4.5" fill="#2563EB"/>
+              <text id="centerLabel" x="156" y="146" font-size="11" font-weight="600" fill="#0F172A"></text>
+            </svg>
+          </div>
+          <div class="insight-box" id="insightBox"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. CHALLENGE -->
+  <section>
+    <div class="card fade-up">
+      <span class="eyebrow">Challenge</span>
+      <h2>Uji pemahamanmu</h2>
+      <p class="soft">Kerjakan 3 soal berikut. Jawabanmu otomatis terkirim ke gurumu.</p>
+
+      <!-- Soal 1 - Mudah -->
+      <div class="q-card">
+        <hr class="sep">
+        <span class="badge-level badge-mudah">Level: Mudah</span>
+        <h3>Soal 1</h3>
+        <p>Tentukan pusat dan jari-jari lingkaran berikut:</p>
+        <div class="formula-live" style="margin-top:0;">\( x^2 + y^2 - 8x + 2y + 8 = 0 \)</div>
+        <div class="q-form">
+          <div><label>Pusat, x =</label><input type="number" id="q1x" step="any"></div>
+          <div><label>Pusat, y =</label><input type="number" id="q1y" step="any"></div>
+          <div><label>Jari-jari, r =</label><input type="number" id="q1r" step="any"></div>
+        </div>
+        <div class="btn-row"><button class="btn btn-primary" onclick="checkQ1()">Cek Jawaban</button></div>
+        <div class="feedback" id="fb1"></div>
+        <div class="send-status" id="send0"></div>
+      </div>
+
+      <!-- Soal 2 - Sedang -->
+      <div class="q-card">
+        <hr class="sep">
+        <span class="badge-level badge-sedang">Level: Sedang</span>
+        <h3>Soal 2</h3>
+        <p>Tentukan pusat dan jari-jari lingkaran berikut:</p>
+        <div class="formula-live" style="margin-top:0;">\( 2x^2 + 2y^2 - 12x + 8y - 24 = 0 \)</div>
+        <p class="soft">Perhatikan baik-baik koefisien \(x^2\) dan \(y^2\)-nya sebelum langsung memakai rumus jalan pintas.</p>
+        <div class="q-form">
+          <div><label>Pusat, x =</label><input type="number" id="q2x" step="any"></div>
+          <div><label>Pusat, y =</label><input type="number" id="q2y" step="any"></div>
+          <div><label>Jari-jari, r =</label><input type="number" id="q2r" step="any"></div>
+        </div>
+        <div class="btn-row"><button class="btn btn-primary" onclick="checkQ2()">Cek Jawaban</button></div>
+        <div class="feedback" id="fb2"></div>
+        <div class="send-status" id="send1"></div>
+      </div>
+
+      <!-- Soal 3 - Sulit -->
+      <div class="q-card">
+        <hr class="sep">
+        <span class="badge-level badge-sulit">Level: Sulit</span>
+        <h3>Soal 3</h3>
+        <p>Perhatikan persamaan dengan parameter \(k\) berikut:</p>
+        <div class="formula-live" style="margin-top:0;">\( x^2 + y^2 - 4x + 6y + k = 0 \)</div>
+        <p>Nilai \(r^2\) dari persamaan ini bergantung pada \(k\). Supaya persamaan ini benar-benar membentuk <strong>lingkaran sejati</strong> (bukan cuma satu titik, dan bukan "lingkaran khayal"), maka \( r^2 \) harus lebih besar dari nol.</p>
+        <div class="q-form">
+          <div>
+            <label>Nilai k saat persamaan ini TEPAT menjadi satu titik (r = 0)</label>
+            <input type="number" id="q3batas" step="any">
+          </div>
+          <div>
+            <label>Jika k = 15, persamaan ini menjadi:</label>
+            <select id="q3jenis">
+              <option value="">Pilih salah satu</option>
+              <option value="lingkaran">Lingkaran sejati</option>
+              <option value="titik">Hanya satu titik</option>
+              <option value="imajiner">Tidak terbentuk (imajiner)</option>
+            </select>
+          </div>
+        </div>
+        <div class="btn-row"><button class="btn btn-primary" onclick="checkQ3()">Cek Jawaban</button></div>
+        <div class="feedback" id="fb3"></div>
+        <div class="send-status" id="send2"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7. KESALAHAN YANG SERING TERJADI -->
+  <section>
+    <div class="card fade-up">
+      <span class="eyebrow">Waspada</span>
+      <h2>Kesalahan yang sering terjadi</h2>
+
+      <div class="mistake-item">
+        <div class="mistake-x">✕</div>
+        <div>
+          <p style="margin-bottom:4px;"><strong>Lupa membagi dulu kalau koefisien \(x^2\) dan \(y^2\) bukan 1.</strong></p>
+          <p class="soft" style="margin-bottom:0;">Rumus pusat dan jari-jari hanya berlaku kalau bentuknya persis \( x^2+y^2+Ax+By+C=0 \), dengan koefisien \(x^2\) dan \(y^2\) sama-sama 1. Kalau masih ada angka di depannya (misalnya \(2x^2+2y^2+\dots\)), <strong>bagi seluruh persamaan dulu</strong> sebelum mengambil nilai A, B, dan C.</p>
+        </div>
+      </div>
+
+      <div class="mistake-item">
+        <div class="mistake-x">✕</div>
+        <div>
+          <p style="margin-bottom:4px;"><strong>Lupa tanda minus saat mencari pusat.</strong></p>
+          <p class="soft" style="margin-bottom:0;">Pusatnya adalah \( \left(-\frac{A}{2}, -\frac{B}{2}\right) \), bukan \( \left(\frac{A}{2}, \frac{B}{2}\right) \). Kalau A-nya negatif, hasil pusatnya jadi positif — begitu juga sebaliknya. Ini penyebab kesalahan paling umum.</p>
+        </div>
+      </div>
+
+      <div class="mistake-item">
+        <div class="mistake-x">✕</div>
+        <div>
+          <p style="margin-bottom:4px;"><strong>Langsung mengakar tanpa mengecek isi di dalam akar dulu.</strong></p>
+          <p class="soft" style="margin-bottom:0;">Sebelum menyimpulkan jari-jarinya, cek dulu apakah \( \left(\frac{A}{2}\right)^2+\left(\frac{B}{2}\right)^2-C \) bernilai positif. Kalau hasilnya 0 atau negatif, itu bukan lingkaran biasa — bisa jadi cuma satu titik, atau malah tidak terbentuk sama sekali.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8. RINGKASAN -->
+  <section>
+    <div class="card fade-up">
+      <span class="eyebrow">Ringkasan</span>
+      <h2>Yang perlu kamu ingat</h2>
+      <ul class="summary-list">
+        <li>Bentuk umum lingkaran adalah \( x^2+y^2+Ax+By+C=0 \), dengan koefisien \(x^2\) dan \(y^2\) harus sama-sama 1.</li>
+        <li>Kalau koefisiennya belum 1, bagi seluruh persamaan terlebih dahulu sebelum mengambil A, B, dan C.</li>
+        <li>Pusat lingkaran adalah \( P\left(-\frac{A}{2},-\frac{B}{2}\right)\) — jangan lupa tanda minusnya.</li>
+        <li>Jari-jari adalah \( r=\sqrt{\left(\frac{A}{2}\right)^2+\left(\frac{B}{2}\right)^2-C} \).</li>
+        <li>Selalu cek dulu isi di dalam akar: kalau ≤ 0, itu bukan lingkaran sejati.</li>
+      </ul>
+      <div class="done-badge">✓ Selesai — Pusat &amp; Jari-jari Bentuk Umum Lingkaran</div>
+    </div>
+  </section>
+
+</div>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-divider"></div>
+    <p class="footer-brand">Cakrawala Matematika</p>
+    <p class="footer-text">Dikembangkan oleh <strong>Kiki Herdiansyah</strong></p>
+    <p class="footer-meta">Versi 1.0 · © 2026</p>
+  </div>
+</footer>
+
+<script>
+/* ================= IDENTITAS SISWA ================= */
+function getIdentitas(){
+  var nama = document.getElementById('namaSiswa').value.trim();
+  var kelas = document.getElementById('kelasSiswa').value.trim();
+  return { nama: nama, kelas: kelas };
+}
+function identitasLengkap(){
+  var id = getIdentitas();
+  var statusEl = document.getElementById('idStatus');
+  if(!id.nama || !id.kelas){
+    statusEl.textContent = 'Isi nama dan kelas dulu ya, sebelum cek jawaban.';
+    statusEl.style.color = '#B91C1C';
+    document.getElementById('namaSiswa').focus();
+    return false;
+  }
+  statusEl.textContent = '';
+  return true;
+}
+
+/* ================= TOPBAR PROGRESS ================= */
+window.addEventListener('scroll', function(){
+  var h = document.documentElement;
+  var scrolled = (h.scrollTop) / (h.scrollHeight - h.clientHeight) * 100;
+  document.getElementById('progressFill').style.width = (isFinite(scrolled) ? scrolled : 0) + '%';
+});
+
+/* ================= FADE UP ON SCROLL ================= */
+var observer = new IntersectionObserver(function(entries){
+  entries.forEach(function(e){
+    if(e.isIntersecting){ e.target.classList.add('in-view'); }
+  });
+}, { threshold: 0.12 });
+document.querySelectorAll('.fade-up').forEach(function(el){ observer.observe(el); });
+
+/* ================= KATEX RENDER HELPER ================= */
+function renderMath(container){
+  if(window.renderMathInElement){
+    renderMathInElement(container, {
+      delimiters: [
+        {left:'\\[', right:'\\]', display:true},
+        {left:'\\(', right:'\\)', display:false}
+      ],
+      throwOnError:false
+    });
+  }
+}
+window.addEventListener('DOMContentLoaded', function(){
+  renderMath(document.body);
+  initSteps();
+  initSimulator();
+});
+
+/* ================= SECTION 4: STEP BY STEP ================= */
+var steps = [
+  {
+    label:'Langkah 1 dari 5',
+    html:'<p>Kelompokkan suku yang mengandung <mark>x</mark> dan suku yang mengandung <mark>y</mark>, lalu pindahkan angka konstan ke ruas kanan.</p>' +
+         '<div class="formula-live">\\[ (x^2-6x) + (y^2+4y) = 12 \\]</div>'
+  },
+  {
+    label:'Langkah 2 dari 5',
+    html:'<p>Lengkapi kuadrat sempurna untuk bagian <mark>x</mark>. Ambil setengah dari koefisien x (yaitu -6), lalu kuadratkan: \\((-3)^2=9\\). Tambahkan 9 di kedua ruas.</p>' +
+         '<div class="formula-live">\\[ (x^2-6x+9) + (y^2+4y) = 12+9 \\]</div>'
+  },
+  {
+    label:'Langkah 3 dari 5',
+    html:'<p>Lakukan hal yang sama untuk bagian <mark>y</mark>. Setengah dari koefisien y (yaitu 4) adalah 2, lalu kuadratkan: \\(2^2=4\\). Tambahkan 4 di kedua ruas.</p>' +
+         '<div class="formula-live">\\[ (x^2-6x+9) + (y^2+4y+4) = 12+9+4 \\]</div>'
+  },
+  {
+    label:'Langkah 4 dari 5',
+    html:'<p>Ubah tiap kelompok jadi bentuk kuadrat, lalu jumlahkan ruas kanan.</p>' +
+         '<div class="formula-live">\\[ (x-3)^2 + (y+2)^2 = 25 \\]</div>' +
+         '<p class="soft">Sekarang bentuknya sudah rapi, persis seperti kado yang sudah dibungkus!</p>'
+  },
+  {
+    label:'Langkah 5 dari 5',
+    html:'<p>Bandingkan dengan bentuk standar \\( (x-a)^2+(y-b)^2=r^2 \\). Tinggal dibaca:</p>' +
+         '<div class="formula-live"><mark>Pusat (3, -2)</mark> &nbsp;&nbsp; <mark>Jari-jari r = 5</mark></div>' +
+         '<p class="soft">Coba cek dengan rumus jalan pintas: A=-6, B=4, C=-12 → pusat \\((3,-2)\\), \\(r=\\sqrt{9+4+12}=\\sqrt{25}=5\\). Sama persis!</p>'
+  }
+];
+var curStep = 0;
+function initSteps(){
+  var dots = document.getElementById('stepDots');
+  dots.innerHTML = '';
+  steps.forEach(function(_, i){
+    var d = document.createElement('div');
+    d.className = 'step-dot' + (i===0 ? ' active' : '');
+    d.id = 'dot'+i;
+    dots.appendChild(d);
+  });
+  renderStep();
+}
+function renderStep(){
+  document.getElementById('stepLabel').textContent = steps[curStep].label;
+  var content = document.getElementById('stepContent');
+  content.innerHTML = steps[curStep].html;
+  renderMath(content);
+  steps.forEach(function(_, i){
+    document.getElementById('dot'+i).classList.toggle('active', i===curStep);
+  });
+  document.getElementById('btnPrev').disabled = (curStep===0);
+  document.getElementById('btnNext').disabled = (curStep===steps.length-1);
+}
+function stepNav(dir){
+  curStep = Math.max(0, Math.min(steps.length-1, curStep+dir));
+  renderStep();
+}
+
+/* ================= SECTION 5: SIMULATOR ================= */
+var sA = document.getElementById('sliderA');
+var sB = document.getElementById('sliderB');
+var sC = document.getElementById('sliderC');
+var scale = 12; // px per satuan
+var originPx = 150;
+
+function initSimulator(){
+  [sA,sB,sC].forEach(function(s){ s.addEventListener('input', updateSim); });
+  updateSim();
+}
+
+function updateSim(){
+  var A = parseFloat(sA.value), B = parseFloat(sB.value), C = parseFloat(sC.value);
+  document.getElementById('valA').textContent = A;
+  document.getElementById('valB').textContent = B;
+  document.getElementById('valC').textContent = C;
+
+  var px = -A/2, py = -B/2;
+  var rSq = (A/2)*(A/2) + (B/2)*(B/2) - C;
+
+  var liveFormula = document.getElementById('liveFormula');
+  var eqText = 'x^2+y^2' + fmtTerm(A,'x') + fmtTerm(B,'y') + fmtConst(C) + '=0';
+
+  var circle = document.getElementById('dynCircle');
+  var radiusLine = document.getElementById('radiusLine');
+  var centerDot = document.getElementById('centerDot');
+  var centerLabel = document.getElementById('centerLabel');
+  var insight = document.getElementById('insightBox');
+
+  var cx = originPx + px*scale;
+  var cy = originPx - py*scale;
+
+  if(rSq > 0){
+    var r = Math.sqrt(rSq);
+    circle.setAttribute('r', r*scale);
+    circle.setAttribute('cx', cx);
+    circle.setAttribute('cy', cy);
+    radiusLine.setAttribute('x1', cx);
+    radiusLine.setAttribute('y1', cy);
+    radiusLine.setAttribute('x2', cx + r*scale);
+    radiusLine.setAttribute('y2', cy);
+    centerDot.setAttribute('cx', cx);
+    centerDot.setAttribute('cy', cy);
+    centerLabel.setAttribute('x', cx+8);
+    centerLabel.setAttribute('y', cy-8);
+    centerLabel.textContent = 'P(' + trim(px) + ', ' + trim(py) + ')';
+
+    liveFormula.innerHTML =
+      '<div>\\(' + eqText + '\\)</div>' +
+      '<div style="margin-top:8px;">Pusat \\(P(' + trim(px) + ',\\,' + trim(py) + ')\\) &nbsp;·&nbsp; \\(r=\\sqrt{' + trim(rSq) + '}=' + trim(r) + '\\)</div>';
+
+    if(Math.abs(rSq - Math.round(rSq)) < 0.001 && Number.isInteger(Math.round(Math.sqrt(rSq))*Math.round(Math.sqrt(rSq))) && rSq === Math.round(Math.sqrt(rSq))**2 ){
+      insight.className = 'insight-box show good';
+      insight.innerHTML = '💡 <div><strong>Ternyata...</strong> jari-jarinya persis bilangan bulat (' + trim(r) + ')! Ini bukan kebetulan — nilai di dalam akarnya adalah kuadrat sempurna.</div>';
+    } else {
+      insight.className = 'insight-box';
+      insight.innerHTML = '';
+    }
+  } else if(Math.abs(rSq) < 1e-9){
+    circle.setAttribute('r', 0);
+    centerDot.setAttribute('cx', cx);
+    centerDot.setAttribute('cy', cy);
+    radiusLine.setAttribute('x1', cx); radiusLine.setAttribute('y1', cy);
+    radiusLine.setAttribute('x2', cx); radiusLine.setAttribute('y2', cy);
+    centerLabel.setAttribute('x', cx+8); centerLabel.setAttribute('y', cy-8);
+    centerLabel.textContent = 'P(' + trim(px) + ', ' + trim(py) + ')';
+    liveFormula.innerHTML = '<div>\\(' + eqText + '\\)</div><div style="margin-top:8px;">\\(r^2=0\\) → bukan lingkaran, hanya satu titik!</div>';
+    insight.className = 'insight-box show warn';
+    insight.innerHTML = '⚠️ <div><strong>Kondisi batas!</strong> Nilai di dalam akar tepat 0. Ini bukan lingkaran biasa, cuma satu titik saja di \\(P(' + trim(px) + ',' + trim(py) + ')\\).</div>';
+  } else {
+    circle.setAttribute('r', 0);
+    radiusLine.setAttribute('x1', cx); radiusLine.setAttribute('y1', cy);
+    radiusLine.setAttribute('x2', cx); radiusLine.setAttribute('y2', cy);
+    centerDot.setAttribute('cx', -100); centerDot.setAttribute('cy', -100);
+    centerLabel.textContent = '';
+    liveFormula.innerHTML = '<div>\\(' + eqText + '\\)</div><div style="margin-top:8px;">\\(r^2=' + trim(rSq) + ' < 0\\) → tidak ada lingkaran nyata!</div>';
+    insight.className = 'insight-box show warn';
+    insight.innerHTML = '⚠️ <div><strong>Ternyata...</strong> kalau nilai di dalam akar negatif, "lingkaran"-nya tidak nyata (imajiner). Coba kecilkan C, atau perbesar A/B.</div>';
+  }
+  renderMath(liveFormula);
+}
+function fmtTerm(coef, v){
+  if(coef===0) return '';
+  var sign = coef>0 ? '+' : '-';
+  var val = Math.abs(coef)===1 ? '' : Math.abs(coef);
+  return sign + val + v;
+}
+function fmtConst(c){
+  if(c===0) return '';
+  return (c>0?'+':'-') + Math.abs(c);
+}
+function trim(n){
+  var r = Math.round(n*100)/100;
+  return (Number.isInteger(r) ? r : r.toFixed(2));
+}
+
+/* ================= PENGIRIMAN KE GURU ================= */
+var SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzcK65GHhWieoZ0MgGrIs4YIyYXyR7E1_UlbfH4fL-OD_movoIiUViBK49EA5mFF9jG/exec';
+
+function kirimKeGuru(nomorSoal, jawaban1, jawaban2, benar){
+  var idx = nomorSoal - 1;
+  var statusEl = document.getElementById('send'+idx);
+  if(!SCRIPT_URL){ if(statusEl) statusEl.textContent=''; return; }
+  var id = getIdentitas();
+  var namaKelas = id.nama + ' — ' + id.kelas;
+  var payload = {
+    topik: 'Menentukan Pusat dan Jari-jari dari Bentuk Umum Lingkaran',
+    nama: namaKelas,
+    soal: nomorSoal,
+    jawaban: jawaban1,
+    jawaban2: jawaban2 || '',
+    benar: benar ? 'Benar' : 'Salah',
+    waktu: new Date().toLocaleString('id-ID')
+  };
+  if(statusEl) statusEl.textContent = 'Mengirim ke guru...';
+  fetch(SCRIPT_URL, { method:'POST', mode:'no-cors', headers:{'Content-Type':'text/plain'}, body: JSON.stringify(payload) })
+    .then(function(){ if(statusEl) statusEl.textContent = 'Terkirim ke guru ✓'; })
+    .catch(function(){ if(statusEl) statusEl.textContent = 'Gagal mengirim (periksa koneksi internet).'; });
+}
+
+/* ================= CHALLENGE: SOAL 1 (MUDAH) ================= */
+function checkQ1(){
+  if(!identitasLengkap()) return;
+  var x = parseFloat(document.getElementById('q1x').value);
+  var y = parseFloat(document.getElementById('q1y').value);
+  var r = parseFloat(document.getElementById('q1r').value);
+  var fb = document.getElementById('fb1');
+  fb.classList.remove('correct','wrong'); fb.classList.add('show');
+
+  if(isNaN(x)||isNaN(y)||isNaN(r)){
+    fb.classList.add('wrong');
+    fb.textContent = 'Isi ketiga kolom dulu ya (x, y, dan r).';
+    return;
+  }
+  var benar = (Math.abs(x-4)<0.01 && Math.abs(y-(-1))<0.01 && Math.abs(r-3)<0.01);
+  if(benar){
+    fb.classList.add('correct');
+    fb.innerHTML = '✓ Benar! A=-8, B=2, C=8 → pusat (4, -1), r = √(16+1-8) = √9 = 3.';
+  } else if(Math.abs(x-(-4))<0.01 && Math.abs(y-2)<0.01){
+    fb.classList.add('wrong');
+    fb.innerHTML = '✗ Kamu lupa tanda minus. Pusatnya adalah \\((-\\frac{A}{2},-\\frac{B}{2})\\), bukan \\((\\frac{A}{2},\\frac{B}{2})\\). Coba hitung ulang tandanya.';
+    renderMath(fb);
+  } else {
+    fb.classList.add('wrong');
+    fb.innerHTML = '✗ Belum tepat. Coba ambil A=-8, B=2, C=8 lalu masukkan ke rumus pusat dan jari-jari.';
+  }
+  kirimKeGuru(1, 'pusat('+x+','+y+'), r='+r, '', benar);
+}
+
+/* ================= CHALLENGE: SOAL 2 (SEDANG) ================= */
+function checkQ2(){
+  if(!identitasLengkap()) return;
+  var x = parseFloat(document.getElementById('q2x').value);
+  var y = parseFloat(document.getElementById('q2y').value);
+  var r = parseFloat(document.getElementById('q2r').value);
+  var fb = document.getElementById('fb2');
+  fb.classList.remove('correct','wrong'); fb.classList.add('show');
+
+  if(isNaN(x)||isNaN(y)||isNaN(r)){
+    fb.classList.add('wrong');
+    fb.textContent = 'Isi ketiga kolom dulu ya (x, y, dan r).';
+    return;
+  }
+  var benar = (Math.abs(x-3)<0.01 && Math.abs(y-(-2))<0.01 && Math.abs(r-5)<0.01);
+  var pakaiKoefisienMentah = (Math.abs(x-6)<0.01 && Math.abs(y-(-4))<0.01);
+  if(benar){
+    fb.classList.add('correct');
+    fb.innerHTML = '✓ Benar! Bagi dulu semuanya dengan 2, jadi \\(x^2+y^2-6x+4y-12=0\\). A=-6, B=4, C=-12 → pusat (3, -2), r = √(9+4+12) = √25 = 5.';
+    renderMath(fb);
+  } else if(pakaiKoefisienMentah){
+    fb.classList.add('wrong');
+    fb.innerHTML = '✗ Kamu langsung memakai koefisien -12 dan 8 tanpa membagi 2 dulu. Ingat: rumus jalan pintas hanya berlaku kalau koefisien \\(x^2\\) dan \\(y^2\\)-nya 1. Bagi seluruh persamaan dengan 2 dulu, baru ambil A, B, C.';
+    renderMath(fb);
+  } else {
+    fb.classList.add('wrong');
+    fb.innerHTML = '✗ Belum tepat. Coba bagi seluruh persamaan dengan 2 terlebih dahulu, baru tentukan A, B, dan C.';
+  }
+  kirimKeGuru(2, 'pusat('+x+','+y+'), r='+r, '', benar);
+}
+
+/* ================= CHALLENGE: SOAL 3 (SULIT) ================= */
+function checkQ3(){
+  if(!identitasLengkap()) return;
+  var batas = parseFloat(document.getElementById('q3batas').value);
+  var jenis = document.getElementById('q3jenis').value;
+  var fb = document.getElementById('fb3');
+  fb.classList.remove('correct','wrong'); fb.classList.add('show');
+
+  if(isNaN(batas) || !jenis){
+    fb.classList.add('wrong');
+    fb.textContent = 'Lengkapi dulu kedua jawaban ya.';
+    return;
+  }
+  var batasBenar = Math.abs(batas-13)<0.01;
+  var jenisBenar = (jenis === 'imajiner');
+  var benar = batasBenar && jenisBenar;
+
+  if(benar){
+    fb.classList.add('correct');
+    fb.innerHTML = '✓ Benar! A=-4, B=6 → \\(r^2=4+9-k=13-k\\). Saat \\(k=13\\), \\(r^2=0\\) (satu titik). Saat \\(k=15>13\\), \\(r^2=13-15=-2<0\\), jadi tidak terbentuk lingkaran nyata.';
+    renderMath(fb);
+  } else if(!batasBenar && jenisBenar){
+    fb.classList.add('wrong');
+    fb.innerHTML = '✗ Jawaban "jenis" sudah tepat, tapi nilai batas k masih salah. Ingat \\(r^2=\\left(\\frac{A}{2}\\right)^2+\\left(\\frac{B}{2}\\right)^2-k\\). Cari k saat \\(r^2=0\\).';
+    renderMath(fb);
+  } else if(batasBenar && !jenisBenar){
+    fb.classList.add('wrong');
+    fb.innerHTML = '✗ Nilai batas k sudah tepat (13). Tapi kalau k=15, berarti k lebih besar dari batas 13 — coba cek lagi tandanya di dalam akar, apakah masih positif atau sudah negatif?';
+  } else {
+    fb.classList.add('wrong');
+    fb.innerHTML = '✗ Coba mulai dari \\(r^2=\\left(\\frac{A}{2}\\right)^2+\\left(\\frac{B}{2}\\right)^2-k\\) dengan A=-4 dan B=6, lalu cari kapan nilainya 0 dan kapan negatif.';
+    renderMath(fb);
+  }
+  kirimKeGuru(3, 'k batas='+batas, 'jenis saat k=15: '+jenis, benar);
+}
+</script>
+
+</body>
+</html>

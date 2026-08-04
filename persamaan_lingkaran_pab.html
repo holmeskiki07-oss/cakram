@@ -1,0 +1,769 @@
+<!--
+==========================================================
+CAKRAWALA MATEMATIKA
+
+Judul      : Persamaan Lingkaran Berpusat di P(a, b)
+Jenis      : Modul Interaktif
+Versi      : 1.0
+
+Dikembangkan oleh
+Kiki Herdiansyah
+
+Copyright © 2026
+
+Website ini merupakan bagian dari proyek
+"Cakrawala Matematika".
+==========================================================
+-->
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Persamaan Lingkaran Berpusat di P(a, b) — Cakrawala Matematika</title>
+<meta name="description" content="Modul interaktif belajar persamaan lingkaran berpusat di P(a,b) — Cakrawala Matematika">
+<meta name="author" content="Kiki Herdiansyah">
+<meta name="application-name" content="Cakrawala Matematika">
+<meta name="copyright" content="© 2026 Kiki Herdiansyah">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --primary:#2563EB;
+    --primary-hover:#1D4ED8;
+    --primary-light:#DBEAFE;
+    --bg:#F8FAFC;
+    --card:#FFFFFF;
+    --text:#0F172A;
+    --text-soft:#64748B;
+    --border:#E2E8F0;
+    --success:#10B981;
+    --warning:#F59E0B;
+    --error:#EF4444;
+    --radius-card:18px;
+    --radius-btn:12px;
+    --sp-1:4px;
+    --sp-2:8px;
+    --sp-3:12px;
+    --sp-4:16px;
+    --sp-5:24px;
+    --sp-6:32px;
+    --sp-7:48px;
+    --shadow:0 1px 2px rgba(15,23,42,.04), 0 4px 16px rgba(15,23,42,.06);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    font-family:'Inter',sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  .wrap{max-width:900px; margin:0 auto; padding:0 var(--sp-4);}
+
+  /* TOPBAR */
+  .topbar{
+    position:sticky; top:0; z-index:50;
+    background:rgba(248,250,252,.92);
+    backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--border);
+  }
+  .topbar-inner{
+    max-width:900px; margin:0 auto; padding:10px var(--sp-4);
+    font-size:13px; font-weight:600; color:var(--primary);
+    letter-spacing:.2px;
+  }
+  .progress-track{height:3px; background:var(--border); width:100%;}
+  .progress-bar{height:100%; width:0%; background:var(--primary); transition:width 80ms linear;}
+
+  main{padding-bottom:var(--sp-7);}
+
+  /* FADE UP */
+  .fade-section{opacity:0; transform:translateY(16px); transition:opacity .5s ease, transform .5s ease;}
+  .fade-section.visible{opacity:1; transform:translateY(0);}
+
+  /* CARD */
+  .card{
+    background:var(--card);
+    border-radius:var(--radius-card);
+    box-shadow:var(--shadow);
+    padding:var(--sp-5);
+    margin-top:var(--sp-5);
+  }
+  .section-num{
+    display:inline-block; font-size:12.5px; font-weight:700; color:var(--primary);
+    background:var(--primary-light); padding:3px 10px; border-radius:999px; margin-bottom:var(--sp-3);
+    letter-spacing:.5px;
+  }
+  h1{font-size:26px; font-weight:800; margin:var(--sp-3) 0 var(--sp-2); line-height:1.3;}
+  h2{font-size:20px; font-weight:700; margin:0 0 var(--sp-3); line-height:1.35;}
+  h3{font-size:16px; font-weight:700; margin:0 0 var(--sp-2);}
+  p{font-size:15px; line-height:1.65; color:var(--text); margin:0 0 var(--sp-3);}
+  .soft{color:var(--text-soft);}
+  mark{background:var(--primary-light); color:var(--primary-hover); padding:1px 4px; border-radius:4px; font-weight:600;}
+
+  /* HEADER */
+  .header-card{margin-top:var(--sp-5);}
+  .pill-row{display:flex; gap:var(--sp-2); flex-wrap:wrap; margin-bottom:var(--sp-3);}
+  .pill{
+    font-size:12.5px; font-weight:600; color:var(--primary);
+    background:var(--primary-light); padding:5px 12px; border-radius:999px;
+  }
+  .goal-list{margin:var(--sp-3) 0 0; padding-left:20px;}
+  .goal-list li{font-size:14.5px; line-height:1.6; color:var(--text-soft); margin-bottom:4px;}
+
+  /* ID CARD */
+  .id-card{
+    margin-top:var(--sp-5);
+    background:var(--primary-light);
+    border-radius:14px;
+    padding:var(--sp-4);
+  }
+  .id-card h3{color:var(--primary-hover);}
+  .id-card p{font-size:13.5px; color:#1e3a8a; margin-bottom:var(--sp-3);}
+  .id-grid{display:grid; grid-template-columns:1fr 1fr; gap:var(--sp-3);}
+  .id-grid label{display:block; font-size:12.5px; font-weight:600; color:var(--text-soft); margin-bottom:4px;}
+  .id-grid input{
+    width:100%; padding:10px 12px; border-radius:10px; border:1px solid var(--border);
+    font-family:'Inter',sans-serif; font-size:14px; background:#fff;
+  }
+  .id-grid input:focus{outline:none; border-color:var(--primary);}
+  .id-status{font-size:13px; font-weight:600; margin-top:var(--sp-2); min-height:16px;}
+
+  @media (max-width:520px){ .id-grid{grid-template-columns:1fr;} }
+
+  /* BUTTONS */
+  .btn{
+    display:inline-flex; align-items:center; justify-content:center; gap:6px;
+    min-height:40px; padding:0 18px; border-radius:var(--radius-btn);
+    font-family:'Inter',sans-serif; font-size:14px; font-weight:600;
+    border:none; cursor:pointer; transition:all 200ms ease;
+  }
+  .btn-primary{background:var(--primary); color:#fff;}
+  .btn-primary:hover{background:var(--primary-hover);}
+  .btn-outline{background:#fff; color:var(--primary); border:1px solid var(--border);}
+  .btn-outline:hover{border-color:var(--primary); background:var(--primary-light);}
+  .btn:disabled{opacity:.4; cursor:not-allowed;}
+
+  /* STEP VISUAL */
+  .step-nav{display:flex; align-items:center; justify-content:space-between; margin-top:var(--sp-4);}
+  .step-dots{display:flex; gap:6px;}
+  .step-dot{width:7px; height:7px; border-radius:50%; background:var(--border);}
+  .step-dot.active{background:var(--primary); width:20px; border-radius:4px; transition:all 200ms ease;}
+  .step-box{
+    background:var(--bg); border-radius:14px; padding:var(--sp-4); margin-top:var(--sp-3);
+    display:flex; flex-direction:column; align-items:center; gap:var(--sp-3);
+  }
+  svg{max-width:100%; height:auto; display:block;}
+  .step-text{font-size:14.5px; line-height:1.65; color:var(--text); text-align:center; min-height:52px;}
+
+  /* SIMULATION */
+  .sim-grid{display:grid; grid-template-columns:1fr; gap:var(--sp-4); margin-top:var(--sp-4);}
+  @media (min-width:640px){ .sim-grid{grid-template-columns:1fr 1fr;} }
+  .sim-visual{background:var(--bg); border-radius:14px; padding:var(--sp-3); display:flex; align-items:center; justify-content:center;}
+  .sim-controls{display:flex; flex-direction:column; gap:var(--sp-4); justify-content:center;}
+  .slider-group label{display:flex; justify-content:space-between; font-size:13.5px; font-weight:600; margin-bottom:6px;}
+  .slider-group label span.val{color:var(--primary); font-weight:700;}
+  input[type=range]{
+    width:100%; -webkit-appearance:none; height:6px; border-radius:999px; background:var(--border); outline:none;
+  }
+  input[type=range]::-webkit-slider-thumb{
+    -webkit-appearance:none; width:20px; height:20px; border-radius:50%; background:var(--primary);
+    cursor:pointer; border:3px solid #fff; box-shadow:0 1px 4px rgba(0,0,0,.25);
+  }
+  input[type=range]::-moz-range-thumb{
+    width:20px; height:20px; border-radius:50%; background:var(--primary); cursor:pointer; border:3px solid #fff;
+  }
+  .equation-box{
+    background:var(--text); color:#fff; border-radius:12px; padding:var(--sp-4);
+    font-size:17px; font-weight:700; text-align:center; letter-spacing:.3px;
+  }
+  .insight-box{
+    margin-top:var(--sp-3); background:#ECFDF5; border:1px solid #A7F3D0; border-radius:12px;
+    padding:var(--sp-3) var(--sp-4); font-size:14px; color:#065F46; font-weight:600;
+    display:none; align-items:center; gap:8px;
+  }
+  .insight-box.show{display:flex;}
+
+  /* CHALLENGE */
+  .challenge-item{border:1px solid var(--border); border-radius:14px; padding:var(--sp-4); margin-top:var(--sp-4);}
+  .challenge-head{display:flex; align-items:center; gap:var(--sp-2); margin-bottom:var(--sp-3); flex-wrap:wrap;}
+  .level-badge{font-size:11.5px; font-weight:700; padding:4px 10px; border-radius:999px; letter-spacing:.3px;}
+  .level-mudah{background:#D1FAE5; color:#065F46;}
+  .level-sedang{background:#FEF3C7; color:#92400E;}
+  .level-sulit{background:#FEE2E2; color:#991B1B;}
+  .challenge-inputs{display:flex; flex-wrap:wrap; gap:var(--sp-3); align-items:flex-end; margin:var(--sp-3) 0;}
+  .field{display:flex; flex-direction:column; gap:4px;}
+  .field label{font-size:12.5px; font-weight:600; color:var(--text-soft);}
+  .field input{
+    width:88px; padding:9px 10px; border-radius:10px; border:1px solid var(--border);
+    font-family:'Inter',sans-serif; font-size:14px;
+  }
+  .field input:focus{outline:none; border-color:var(--primary);}
+  .feedback{
+    margin-top:var(--sp-3); padding:var(--sp-3); border-radius:10px; font-size:14px; line-height:1.55;
+    display:none;
+  }
+  .feedback.show{display:block;}
+  .feedback.ok{background:#D1FAE5; color:#065F46;}
+  .feedback.bad{background:#FEE2E2; color:#991B1B;}
+  .send-status{font-size:12.5px; color:var(--text-soft); margin-top:6px; min-height:14px;}
+
+  /* MISTAKES */
+  .mistake-item{display:flex; gap:var(--sp-3); align-items:flex-start; margin-top:var(--sp-4);}
+  .mistake-x{
+    flex-shrink:0; width:28px; height:28px; border-radius:50%; background:#FEE2E2; color:var(--error);
+    display:flex; align-items:center; justify-content:center; font-weight:800; font-size:14px;
+  }
+
+  /* SUMMARY */
+  .summary-list{list-style:none; margin:0; padding:0;}
+  .summary-list li{
+    display:flex; gap:var(--sp-3); align-items:flex-start; font-size:14.5px; line-height:1.6;
+    padding:var(--sp-3) 0; border-bottom:1px solid var(--border);
+  }
+  .summary-list li:last-child{border-bottom:none;}
+  .summary-num{
+    flex-shrink:0; width:26px; height:26px; border-radius:50%; background:var(--primary); color:#fff;
+    display:flex; align-items:center; justify-content:center; font-size:12.5px; font-weight:700;
+  }
+  .done-badge{
+    text-align:center; margin-top:var(--sp-5); font-size:14px; font-weight:700; color:var(--success);
+  }
+
+  /* FOOTER */
+  .site-footer{padding: var(--sp-5) 0 var(--sp-6); text-align:center;}
+  .footer-divider{height:1px; background:var(--border); margin-bottom:var(--sp-4);}
+  .footer-brand{font-size:13.5px; font-weight:700; color:var(--primary); margin:0 0 4px;}
+  .footer-text{font-size:13px; color:var(--text-soft); margin:0 0 2px;}
+  .footer-meta{font-size:12.5px; color:var(--text-soft); margin:0; opacity:.85;}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-inner">CAKRAWALA MATEMATIKA · Persamaan Lingkaran Berpusat di P(a, b)</div>
+  <div class="progress-track"><div class="progress-bar" id="progressBar"></div></div>
+</div>
+
+<main class="wrap">
+
+  <!-- 1. HEADER -->
+  <section class="header-card card">
+    <div class="pill-row">
+      <span class="pill">Kelas XI</span>
+      <span class="pill">⏱ 15–20 menit</span>
+    </div>
+    <h1>Persamaan Lingkaran Berpusat di P(a, b)</h1>
+    <p class="soft">Setelah modul ini selesai, kamu akan bisa:</p>
+    <ul class="goal-list">
+      <li>Memahami dari mana rumus persamaan lingkaran itu berasal (bukan cuma menghafal).</li>
+      <li>Menuliskan persamaan lingkaran kalau tahu pusat dan jari-jarinya.</li>
+      <li>Membaca pusat dan jari-jari dari sebuah persamaan lingkaran.</li>
+      <li>Menghindari kesalahan tanda yang paling sering terjadi di materi ini.</li>
+    </ul>
+
+    <div class="id-card">
+      <h3>Isi dulu sebelum mulai 👋</h3>
+      <p>Jawabanmu di bagian Challenge otomatis terkirim ke gurumu. Tidak perlu login atau email apapun.</p>
+      <div class="id-grid">
+        <div><label>Nama lengkap</label><input type="text" id="namaSiswa" placeholder="Tulis namamu"></div>
+        <div><label>Kelas</label><input type="text" id="kelasSiswa" placeholder="Contoh: XI IPA 2"></div>
+      </div>
+      <div class="id-status" id="idStatus"></div>
+    </div>
+  </section>
+
+  <!-- 2. PERNAHKAH KAMU BERPIKIR -->
+  <section class="card fade-section">
+    <span class="section-num">01</span>
+    <h2>Pernahkah Kamu Berpikir?</h2>
+    <p>Coba bayangkan kamu menaruh sebuah gelas di atas meja, lalu memutarinya dengan jari sambil menjaga jarak yang sama persis.</p>
+    <p>Jarimu akan membentuk sebuah lingkaran. Sekarang, apa yang terjadi kalau gelasnya kamu geser ke pojok meja?</p>
+    <p>Lingkaran yang terbentuk tetap sama besar. Tapi <mark>posisinya ikut pindah</mark>, mengikuti posisi gelas.</p>
+    <p>Nah, kamu mungkin sudah tahu rumus <mark>x² + y² = r²</mark> untuk lingkaran yang pusatnya di titik asal O(0,0). Tapi bagaimana kalau pusatnya bukan di O, melainkan di titik lain, sebut saja P(a, b)?</p>
+    <p>Menurutmu, apa yang berubah dari rumusnya?</p>
+  </section>
+
+  <!-- 3. PENJELASAN SEDERHANA -->
+  <section class="card fade-section">
+    <span class="section-num">02</span>
+    <h2>Penjelasan Sederhana</h2>
+    <p>Ingat syarat sebuah lingkaran: <mark>semua titik di kelilingnya punya jarak yang sama ke pusat</mark>. Jarak itu namanya jari-jari, atau r.</p>
+    <p>Kalau pusatnya di O(0,0), titik sembarang (x, y) di lingkaran itu jaraknya ke O adalah r. Dari situ munculah x² + y² = r².</p>
+    <p>Sekarang pusatnya kita geser ke P(a, b). Ambil titik sembarang (x, y) di lingkaran itu. Jarak horizontalnya ke pusat adalah (x − a), dan jarak vertikalnya adalah (y − b).</p>
+    <p>Ayo coba pakai Teorema Pythagoras seperti biasa: kuadrat sisi datar ditambah kuadrat sisi tegak, sama dengan kuadrat sisi miring (jari-jari r).</p>
+    <p>Hasilnya: <mark>(x − a)² + (y − b)² = r²</mark>. Itu saja. Rumus lama cuma "digeser" pakai a dan b.</p>
+  </section>
+
+  <!-- 4. LIHAT CARA KERJANYA -->
+  <section class="card fade-section">
+    <span class="section-num">03</span>
+    <h2>Lihat Cara Kerjanya</h2>
+    <p class="soft">Kita pakai contoh: pusat P(3, 2) dan jari-jari r = 4. Tekan Next untuk lihat langkah demi langkah.</p>
+
+    <div class="step-box">
+      <svg id="stepSvg" viewBox="0 0 300 260" xmlns="http://www.w3.org/2000/svg"></svg>
+      <p class="step-text" id="stepText"></p>
+    </div>
+
+    <div class="step-nav">
+      <button class="btn btn-outline" id="prevStepBtn">← Previous</button>
+      <div class="step-dots" id="stepDots"></div>
+      <button class="btn btn-primary" id="nextStepBtn">Next →</button>
+    </div>
+  </section>
+
+  <!-- 5. COBA SENDIRI -->
+  <section class="card fade-section">
+    <span class="section-num">04</span>
+    <h2>Coba Sendiri</h2>
+    <p class="soft">Geser slider di bawah. Perhatikan bagaimana lingkaran dan rumusnya berubah bersamaan, secara langsung.</p>
+
+    <div class="sim-grid">
+      <div class="sim-visual">
+        <svg id="simSvg" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg"></svg>
+      </div>
+      <div class="sim-controls">
+        <div class="slider-group">
+          <label>Pusat a (geser mendatar) <span class="val" id="valA">2</span></label>
+          <input type="range" id="sliderA" min="-6" max="6" step="1" value="2">
+        </div>
+        <div class="slider-group">
+          <label>Pusat b (geser tegak) <span class="val" id="valB">1</span></label>
+          <input type="range" id="sliderB" min="-6" max="6" step="1" value="1">
+        </div>
+        <div class="slider-group">
+          <label>Jari-jari r <span class="val" id="valR">3</span></label>
+          <input type="range" id="sliderR" min="1" max="6" step="1" value="3">
+        </div>
+        <div class="equation-box" id="equationBox"></div>
+      </div>
+    </div>
+    <div class="insight-box" id="insightBox">💡 <span id="insightText"></span></div>
+  </section>
+
+  <!-- 6. CHALLENGE -->
+  <section class="card fade-section">
+    <span class="section-num">05</span>
+    <h2>Challenge</h2>
+    <p class="soft">Tiga soal, makin lama makin menantang. Jawabanmu otomatis tersimpan untuk gurumu.</p>
+
+    <!-- Soal 1 - Mudah -->
+    <div class="challenge-item">
+      <div class="challenge-head">
+        <span class="level-badge level-mudah">MUDAH</span>
+        <h3 style="margin:0;">Soal 1</h3>
+      </div>
+      <p>Sebuah lingkaran punya pusat P(2, −3) dan jari-jari 5. Tuliskan persamaannya dalam bentuk (x − A)² + (y − B)² = C.</p>
+      <div class="challenge-inputs">
+        <div class="field"><label>A</label><input type="number" id="s1a"></div>
+        <div class="field"><label>B</label><input type="number" id="s1b"></div>
+        <div class="field"><label>C</label><input type="number" id="s1c"></div>
+        <button class="btn btn-primary" onclick="checkSoal1()">Cek Jawaban</button>
+      </div>
+      <div class="feedback" id="fb1"></div>
+      <div class="send-status" id="send0"></div>
+    </div>
+
+    <!-- Soal 2 - Sedang -->
+    <div class="challenge-item">
+      <div class="challenge-head">
+        <span class="level-badge level-sedang">SEDANG</span>
+        <h3 style="margin:0;">Soal 2</h3>
+      </div>
+      <p>Diketahui lingkaran (x + 4)² + (y − 2)² = 9. Tentukan pusat (a, b) dan jari-jari r-nya.</p>
+      <div class="challenge-inputs">
+        <div class="field"><label>a</label><input type="number" id="s2a"></div>
+        <div class="field"><label>b</label><input type="number" id="s2b"></div>
+        <div class="field"><label>r</label><input type="number" id="s2r"></div>
+        <button class="btn btn-primary" onclick="checkSoal2()">Cek Jawaban</button>
+      </div>
+      <div class="feedback" id="fb2"></div>
+      <div class="send-status" id="send1"></div>
+    </div>
+
+    <!-- Soal 3 - Sulit -->
+    <div class="challenge-item">
+      <div class="challenge-head">
+        <span class="level-badge level-sulit">SULIT</span>
+        <h3 style="margin:0;">Soal 3</h3>
+      </div>
+      <p>Lingkaran (x − 3)² + (y − k)² = 25 melalui titik (7, 1). Ada <strong>dua</strong> kemungkinan nilai k yang memenuhi. Temukan keduanya (isi dalam urutan berapa saja).</p>
+      <div class="challenge-inputs">
+        <div class="field"><label>k pertama</label><input type="number" id="s3a"></div>
+        <div class="field"><label>k kedua</label><input type="number" id="s3b"></div>
+        <button class="btn btn-primary" onclick="checkSoal3()">Cek Jawaban</button>
+      </div>
+      <div class="feedback" id="fb3"></div>
+      <div class="send-status" id="send2"></div>
+    </div>
+  </section>
+
+  <!-- 7. KESALAHAN YANG SERING TERJADI -->
+  <section class="card fade-section">
+    <span class="section-num">06</span>
+    <h2>Kesalahan yang Sering Terjadi</h2>
+
+    <div class="mistake-item">
+      <div class="mistake-x">✕</div>
+      <div>
+        <p style="margin-bottom:2px;"><strong>Salah tanda pusat.</strong></p>
+        <p class="soft">Rumusnya (x − a), jadi kalau di soal tertulis (x + 4), itu artinya (x − (−4)), sehingga a = −4, bukan 4. Selalu balik tandanya.</p>
+      </div>
+    </div>
+    <div class="mistake-item">
+      <div class="mistake-x">✕</div>
+      <div>
+        <p style="margin-bottom:2px;"><strong>Lupa mengakar untuk mencari r.</strong></p>
+        <p class="soft">Angka di ruas kanan itu r², bukan r. Kalau ruas kanannya 9, jari-jarinya adalah √9 = 3, bukan 9.</p>
+      </div>
+    </div>
+    <div class="mistake-item">
+      <div class="mistake-x">✕</div>
+      <div>
+        <p style="margin-bottom:2px;"><strong>Menukar posisi a dan b.</strong></p>
+        <p class="soft">a selalu berpasangan dengan x, dan b selalu berpasangan dengan y. Kalau tertukar, pusat lingkaranmu akan salah tempat.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8. RINGKASAN -->
+  <section class="card fade-section">
+    <span class="section-num">07</span>
+    <h2>Ringkasan</h2>
+    <ul class="summary-list">
+      <li><span class="summary-num">1</span><span>Persamaan lingkaran berpusat di P(a, b) dengan jari-jari r adalah (x − a)² + (y − b)² = r².</span></li>
+      <li><span class="summary-num">2</span><span>Nilai a menggeser lingkaran secara mendatar, dan nilai b menggesernya secara tegak.</span></li>
+      <li><span class="summary-num">3</span><span>Nilai r menentukan besar-kecilnya lingkaran.</span></li>
+      <li><span class="summary-num">4</span><span>Kalau pusatnya di titik asal (a = 0, b = 0), rumusnya sederhana menjadi x² + y² = r².</span></li>
+      <li><span class="summary-num">5</span><span>Hati-hati dengan tanda minus di depan a dan b — itu sumber kesalahan paling umum di materi ini.</span></li>
+    </ul>
+    <p class="done-badge">✓ Selesai — Persamaan Lingkaran Berpusat di P(a, b)</p>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-divider"></div>
+    <p class="footer-brand">Cakrawala Matematika</p>
+    <p class="footer-text">Dikembangkan oleh <strong>Kiki Herdiansyah</strong></p>
+    <p class="footer-meta">Versi 1.0 · © 2026</p>
+  </div>
+</footer>
+
+<script>
+/* ================= PROGRESS BAR ================= */
+(function(){
+  var bar = document.getElementById('progressBar');
+  function update(){
+    var h = document.documentElement;
+    var scrolled = h.scrollTop;
+    var height = h.scrollHeight - h.clientHeight;
+    var pct = height > 0 ? (scrolled / height) * 100 : 0;
+    bar.style.width = pct + '%';
+  }
+  document.addEventListener('scroll', update, {passive:true});
+  update();
+})();
+
+/* ================= FADE UP ================= */
+(function(){
+  var els = document.querySelectorAll('.fade-section');
+  if(!('IntersectionObserver' in window)){
+    els.forEach(function(el){ el.classList.add('visible'); });
+    return;
+  }
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(entry){
+      if(entry.isIntersecting){
+        entry.target.classList.add('visible');
+        io.unobserve(entry.target);
+      }
+    });
+  }, {threshold:0.12});
+  els.forEach(function(el){ io.observe(el); });
+})();
+
+/* ================= IDENTITAS SISWA ================= */
+function getIdentitas(){
+  var nama = document.getElementById('namaSiswa').value.trim();
+  var kelas = document.getElementById('kelasSiswa').value.trim();
+  return { nama: nama, kelas: kelas };
+}
+function identitasLengkap(){
+  var id = getIdentitas();
+  var statusEl = document.getElementById('idStatus');
+  if(!id.nama || !id.kelas){
+    statusEl.textContent = 'Isi nama dan kelas dulu ya, sebelum cek jawaban.';
+    statusEl.style.color = '#B91C1C';
+    document.getElementById('namaSiswa').focus();
+    return false;
+  }
+  statusEl.textContent = '';
+  return true;
+}
+
+/* ================= SVG HELPERS ================= */
+var SVGNS = 'http://www.w3.org/2000/svg';
+function el(tag, attrs){
+  var e = document.createElementNS(SVGNS, tag);
+  for(var k in attrs){ e.setAttribute(k, attrs[k]); }
+  return e;
+}
+
+/* ================= STEP DIAGRAM (Section 4) ================= */
+(function(){
+  var svg = document.getElementById('stepSvg');
+  var textEl = document.getElementById('stepText');
+  var dotsWrap = document.getElementById('stepDots');
+  var prevBtn = document.getElementById('prevStepBtn');
+  var nextBtn = document.getElementById('nextStepBtn');
+
+  // world: origin at (40,220), scale 22px/unit. Pusat P(3,2), titik (x,y) di lingkaran misal (6,5) -> r=4.24 (dibulatkan konsep 4 utk cerita)
+  var scale = 22, ox = 55, oy = 220;
+  function px(x){ return ox + x*scale; }
+  function py(y){ return oy - y*scale; }
+
+  var Px = 3, Py = 2, Qx = 6, Qy = 5.3;
+
+  var texts = [
+    'Ini titik pusat lingkaran, <mark>P(3, 2)</mark>, dan titik (x, y) sembarang di tepi lingkaran.',
+    'Ayo buat segitiga siku-siku. Sisi mendatarnya panjangnya <mark>(x − 3)</mark>, dan sisi tegaknya <mark>(y − 2)</mark>.',
+    'Sisi miring segitiga ini adalah jarak dari P ke titik (x, y) — itulah <mark>jari-jari r</mark>.',
+    'Terapkan Pythagoras: kuadrat sisi datar ditambah kuadrat sisi tegak, sama dengan kuadrat sisi miring.',
+    'Jadi rumusnya: <mark>(x − 3)² + (y − 2)² = r²</mark>. Kalau pusatnya P(a, b), tinggal ganti angka 3 jadi a dan 2 jadi b.'
+  ];
+
+  var step = 0;
+  var totalSteps = texts.length;
+
+  function buildDots(){
+    dotsWrap.innerHTML = '';
+    for(var i=0;i<totalSteps;i++){
+      var d = document.createElement('div');
+      d.className = 'step-dot';
+      dotsWrap.appendChild(d);
+    }
+  }
+  buildDots();
+
+  function render(){
+    svg.innerHTML = '';
+    // axes
+    svg.appendChild(el('line', {x1:ox-30, y1:oy, x2:270, y2:oy, stroke:'#CBD5E1', 'stroke-width':1.5}));
+    svg.appendChild(el('line', {x1:ox, y1:20, x2:ox, y2:oy+15, stroke:'#CBD5E1', 'stroke-width':1.5}));
+
+    // step >=0: pusat P and titik (x,y)
+    svg.appendChild(el('circle', {cx:px(Px), cy:py(Py), r:4, fill:'#2563EB'}));
+    svg.appendChild(el('text', {x:px(Px)-6, y:py(Py)-10, 'font-size':12, fill:'#0F172A', 'font-weight':700}))
+       .textContent = 'P(3,2)';
+
+    if(step >= 0){
+      svg.appendChild(el('circle', {cx:px(Qx), cy:py(Qy), r:4, fill:'#10B981'}));
+      var qLbl = el('text', {x:px(Qx)+8, y:py(Qy)-6, 'font-size':12, fill:'#0F172A', 'font-weight':700});
+      qLbl.textContent = '(x, y)';
+      svg.appendChild(qLbl);
+    }
+
+    if(step >= 1){
+      svg.appendChild(el('line', {x1:px(Px), y1:py(Py), x2:px(Qx), y2:py(Py), stroke:'#F59E0B', 'stroke-width':2.5, 'stroke-dasharray':'4,3'}));
+      svg.appendChild(el('line', {x1:px(Qx), y1:py(Py), x2:px(Qx), y2:py(Qy), stroke:'#F59E0B', 'stroke-width':2.5, 'stroke-dasharray':'4,3'}));
+      var dxLbl = el('text', {x:(px(Px)+px(Qx))/2-14, y:py(Py)+16, 'font-size':11.5, fill:'#92400E', 'font-weight':700});
+      dxLbl.textContent = 'x − 3';
+      svg.appendChild(dxLbl);
+      var dyLbl = el('text', {x:px(Qx)+6, y:(py(Py)+py(Qy))/2, 'font-size':11.5, fill:'#92400E', 'font-weight':700});
+      dyLbl.textContent = 'y − 2';
+      svg.appendChild(dyLbl);
+    }
+
+    if(step >= 2){
+      svg.appendChild(el('line', {x1:px(Px), y1:py(Py), x2:px(Qx), y2:py(Qy), stroke:'#2563EB', 'stroke-width':2.5}));
+      var rLbl = el('text', {x:(px(Px)+px(Qx))/2-22, y:(py(Py)+py(Qy))/2-8, 'font-size':12, fill:'#2563EB', 'font-weight':700});
+      rLbl.textContent = 'r';
+      svg.appendChild(rLbl);
+    }
+
+    if(step >= 4){
+      var formula = el('text', {x:70, y:30, 'font-size':13, fill:'#0F172A', 'font-weight':800});
+      formula.textContent = '(x−3)² + (y−2)² = r²';
+      svg.appendChild(formula);
+    }
+
+    textEl.innerHTML = texts[step];
+
+    var dots = dotsWrap.children;
+    for(var i=0;i<dots.length;i++){
+      dots[i].classList.toggle('active', i === step);
+    }
+    prevBtn.disabled = (step === 0);
+    nextBtn.disabled = (step === totalSteps-1);
+  }
+
+  prevBtn.addEventListener('click', function(){ if(step>0){ step--; render(); } });
+  nextBtn.addEventListener('click', function(){ if(step<totalSteps-1){ step++; render(); } });
+
+  render();
+})();
+
+/* ================= SIMULATION (Section 5) ================= */
+(function(){
+  var svg = document.getElementById('simSvg');
+  var sliderA = document.getElementById('sliderA');
+  var sliderB = document.getElementById('sliderB');
+  var sliderR = document.getElementById('sliderR');
+  var valA = document.getElementById('valA');
+  var valB = document.getElementById('valB');
+  var valR = document.getElementById('valR');
+  var eqBox = document.getElementById('equationBox');
+  var insightBox = document.getElementById('insightBox');
+  var insightText = document.getElementById('insightText');
+
+  var size = 300, ox = 150, oy = 150, scale = 15; // range kira-kira -10..10
+
+  function px(x){ return ox + x*scale; }
+  function py(y){ return oy - y*scale; }
+
+  function fmt(n){ return n < 0 ? ('− ' + Math.abs(n)) : ('+ ' + n); }
+
+  function draw(){
+    var a = parseInt(sliderA.value, 10);
+    var b = parseInt(sliderB.value, 10);
+    var r = parseInt(sliderR.value, 10);
+    valA.textContent = a; valB.textContent = b; valR.textContent = r;
+
+    svg.setAttribute('viewBox', '0 0 ' + size + ' ' + size);
+    svg.innerHTML = '';
+
+    // grid every 2 units
+    for(var g=-10; g<=10; g+=2){
+      svg.appendChild(el('line', {x1:px(g), y1:0, x2:px(g), y2:size, stroke:'#E2E8F0', 'stroke-width':1}));
+      svg.appendChild(el('line', {x1:0, y1:py(g), x2:size, y2:py(g), stroke:'#E2E8F0', 'stroke-width':1}));
+    }
+    // axes
+    svg.appendChild(el('line', {x1:0, y1:oy, x2:size, y2:oy, stroke:'#94A3B8', 'stroke-width':1.5}));
+    svg.appendChild(el('line', {x1:ox, y1:0, x2:ox, y2:size, stroke:'#94A3B8', 'stroke-width':1.5}));
+
+    // circle
+    svg.appendChild(el('circle', {cx:px(a), cy:py(b), r:r*scale, fill:'rgba(37,99,235,.12)', stroke:'#2563EB', 'stroke-width':2.5}));
+    // center point
+    svg.appendChild(el('circle', {cx:px(a), cy:py(b), r:4, fill:'#2563EB'}));
+    var lbl = el('text', {x:px(a)+8, y:py(b)-8, 'font-size':11.5, fill:'#0F172A', 'font-weight':700});
+    lbl.textContent = 'P(' + a + ', ' + b + ')';
+    svg.appendChild(lbl);
+
+    var eq;
+    if(a === 0 && b === 0){
+      eq = 'x² + y² = ' + (r*r);
+    } else {
+      eq = '(x ' + fmt(-a) + ')² + (y ' + fmt(-b) + ')² = ' + (r*r);
+    }
+    eqBox.textContent = eq;
+
+    if(a === 0 && b === 0){
+      insightText.textContent = 'Kalau pusatnya tepat di titik asal, rumusnya jadi lebih sederhana: x² + y² = r²!';
+      insightBox.classList.add('show');
+    } else {
+      insightBox.classList.remove('show');
+    }
+  }
+
+  sliderA.addEventListener('input', draw);
+  sliderB.addEventListener('input', draw);
+  sliderR.addEventListener('input', draw);
+  draw();
+})();
+
+/* ================= CHALLENGE CHECKING ================= */
+function showFeedback(id, ok, msg){
+  var f = document.getElementById(id);
+  f.className = 'feedback show ' + (ok ? 'ok' : 'bad');
+  f.textContent = msg;
+}
+
+function checkSoal1(){
+  if(!identitasLengkap()) return;
+  var a = parseFloat(document.getElementById('s1a').value);
+  var b = parseFloat(document.getElementById('s1b').value);
+  var c = parseFloat(document.getElementById('s1c').value);
+  var benar = (a === 2 && b === -3 && c === 25);
+  if(benar){
+    showFeedback('fb1', true, 'Betul! (x − 2)² + (y − (−3))² = 25. Kamu sudah tepat menuliskan pusat dan mengkuadratkan jari-jarinya.');
+  } else if(c === 5){
+    showFeedback('fb1', false, 'Hampir benar untuk pusatnya. Tapi ingat, ruas kanan itu r² bukan r. Karena r = 5, seharusnya ruas kanan = 25.');
+  } else if(a === -2 || b === 3){
+    showFeedback('fb1', false, 'Perhatikan tandanya lagi. Kalau pusatnya P(2, −3), maka A = 2 dan B = −3, sesuai posisi pusat, bukan dibalik.');
+  } else {
+    showFeedback('fb1', false, 'Belum tepat. Ingat bentuknya (x − a)² + (y − b)² = r². Substitusikan a = 2, b = −3, dan kuadratkan r = 5.');
+  }
+  kirimKeGuru(1, 'A='+a+', B='+b+', C='+c, '', benar);
+}
+
+function checkSoal2(){
+  if(!identitasLengkap()) return;
+  var a = parseFloat(document.getElementById('s2a').value);
+  var b = parseFloat(document.getElementById('s2b').value);
+  var r = parseFloat(document.getElementById('s2r').value);
+  var benar = (a === -4 && b === 2 && r === 3);
+  if(benar){
+    showFeedback('fb2', true, 'Tepat sekali! Pusatnya (−4, 2) dan jari-jarinya 3. Kamu sudah jeli membalik tanda dan mengakar r².');
+  } else if(a === 4){
+    showFeedback('fb2', false, 'Hati-hati di bagian a. Bentuk rumusnya (x − a), jadi (x + 4) itu sebenarnya (x − (−4)) → a = −4, bukan 4.');
+  } else if(r === 9){
+    showFeedback('fb2', false, 'Bagian pusat sudah benar, tapi ingat angka 9 di ruas kanan itu r², bukan r. Karena r² = 9, maka r = 3.');
+  } else {
+    showFeedback('fb2', false, 'Belum tepat. Cocokkan (x + 4)² + (y − 2)² = 9 dengan bentuk (x − a)² + (y − b)² = r² untuk menemukan a, b, dan r.');
+  }
+  kirimKeGuru(2, 'a='+a+', b='+b+', r='+r, '', benar);
+}
+
+function checkSoal3(){
+  if(!identitasLengkap()) return;
+  var k1 = parseFloat(document.getElementById('s3a').value);
+  var k2 = parseFloat(document.getElementById('s3b').value);
+  var target = [-2, 4];
+  var isValid = function(v){ return v === -2 || v === 4; };
+  var berbeda = (k1 !== k2);
+  var benar = isValid(k1) && isValid(k2) && berbeda;
+
+  if(benar){
+    showFeedback('fb3', true, 'Betul! k = −2 dan k = 4 sama-sama membuat lingkaran melewati titik (7, 1). Keduanya valid karena berasal dari akar kuadrat (1 − k)² = 9.');
+  } else if(isValid(k1) && !berbeda){
+    showFeedback('fb3', false, 'Salah satu nilaimu sudah benar, tapi kamu menuliskan angka yang sama dua kali. Ingat, akar kuadrat punya DUA kemungkinan (positif dan negatif).');
+  } else {
+    showFeedback('fb3', false, 'Coba substitusikan titik (7,1): (7−3)² + (1−k)² = 25 → 16 + (1−k)² = 25 → (1−k)² = 9. Ambil akar positif dan negatifnya untuk dapat dua nilai k.');
+  }
+  kirimKeGuru(3, 'k1='+k1, 'k2='+k2, benar);
+}
+
+/* ================= KIRIM KE GURU (Google Apps Script) ================= */
+/* Tempel URL Web App Google Apps Script di sini (satu URL sama dipakai untuk SEMUA modul) */
+var SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzcK65GHhWieoZ0MgGrIs4YIyYXyR7E1_UlbfH4fL-OD_movoIiUViBK49EA5mFF9jG/exec';
+
+function kirimKeGuru(nomorSoal, jawaban1, jawaban2, benar){
+  var idx = nomorSoal - 1;
+  var statusEl = document.getElementById('send'+idx);
+  if(!SCRIPT_URL){ if(statusEl) statusEl.textContent=''; return; }
+  var id = getIdentitas();
+  var namaKelas = id.nama + ' — ' + id.kelas;
+  var payload = {
+    topik: 'Persamaan Lingkaran Berpusat di P(a, b)',
+    nama: namaKelas,
+    soal: nomorSoal,
+    jawaban: jawaban1,
+    jawaban2: jawaban2 || '',
+    benar: benar ? 'Benar' : 'Salah',
+    waktu: new Date().toLocaleString('id-ID')
+  };
+  if(statusEl) statusEl.textContent = 'Mengirim ke guru...';
+  fetch(SCRIPT_URL, { method:'POST', mode:'no-cors', headers:{'Content-Type':'text/plain'}, body: JSON.stringify(payload) })
+    .then(function(){ if(statusEl) statusEl.textContent = 'Terkirim ke guru ✓'; })
+    .catch(function(){ if(statusEl) statusEl.textContent = 'Gagal mengirim (periksa koneksi internet).'; });
+}
+</script>
+</body>
+</html>
