@@ -70,6 +70,27 @@
         line-height: 1.5;
     }
 
+    /* =================================================================
+       APP SHELL — canvas mobile
+       Membatasi seluruh halaman ke lebar aplikasi HP, konsisten dengan
+       topik.html. Di layar PC/laptop, konten tetap sempit dan berada
+       di tengah, tidak melebar mengikuti lebar monitor.
+       ================================================================= */
+    .app-shell {
+        max-width: 560px;
+        margin: 0 auto;
+        min-height: 100vh;
+        background: var(--bg);
+        position: relative;
+    }
+
+    @media (min-width: 561px) {
+        .app-shell {
+            border-left: 1px solid var(--border);
+            border-right: 1px solid var(--border);
+        }
+    }
+
     .container {
         max-width: 880px;
         margin: 0 auto;
@@ -381,9 +402,70 @@
             font-size: 34px;
         }
     }
+
+    /* =================================================================
+       BOTTOM NAVIGATION
+       Standar navigasi utama Cakrawala Matematika: 5 menu, fixed di
+       bawah, lebar mengikuti canvas mobile (tidak melebar di PC/laptop).
+       Identik dengan bottom navigation pada topik.html.
+       ================================================================= */
+    .bottom-nav-spacer {
+        height: calc(72px + env(safe-area-inset-bottom));
+    }
+
+    .bottom-nav {
+        position: fixed;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        margin: 0 auto;
+        width: 100%;
+        max-width: 560px;
+        display: flex;
+        z-index: 50;
+        background: rgba(255, 255, 255, 0.92);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border-top: 1px solid var(--border);
+        padding: 8px 4px calc(8px + env(safe-area-inset-bottom));
+    }
+
+    .nav-item {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 4px;
+        padding: 6px 2px;
+        color: var(--text-secondary);
+        border-radius: 12px;
+        text-decoration: none;
+        transition: color 0.15s ease;
+    }
+
+    .nav-item svg {
+        width: 22px;
+        height: 22px;
+    }
+
+    .nav-item span {
+        font-size: 10.5px;
+        font-weight: 600;
+        letter-spacing: -0.01em;
+    }
+
+    .nav-item.active {
+        color: var(--primary);
+    }
+
+    .nav-item:active {
+        opacity: 0.7;
+    }
 </style>
 </head>
 <body>
+
+    <div class="app-shell">
 
     <div class="container">
 
@@ -407,7 +489,7 @@
         <div class="kompetensi-card">
             <div class="kompetensi-header">
                 <h2>🎯 Kompetensi yang Akan Dicapai</h2>
-                <p>Kemampuan yang akan kamu kuasai setelah mempelajari bab ini.</p>
+                <p>Gambaran umum bab ini, bukan materi lengkap.</p>
             </div>
             <ul class="kompetensi-list" id="kompetensiList"></ul>
         </div>
@@ -418,10 +500,46 @@
 
     </div>
 
+    <!-- ================= SPACER — mencegah konten tertutup bottom navigation ================= -->
+    <div class="bottom-nav-spacer"></div>
+
     <!-- ================= FOOTER ================= -->
     <footer>
         Cakrawala Matematika
     </footer>
+
+    <!-- ================= BOTTOM NAVIGATION ================= -->
+    <!-- Struktur navigasi utama Cakrawala Matematika (5 menu). -->
+    <!-- Ganti atribut href pada tiap <a> sesuai halaman tujuan. -->
+    <nav class="bottom-nav" aria-label="Navigasi utama">
+        <!-- GANTI href di bawah ini ke halaman Beranda yang sebenarnya -->
+        <a class="nav-item" href="#" data-nav="beranda">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11.5 12 4l9 7.5"/><path d="M5.5 10v9a1 1 0 0 0 1 1H9a1 1 0 0 0 1-1v-4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v4a1 1 0 0 0 1 1h2.5a1 1 0 0 0 1-1v-9"/></svg>
+            <span>Beranda</span>
+        </a>
+        <!-- Topik: menu aktif — Sub Topik masih berada di dalam bagian Topik -->
+        <a class="nav-item active" href="topik.html" data-nav="topik" aria-current="page">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h9l5 5v13a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1Z"/><path d="M14 3v5h5"/><path d="M8.5 13h7M8.5 16.5h7"/></svg>
+            <span>Topik</span>
+        </a>
+        <!-- GANTI href di bawah ini ke halaman Eksplorasi yang sebenarnya -->
+        <a class="nav-item" href="#" data-nav="eksplorasi">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6M10 3v5.5L4.5 18a1.8 1.8 0 0 0 1.6 2.6h11.8A1.8 1.8 0 0 0 19.5 18L14 8.5V3"/><path d="M7.5 14h9"/></svg>
+            <span>Eksplorasi</span>
+        </a>
+        <!-- GANTI href di bawah ini ke halaman Arena Game yang sebenarnya -->
+        <a class="nav-item" href="#" data-nav="arena">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="8" width="19" height="10" rx="5"/><line x1="7" y1="13" x2="7" y2="13.01"/><line x1="7" y1="10.5" x2="7" y2="15.5"/><line x1="5.5" y1="13" x2="8.5" y2="13"/><circle cx="16" cy="11.5" r="1" fill="currentColor" stroke="none"/><circle cx="18" cy="14.5" r="1" fill="currentColor" stroke="none"/></svg>
+            <span>Arena Game</span>
+        </a>
+        <!-- GANTI href di bawah ini ke halaman Cakrawala yang sebenarnya -->
+        <a class="nav-item" href="#" data-nav="Cakrawala">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M10 8.5v7l6-3.5-6-3.5Z"/></svg>
+            <span>Cakrawala</span>
+        </a>
+    </nav>
+
+    </div>
 
     <script>
         /* =============================================================
@@ -441,10 +559,11 @@
            tambahan.
            ============================================================= */
         const KOMPETENSI = [
-            "Memahami konsep polinomial.",
-            "Melakukan operasi polinomial.",
-            "Menentukan nilai, sisa, dan faktor polinomial.",
-            "Menentukan akar serta menyusun persamaan polinomial.",            
+            "Memahami konsep polinom.",
+            "Menentukan nilai polinom.",
+            "Menggunakan Teorema Sisa.",
+            "Menggunakan Teorema Faktor.",
+            "Melakukan pembagian dengan Skema Horner."
         ];
 
         /* =============================================================
@@ -461,64 +580,28 @@
            ============================================================= */
         const SUBMODUL = [
             {
-                judul: "Definisi & Unsur",
-                ikon: "📘",
-                deskripsi: "Mengenal bentuk umum dan unsur-unsur polinomial.",
-                link: "definisi_polinomial.html"
-            },
-            {
-                judul: "Penjumlahan & Pengurangan",
-                ikon: "📘",
-                deskripsi: "Menjumlahkan dan mengurangkan polinomial dengan benar.",
-                link: "penjumlahan_pengurangan_polinomial.html"
-            },
-            {
-                judul: "Perkalian",
-                ikon: "📘",
-                deskripsi: "Mengalikan dua polinomial langkah demi langkah.",
-                link: "perkalian_polinomial.html"
-            },
-            {
-                judul: "Pembagian Cara Bersusun",
-                ikon: "📘",
-                deskripsi: "Membagi polinomial dengan cara bersusun.",
-                link: "cara_bersusun.html"
-            },
-            {
-                judul: "Pembagian Cara Horner",
-                ikon: "📘",
-                deskripsi: "Membagi polinomial dengan skema horner.",
-                link: "cara_horner.html"
-            },
-            {
                 judul: "Teorema Sisa",
                 ikon: "📘",
-                deskripsi: "Menentukan sisa pembagian polinomial secara tepat.",
-                link: "teorema_sisa.html"
+                deskripsi: "Menentukan sisa pembagian suatu polinom.",
+                link: "teorema-sisa.html"
+            },
+            {
+                judul: "Metode Horner",
+                ikon: "📗",
+                deskripsi: "Membagi polinom secara praktis dengan skema Horner.",
+                link: "metode-horner.html"
             },
             {
                 judul: "Teorema Faktor",
-                ikon: "📘",
-                deskripsi: "Menentukan apakah suatu bentuk merupakan faktor polinomial.",
-                link: "teorema_faktor.html"
+                ikon: "📙",
+                deskripsi: "Menentukan faktor-faktor dari suatu polinom.",
+                link: "teorema-faktor.html"
             },
             {
                 judul: "Akar Polinomial",
-                ikon: "📘",
-                deskripsi: "Menemukan nilai yang membuat polinomial bernilai nol.",
-                link: "akar_polinomial.html"
-            },
-            {
-                judul: "Menentukan Persamaan",
-                ikon: "📘",
-                deskripsi: "Menyusun persamaan polinomial dari informasi yang diketahui.",
-                link: "menentukan_persamaan_polinomial.html"
-            },
-            {
-                judul: "Hubungan Akar-Koefisien",
-                ikon: "📘",
-                deskripsi: "Memahami hubungan antara akar dan koefisien polinomial.",
-                link: "hubungan_akar_koefisien.html"
+                ikon: "📕",
+                deskripsi: "Mencari akar-akar rasional dari persamaan polinom.",
+                link: "akar-polinomial.html"
             }
 
             // Tambahkan subbab baru di sini, contoh:
