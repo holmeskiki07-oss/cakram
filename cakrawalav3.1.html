@@ -1,0 +1,957 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title>Cakrawala — Cakrawala Matematika</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<!--
+    =====================================================================
+    CAKRAWALA MATEMATIKA — cakrawala.html
+    =====================================================================
+    Halaman ini adalah ruang KONTEN (video & artikel) — bukan LMS,
+    bukan halaman materi. Video mengarah ke YouTube (tab baru), artikel
+    untuk saat ini hanya katalog (belum ada halaman detail).
+
+    Kerangka teknis & visual (app-shell mobile canvas, warna, typography,
+    hero, bottom navigation) mengadaptasi langsung eksplorasi_v3.3.html
+    supaya satu keluarga dengan halaman lain. File ini TIDAK mengubah
+    halaman lain.
+    =====================================================================
+-->
+
+<style>
+  :root{
+    --primary:#2563EB;
+    --primary-hover:#1D4ED8;
+    --primary-light:#DBEAFE;
+    --bg:#F8FAFC;
+    --card:#FFFFFF;
+    --text:#0F172A;
+    --text-secondary:#64748B;
+    --border:#E2E8F0;
+    --success:#10B981;
+    --warning:#F59E0B;
+    --error:#EF4444;
+
+    --radius-lg:20px;
+    --radius-md:14px;
+    --radius-sm:10px;
+    --shadow-soft:0 2px 10px rgba(15,23,42,0.05), 0 1px 2px rgba(15,23,42,0.04);
+    --shadow-card:0 4px 16px rgba(15,23,42,0.06);
+    --header-h:64px;
+    --bottomnav-h:64px;
+  }
+
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  button{font-family:inherit;}
+  a{text-decoration:none;color:inherit;}
+
+  /* ---------- Layout shell (identik dengan eksplorasi_v3.3.html) ---------- */
+  .app{
+    max-width:560px;
+    margin:0 auto;
+    min-height:100vh;
+    background:var(--bg);
+    position:relative;
+    padding-bottom:calc(var(--bottomnav-h) + 28px);
+  }
+  @media (min-width:561px){
+    .app{border-left:1px solid var(--border);border-right:1px solid var(--border);}
+  }
+
+  /* ---------- Header ---------- */
+  .site-header{
+    position:sticky;
+    top:0;
+    z-index:40;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+    padding:16px 20px;
+    background:rgba(248,250,252,0.86);
+    backdrop-filter:blur(14px);
+    -webkit-backdrop-filter:blur(14px);
+    border-bottom:1px solid var(--border);
+  }
+  .site-header h1{
+    font-size:25px;
+    font-weight:800;
+    letter-spacing:-0.02em;
+    margin:0;
+  }
+  .icon-btn{
+    width:38px;
+    height:38px;
+    border-radius:50%;
+    border:1px solid var(--border);
+    background:var(--card);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    flex-shrink:0;
+    cursor:pointer;
+    transition:background .15s ease, border-color .15s ease, transform .15s ease;
+  }
+  .icon-btn:hover{border-color:var(--primary);}
+  .icon-btn:active{transform:scale(0.94);}
+
+  /* ---------- Hero ---------- */
+  .hero{
+    position:relative;
+    padding:26px 20px 8px;
+    overflow:hidden;
+  }
+  .hero-content{
+    position:relative;
+    z-index:2;
+    max-width:68%;
+  }
+  .hero h2{
+    font-size:clamp(24px,7vw,28px);
+    font-weight:800;
+    letter-spacing:-0.02em;
+    line-height:1.18;
+    margin:0 0 8px;
+  }
+  .hero p{
+    font-size:14px;
+    color:var(--text-secondary);
+    line-height:1.5;
+    margin:0;
+    max-width:320px;
+  }
+  .hero-svg{
+    position:absolute;
+    top:6px;
+    right:-10px;
+    width:140px;
+    height:140px;
+    z-index:1;
+    pointer-events:none;
+  }
+
+  /* ---------- Section heading (dipakai berulang) ---------- */
+  .section{padding:22px 20px 4px;}
+  .section-head{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    margin-bottom:14px;
+  }
+  .section-title{
+    display:flex;
+    align-items:center;
+    gap:7px;
+    font-size:17px;
+    font-weight:800;
+    letter-spacing:-0.01em;
+    color:var(--text);
+  }
+  .section-title svg{width:19px;height:19px;color:var(--primary);}
+  .section-link{
+    display:flex;
+    align-items:center;
+    gap:3px;
+    font-size:13.5px;
+    font-weight:700;
+    color:var(--primary);
+    white-space:nowrap;
+    flex-shrink:0;
+    cursor:pointer;
+    background:none;
+    border:none;
+  }
+  .section-link svg{width:14px;height:14px;}
+
+  /* ---------- Featured card (video/artikel pertama, lebih besar) ---------- */
+  .featured{
+    display:block;
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:var(--radius-lg);
+    overflow:hidden;
+    box-shadow:var(--shadow-card);
+    margin-bottom:14px;
+  }
+  .featured-thumb{
+    position:relative;
+    width:100%;
+    aspect-ratio:16/9;
+    overflow:hidden;
+  }
+  .featured-thumb img{width:100%;height:100%;object-fit:cover;display:block;}
+  .featured-badge{
+    position:absolute;
+    top:10px;
+    left:10px;
+    width:30px;
+    height:30px;
+    border-radius:8px;
+    background:#EF4444;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    box-shadow:0 2px 6px rgba(0,0,0,0.25);
+  }
+  .featured-badge svg{width:14px;height:14px;}
+  .featured-duration{
+    position:absolute;
+    bottom:10px;
+    right:10px;
+    background:rgba(15,23,42,0.72);
+    color:#fff;
+    font-size:12px;
+    font-weight:700;
+    padding:3px 8px;
+    border-radius:6px;
+  }
+  .featured-body{padding:14px 16px 16px;}
+  .featured-body h3{
+    font-size:16px;
+    font-weight:700;
+    letter-spacing:-0.01em;
+    line-height:1.32;
+    margin:0 0 5px;
+  }
+  .featured-meta{
+    font-size:12.5px;
+    color:var(--text-secondary);
+    display:flex;
+    align-items:center;
+    gap:6px;
+  }
+  .featured-meta .dot{width:3px;height:3px;border-radius:50%;background:var(--text-secondary);flex-shrink:0;}
+
+  /* ---------- List (row card horizontal) ---------- */
+  .list{display:flex;flex-direction:column;gap:10px;}
+  .row-card{
+    display:flex;
+    gap:12px;
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:var(--radius-md);
+    padding:10px;
+    box-shadow:var(--shadow-soft);
+  }
+  .row-thumb{
+    position:relative;
+    flex-shrink:0;
+    width:104px;
+    aspect-ratio:16/9;
+    border-radius:var(--radius-sm);
+    overflow:hidden;
+  }
+  .row-thumb img{width:100%;height:100%;object-fit:cover;display:block;}
+  .row-thumb .play-badge{
+    position:absolute;
+    top:5px;
+    left:5px;
+    width:18px;
+    height:18px;
+    border-radius:5px;
+    background:#EF4444;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+  .row-thumb .play-badge svg{width:8px;height:8px;}
+  .row-thumb .duration-badge{
+    position:absolute;
+    bottom:5px;
+    right:5px;
+    background:rgba(15,23,42,0.72);
+    color:#fff;
+    font-size:10.5px;
+    font-weight:700;
+    padding:2px 5px;
+    border-radius:5px;
+    line-height:1.2;
+  }
+  .row-body{flex:1;min-width:0;display:flex;flex-direction:column;justify-content:center;}
+  .row-body h4{
+    font-size:14px;
+    font-weight:700;
+    letter-spacing:-0.005em;
+    line-height:1.32;
+    margin:0 0 4px;
+    display:-webkit-box;
+    -webkit-line-clamp:2;
+    -webkit-box-orient:vertical;
+    overflow:hidden;
+  }
+  .row-meta{
+    font-size:12px;
+    color:var(--text-secondary);
+    display:flex;
+    align-items:center;
+    gap:5px;
+  }
+  .row-meta .dot{width:2.5px;height:2.5px;border-radius:50%;background:var(--text-secondary);flex-shrink:0;}
+
+  .article-icon{
+    color:#fff;
+    opacity:0.9;
+  }
+
+  /* ---------- Empty state (jaga-jaga jika array dikosongkan guru) ---------- */
+  .empty-state{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    text-align:center;
+    padding:34px 20px;
+    color:var(--text-secondary);
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:var(--radius-md);
+  }
+  .empty-state svg{width:34px;height:34px;margin-bottom:8px;color:#CBD5E1;}
+  .empty-state p{font-size:13px;margin:0;}
+
+  /* ---------- Search overlay ---------- */
+  .search-overlay{
+    display:none;
+    flex-direction:column;
+  }
+  .search-overlay.open{display:flex;}
+
+  .search-bar-row{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:16px 20px 6px;
+  }
+  .search-bar{
+    flex:1;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:999px;
+    padding:12px 16px;
+    box-shadow:var(--shadow-soft);
+    transition:border-color .15s ease, box-shadow .15s ease;
+  }
+  .search-bar:focus-within{
+    border-color:var(--primary);
+    box-shadow:0 0 0 4px var(--primary-light);
+  }
+  .search-bar svg{flex-shrink:0;color:var(--text-secondary);}
+  .search-bar input{
+    border:none;
+    outline:none;
+    background:transparent;
+    font-family:inherit;
+    font-size:15px;
+    color:var(--text);
+    width:100%;
+  }
+  .search-bar input::placeholder{color:#94A3B8;}
+
+  .search-results{padding:18px 20px 4px;}
+
+  .result-group{margin-bottom:20px;}
+  .result-group:last-child{margin-bottom:0;}
+  .result-group-label{
+    display:flex;
+    align-items:center;
+    gap:6px;
+    font-size:12px;
+    font-weight:800;
+    letter-spacing:.04em;
+    text-transform:uppercase;
+    color:var(--text-secondary);
+    margin-bottom:10px;
+  }
+  .result-group-label svg{width:14px;height:14px;color:var(--primary);}
+
+  .search-hint,
+  .search-empty{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    text-align:center;
+    padding:70px 24px;
+    color:var(--text-secondary);
+  }
+  .search-hint svg,
+  .search-empty svg{width:40px;height:40px;margin-bottom:14px;color:#CBD5E1;}
+  .search-hint p{font-size:13.5px;margin:0;max-width:240px;line-height:1.5;}
+  .search-empty p.main{font-size:15px;font-weight:700;color:var(--text);margin:0 0 4px;}
+  .search-empty p.sub{font-size:13px;margin:0;}
+
+  /* ---------- Bottom nav (identik dengan eksplorasi_v3.3.html) ---------- */
+  .bottom-nav{
+    position:fixed;
+    left:0;
+    right:0;
+    bottom:0;
+    z-index:50;
+    display:flex;
+    max-width:560px;
+    margin:0 auto;
+    background:rgba(255,255,255,0.92);
+    backdrop-filter:blur(16px);
+    -webkit-backdrop-filter:blur(16px);
+    border-top:1px solid var(--border);
+    padding:8px 4px calc(8px + env(safe-area-inset-bottom));
+  }
+  .nav-item{
+    flex:1;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:4px;
+    padding:6px 2px;
+    color:var(--text-secondary);
+    border-radius:12px;
+    transition:color .15s ease;
+  }
+  .nav-item svg{width:22px;height:22px;}
+  .nav-item span{font-size:10.5px;font-weight:600;letter-spacing:-0.01em;}
+  .nav-item.active{color:var(--primary);}
+  .nav-item:active{opacity:0.7;}
+
+  @media (prefers-reduced-motion: reduce){
+    *{transition:none !important; animation:none !important;}
+  }
+
+  .float-dot{animation:floaty 5s ease-in-out infinite;}
+  .float-dot2{animation:floaty 6.5s ease-in-out infinite .8s;}
+  @keyframes floaty{
+    0%,100%{transform:translateY(0);}
+    50%{transform:translateY(-7px);}
+  }
+</style>
+</head>
+<body>
+
+<div class="app">
+
+  <!-- ===================== HEADER ===================== -->
+  <header class="site-header">
+    <h1>Cakrawala</h1>
+    <!-- Ikon pencarian — membuka overlay pencarian video & artikel -->
+    <button class="icon-btn" id="searchOpenBtn" aria-label="Cari">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#0F172A" stroke-width="2" stroke-linecap="round">
+        <circle cx="11" cy="11" r="7"/>
+        <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+      </svg>
+    </button>
+  </header>
+
+  <!-- ===================== KONTEN UTAMA (disembunyikan saat search aktif) ===================== -->
+  <div id="mainContent">
+
+  <!-- ===================== HERO ===================== -->
+  <section class="hero">
+    <svg class="hero-svg" viewBox="0 0 200 200" fill="none">
+      <circle cx="100" cy="90" r="46" fill="none" stroke="#BFDBFE" stroke-width="1.6"/>
+      <ellipse cx="100" cy="90" rx="46" ry="17" fill="none" stroke="#93C5FD" stroke-width="1.2" opacity="0.8"/>
+      <circle class="float-dot" cx="146" cy="60" r="4" fill="var(--primary)"/>
+      <circle cx="60" cy="130" r="3" fill="#93C5FD"/>
+      <circle class="float-dot2" cx="40" cy="60" r="2.5" fill="#2563EB" opacity="0.5"/>
+      <path d="M20 155 C50 140, 60 165, 90 150" stroke="#BFDBFE" stroke-width="2" stroke-dasharray="1 7" stroke-linecap="round"/>
+      <circle cx="170" cy="130" r="3.5" fill="#1D4ED8" opacity="0.5"/>
+    </svg>
+    <div class="hero-content">
+      <h2>Jelajahi dunia matematika tanpa batas.</h2>
+      <p>Kumpulan cerita, ide, dan inspirasi seputar matematika — lewat video dan artikel.</p>
+    </div>
+  </section>
+
+  <!-- ===================== VIDEO TERBARU ===================== -->
+  <section class="section" id="sectionVideo">
+    <div class="section-head">
+      <div class="section-title">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M10 8.5v7l6-3.5-6-3.5Z"/></svg>
+        Video Terbaru
+      </div>
+      <button class="section-link" data-toggle="video">
+        <span id="videoToggleLabel">Lihat semua</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+      </button>
+    </div>
+    <div id="videoContainer"></div>
+  </section>
+
+  <!-- ===================== ARTIKEL TERBARU ===================== -->
+  <section class="section" id="sectionArtikel">
+    <div class="section-head">
+      <div class="section-title">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h9l5 5v13a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1Z"/><path d="M14 3v5h5"/><path d="M8.5 13h7M8.5 16.5h7"/></svg>
+        Artikel Terbaru
+      </div>
+      <button class="section-link" data-toggle="artikel">
+        <span id="artikelToggleLabel">Lihat semua</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+      </button>
+    </div>
+    <div id="artikelContainer"></div>
+  </section>
+
+  </div>
+  <!-- ===================== /KONTEN UTAMA ===================== -->
+
+  <!-- ===================== SEARCH OVERLAY ===================== -->
+  <div class="search-overlay" id="searchOverlay">
+    <div class="search-bar-row">
+      <div class="search-bar">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <circle cx="11" cy="11" r="7"/>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+        </svg>
+        <input type="text" id="searchInput" placeholder="Cari di Cakrawala..." autocomplete="off">
+      </div>
+      <button class="icon-btn" id="searchCloseBtn" aria-label="Tutup pencarian">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#0F172A" stroke-width="2.2" stroke-linecap="round"><line x1="5" y1="5" x2="19" y2="19"/><line x1="19" y1="5" x2="5" y2="19"/></svg>
+      </button>
+    </div>
+    <div class="search-results" id="searchResults"></div>
+  </div>
+
+  <!-- ===================== BOTTOM NAVIGATION ===================== -->
+  <!-- Struktur navigasi utama, identik dengan halaman lain. -->
+  <nav class="bottom-nav" aria-label="Navigasi utama">
+    <a class="nav-item" href="beranda.html" data-nav="beranda">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11.5 12 4l9 7.5"/><path d="M5.5 10v9a1 1 0 0 0 1 1H9a1 1 0 0 0 1-1v-4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v4a1 1 0 0 0 1 1h2.5a1 1 0 0 0 1-1v-9"/></svg>
+      <span>Beranda</span>
+    </a>
+    <a class="nav-item" href="topik.html" data-nav="topik">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h9l5 5v13a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1Z"/><path d="M14 3v5h5"/><path d="M8.5 13h7M8.5 16.5h7"/></svg>
+      <span>Topik</span>
+    </a>
+    <a class="nav-item" href="eksplorasi.html" data-nav="eksplorasi">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6M10 3v5.5L4.5 18a1.8 1.8 0 0 0 1.6 2.6h11.8A1.8 1.8 0 0 0 19.5 18L14 8.5V3"/><path d="M7.5 14h9"/></svg>
+      <span>Eksplorasi</span>
+    </a>
+    <a class="nav-item" href="arena.html" data-nav="arena">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="8" width="19" height="10" rx="5"/><line x1="7" y1="13" x2="7" y2="13.01"/><line x1="7" y1="10.5" x2="7" y2="15.5"/><line x1="5.5" y1="13" x2="8.5" y2="13"/><circle cx="16" cy="11.5" r="1" fill="currentColor" stroke="none"/><circle cx="18" cy="14.5" r="1" fill="currentColor" stroke="none"/></svg>
+      <span>Arena Game</span>
+    </a>
+    <a class="nav-item active" href="cakrawala.html" data-nav="Cakrawala" aria-current="page">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M10 8.5v7l6-3.5-6-3.5Z"/></svg>
+      <span>Cakrawala</span>
+    </a>
+  </nav>
+
+</div>
+
+<script>
+  /* ================================================================
+     ZONA EDIT GURU
+     ================================================================
+
+     GURU HANYA PERLU MENGEDIT BAGIAN INI (sampai tulisan
+     "JANGAN UBAH KODE DI BAWAH INI").
+
+     1. Tambahkan video baru di VIDEOS.
+     2. Tambahkan artikel baru di ARTICLES.
+     3. Isi "link" dengan URL video YouTube / artikel sebenarnya.
+     4. Isi "thumbnail" dengan URL gambar (bukan file, cukup alamat
+        gambarnya). Jika belum ada, biarkan tulisan placeholder —
+        halaman akan otomatis menampilkan sampul sementara yang rapi.
+
+     JANGAN MENGUBAH KODE DI LUAR ZONA INI.
+     ================================================================ */
+
+  // ================================================================
+  // CARA MENAMBAHKAN VIDEO BARU
+  // ================================================================
+  //
+  // 1. Salin satu blok video (dari tanda { sampai tanda }).
+  // 2. Tempel di bawah video terakhir.
+  // 3. Ganti judul, durasi, dan deskripsi.
+  // 4. Ganti "TEMPEL LINK YOUTUBE DI SINI" dengan link video asli.
+  // 5. (Opsional) Ganti "TEMPEL URL THUMBNAIL DI SINI" dengan URL
+  //    gambar sampul. Jika dibiarkan, akan tampil sampul otomatis.
+  //
+  // Contoh:
+  // link: "https://youtu.be/xxxxxxx"
+  // ================================================================
+
+  const VIDEOS = [
+    {
+      judul: "Keindahan Pola dalam Matematika",
+      thumbnail: "TEMPEL URL THUMBNAIL DI SINI",
+      link: "TEMPEL LINK YOUTUBE DI SINI",
+      durasi: "12:48",
+      deskripsi: "Menelusuri pola-pola indah yang tersembunyi dalam angka dan bentuk."
+    },
+    {
+      judul: "Mengungkap Pola Fibonacci di Alam",
+      thumbnail: "TEMPEL URL THUMBNAIL DI SINI",
+      link: "TEMPEL LINK YOUTUBE DI SINI",
+      durasi: "9:15",
+      deskripsi: "Dari bunga matahari hingga cangkang kerang — ke mana pun barisan Fibonacci bersembunyi."
+    },
+    {
+      judul: "Mengapa Matematika Itu Indah?",
+      thumbnail: "TEMPEL URL THUMBNAIL DI SINI",
+      link: "TEMPEL LINK YOUTUBE DI SINI",
+      durasi: "11:32",
+      deskripsi: "Sudut pandang lain tentang keindahan di balik rumus dan logika."
+    },
+    {
+      judul: "Geometri di Sekitar Kita",
+      thumbnail: "TEMPEL URL THUMBNAIL DI SINI",
+      link: "TEMPEL LINK YOUTUBE DI SINI",
+      durasi: "10:07",
+      deskripsi: "Bentuk-bentuk geometri ternyata ada di mana-mana, termasuk di sekitarmu."
+    },
+    {
+      judul: "Kisah Hidup Leonhard Euler",
+      thumbnail: "TEMPEL URL THUMBNAIL DI SINI",
+      link: "TEMPEL LINK YOUTUBE DI SINI",
+      durasi: "14:20",
+      deskripsi: "Mengenal perjalanan hidup salah satu matematikawan paling berpengaruh."
+    },
+    {
+      judul: "Parabola dalam Kehidupan Sehari-hari",
+      thumbnail: "TEMPEL URL THUMBNAIL DI SINI",
+      link: "TEMPEL LINK YOUTUBE DI SINI",
+      durasi: "8:54",
+      deskripsi: "Ternyata kurva parabola muncul di banyak hal yang kita temui setiap hari."
+    }
+  ];
+
+  // ================================================================
+  // CARA MENAMBAHKAN ARTIKEL BARU
+  // ================================================================
+  //
+  // 1. Salin satu blok artikel.
+  // 2. Tempel di bawah artikel terakhir.
+  // 3. Ganti judul dan waktuBaca.
+  // 4. Ganti "TEMPEL LINK ARTIKEL DI SINI" dengan link artikel asli
+  //    (artikel itu sendiri belum perlu dibuat sekarang).
+  // ================================================================
+
+  const ARTICLES = [
+    {
+      judul: "5 Fakta Menarik tentang Bilangan Prima",
+      thumbnail: "TEMPEL URL THUMBNAIL DI SINI",
+      link: "TEMPEL LINK ARTIKEL DI SINI",
+      waktuBaca: "4 menit baca"
+    },
+    {
+      judul: "Mengapa Simetri Ada di Mana-mana?",
+      thumbnail: "TEMPEL URL THUMBNAIL DI SINI",
+      link: "TEMPEL LINK ARTIKEL DI SINI",
+      waktuBaca: "6 menit baca"
+    },
+    {
+      judul: "Sejarah Singkat Angka Nol",
+      thumbnail: "TEMPEL URL THUMBNAIL DI SINI",
+      link: "TEMPEL LINK ARTIKEL DI SINI",
+      waktuBaca: "5 menit baca"
+    },
+    {
+      judul: "Matematika di Balik Karya Seni M.C. Escher",
+      thumbnail: "TEMPEL URL THUMBNAIL DI SINI",
+      link: "TEMPEL LINK ARTIKEL DI SINI",
+      waktuBaca: "7 menit baca"
+    }
+  ];
+
+  /* ================================================================
+     JANGAN UBAH KODE DI BAWAH INI
+     (sistem otomatis — render tampilan, sampul sementara, tombol
+     "Lihat semua")
+     ================================================================ */
+
+  const PREVIEW_COUNT = 3;
+
+  // Palet sampul sementara — dipakai bergantian jika "thumbnail"
+  // belum diisi URL gambar sungguhan.
+  const COVER_PALETTE = [
+    ['#1E3A8A', '#6D28D9'],
+    ['#0F172A', '#334155'],
+    ['#312E81', '#4C1D95'],
+    ['#78350F', '#B45309'],
+    ['#134E4A', '#0F766E'],
+    ['#7C2D12', '#C2410C']
+  ];
+
+  function isFilled(value){
+    if(!value) return false;
+    const clean = value.trim().toLowerCase();
+    if(clean === '' || clean === '#') return false;
+    return !clean.includes('tempel');
+  }
+
+  function coverStyle(index){
+    const pair = COVER_PALETTE[index % COVER_PALETTE.length];
+    return `background:linear-gradient(150deg, ${pair[0]}, ${pair[1]});`;
+  }
+
+  const ICON_PLAY = '<svg viewBox="0 0 24 24" fill="white"><path d="M6 4.5v15l14-7.5-14-7.5Z"/></svg>';
+  const ICON_ARTICLE = '<svg class="article-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h9l5 5v13a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1Z"/><path d="M14 3v5h5"/><path d="M8.5 13h7M8.5 16.5h7"/></svg>';
+
+  function thumbInner(item, index, iconHtml, iconSize){
+    if(isFilled(item.thumbnail)){
+      return `<img src="${item.thumbnail}" alt="${item.judul}" loading="lazy">`;
+    }
+    return `<div style="${coverStyle(index)} width:100%;height:100%;display:flex;align-items:center;justify-content:center;">
+      <div style="width:${iconSize}px;height:${iconSize}px;opacity:0.85;">${iconHtml}</div>
+    </div>`;
+  }
+
+  /* ---------------- VIDEO ---------------- */
+  const videoContainer = document.getElementById('videoContainer');
+  const videoToggleBtn = document.querySelector('[data-toggle="video"]');
+  const videoToggleLabel = document.getElementById('videoToggleLabel');
+  let videoExpanded = false;
+
+  function videoLinkAttrs(item){
+    const filled = isFilled(item.link);
+    return {
+      href: filled ? item.link : '#',
+      targetRel: filled ? 'target="_blank" rel="noopener"' : ''
+    };
+  }
+
+  function renderFeaturedVideo(item){
+    const { href, targetRel } = videoLinkAttrs(item);
+    return `
+      <a class="featured" href="${href}" ${targetRel}>
+        <div class="featured-thumb">
+          ${thumbInner(item, 0, ICON_PLAY, 40)}
+          <span class="featured-badge">${ICON_PLAY}</span>
+          <span class="featured-duration">${item.durasi || ''}</span>
+        </div>
+        <div class="featured-body">
+          <h3>${item.judul}</h3>
+          <div class="featured-meta">Cakrawala Matematika<span class="dot"></span>${item.durasi || ''}</div>
+        </div>
+      </a>
+    `;
+  }
+
+  function renderVideoRow(item, index){
+    const { href, targetRel } = videoLinkAttrs(item);
+    return `
+      <a class="row-card" href="${href}" ${targetRel}>
+        <div class="row-thumb">
+          ${thumbInner(item, index, ICON_PLAY, 22)}
+          <span class="play-badge">${ICON_PLAY}</span>
+          <span class="duration-badge">${item.durasi || ''}</span>
+        </div>
+        <div class="row-body">
+          <h4>${item.judul}</h4>
+          <div class="row-meta">Cakrawala Matematika<span class="dot"></span>${item.durasi || ''}</div>
+        </div>
+      </a>
+    `;
+  }
+
+  function renderVideos(){
+    if(VIDEOS.length === 0){
+      videoContainer.innerHTML = `
+        <div class="empty-state">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M10 8.5v7l6-3.5-6-3.5Z"/></svg>
+          <p>Belum ada video.</p>
+        </div>`;
+      videoToggleBtn.style.display = 'none';
+      return;
+    }
+
+    const [first, ...rest] = VIDEOS;
+    const shown = videoExpanded ? rest : rest.slice(0, PREVIEW_COUNT);
+
+    videoContainer.innerHTML = `
+      ${renderFeaturedVideo(first)}
+      <div class="list">
+        ${shown.map((item, i) => renderVideoRow(item, i + 1)).join('')}
+      </div>
+    `;
+
+    videoToggleBtn.style.display = rest.length > PREVIEW_COUNT ? 'flex' : 'none';
+    videoToggleLabel.textContent = videoExpanded ? 'Tampilkan lebih sedikit' : 'Lihat semua';
+  }
+
+  /* ---------------- ARTIKEL ---------------- */
+  const artikelContainer = document.getElementById('artikelContainer');
+  const artikelToggleBtn = document.querySelector('[data-toggle="artikel"]');
+  const artikelToggleLabel = document.getElementById('artikelToggleLabel');
+  let artikelExpanded = false;
+
+  function artikelLinkAttrs(item){
+    const filled = isFilled(item.link);
+    return { href: filled ? item.link : '#' };
+  }
+
+  function renderArtikelRow(item, index){
+    const { href } = artikelLinkAttrs(item);
+    return `
+      <a class="row-card" href="${href}">
+        <div class="row-thumb">
+          ${thumbInner(item, index, ICON_ARTICLE, 22)}
+        </div>
+        <div class="row-body">
+          <h4>${item.judul}</h4>
+          <div class="row-meta">${item.waktuBaca || ''}</div>
+        </div>
+      </a>
+    `;
+  }
+
+  function renderArtikel(){
+    if(ARTICLES.length === 0){
+      artikelContainer.innerHTML = `
+        <div class="empty-state">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h9l5 5v13a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1Z"/></svg>
+          <p>Belum ada artikel.</p>
+        </div>`;
+      artikelToggleBtn.style.display = 'none';
+      return;
+    }
+
+    const shown = artikelExpanded ? ARTICLES : ARTICLES.slice(0, PREVIEW_COUNT);
+
+    artikelContainer.innerHTML = `
+      <div class="list">
+        ${shown.map((item, i) => renderArtikelRow(item, i)).join('')}
+      </div>
+    `;
+
+    artikelToggleBtn.style.display = ARTICLES.length > PREVIEW_COUNT ? 'flex' : 'none';
+    artikelToggleLabel.textContent = artikelExpanded ? 'Tampilkan lebih sedikit' : 'Lihat semua';
+  }
+
+  /* ---------------- Tombol "Lihat semua" ---------------- */
+  videoToggleBtn.addEventListener('click', () => {
+    videoExpanded = !videoExpanded;
+    renderVideos();
+  });
+  artikelToggleBtn.addEventListener('click', () => {
+    artikelExpanded = !artikelExpanded;
+    renderArtikel();
+  });
+
+  /* ---------------- Inisialisasi ---------------- */
+  renderVideos();
+  renderArtikel();
+
+  /* ================================================================
+     PENCARIAN (VIDEO & ARTIKEL)
+     ================================================================
+     Mencari langsung dari data VIDEOS & ARTICLES di Zona Edit Guru
+     di atas — otomatis ikut bertambah begitu guru menambah data baru,
+     tanpa perlu mengubah kode di bagian ini.
+     ================================================================ */
+
+  const searchOpenBtn = document.getElementById('searchOpenBtn');
+  const searchCloseBtn = document.getElementById('searchCloseBtn');
+  const searchOverlay = document.getElementById('searchOverlay');
+  const searchInput = document.getElementById('searchInput');
+  const searchResults = document.getElementById('searchResults');
+  const mainContent = document.getElementById('mainContent');
+
+  function normalizeText(str){
+    return (str || '').toLowerCase();
+  }
+
+  function cariVideo(query){
+    return VIDEOS.filter(item =>
+      normalizeText(item.judul).includes(query) ||
+      normalizeText(item.deskripsi).includes(query)
+    );
+  }
+
+  function cariArtikel(query){
+    return ARTICLES.filter(item => normalizeText(item.judul).includes(query));
+  }
+
+  const ICON_SEARCH_HINT = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>';
+  const ICON_NO_RESULT = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="16" y1="16" x2="21" y2="21"/><line x1="8.5" y1="11" x2="13.5" y2="11"/></svg>';
+  const ICON_VIDEO_LABEL = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M10 8.5v7l6-3.5-6-3.5Z"/></svg>';
+  const ICON_ARTIKEL_LABEL = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h9l5 5v13a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1Z"/><path d="M14 3v5h5"/><path d="M8.5 13h7M8.5 16.5h7"/></svg>';
+
+  function renderSearchResults(){
+    const query = normalizeText(searchInput.value.trim());
+
+    if(query === ''){
+      searchResults.innerHTML = `
+        <div class="search-hint">
+          ${ICON_SEARCH_HINT}
+          <p>Ketik kata kunci untuk menemukan video atau artikel.</p>
+        </div>`;
+      return;
+    }
+
+    const hasilVideo = cariVideo(query);
+    const hasilArtikel = cariArtikel(query);
+
+    if(hasilVideo.length === 0 && hasilArtikel.length === 0){
+      searchResults.innerHTML = `
+        <div class="search-empty">
+          ${ICON_NO_RESULT}
+          <p class="main">Konten tidak ditemukan.</p>
+          <p class="sub">Coba gunakan kata kunci yang berbeda.</p>
+        </div>`;
+      return;
+    }
+
+    let html = '';
+
+    if(hasilVideo.length > 0){
+      html += `
+        <div class="result-group">
+          <div class="result-group-label">${ICON_VIDEO_LABEL} Video</div>
+          <div class="list">
+            ${hasilVideo.map(item => renderVideoRow(item, VIDEOS.indexOf(item))).join('')}
+          </div>
+        </div>`;
+    }
+
+    if(hasilArtikel.length > 0){
+      html += `
+        <div class="result-group">
+          <div class="result-group-label">${ICON_ARTIKEL_LABEL} Artikel</div>
+          <div class="list">
+            ${hasilArtikel.map(item => renderArtikelRow(item, ARTICLES.indexOf(item))).join('')}
+          </div>
+        </div>`;
+    }
+
+    searchResults.innerHTML = html;
+  }
+
+  function openSearch(){
+    mainContent.style.display = 'none';
+    searchOverlay.classList.add('open');
+    renderSearchResults();
+    searchInput.focus();
+  }
+
+  function closeSearch(){
+    searchOverlay.classList.remove('open');
+    mainContent.style.display = '';
+    searchInput.value = '';
+  }
+
+  searchOpenBtn.addEventListener('click', openSearch);
+  searchCloseBtn.addEventListener('click', closeSearch);
+  searchInput.addEventListener('input', renderSearchResults);
+  document.addEventListener('keydown', (e) => {
+    if(e.key === 'Escape' && searchOverlay.classList.contains('open')) closeSearch();
+  });
+</script>
+
+</body>
+</html>
